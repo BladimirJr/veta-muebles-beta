@@ -94,6 +94,9 @@ button{cursor:pointer}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"esc" "txt" "cta";gap:34px;margin-top:6px}
 .hero-esc{grid-area:esc;height:clamp(250px,72vw,400px)}
 .hero-txt{grid-area:txt;font-size:18px;line-height:1.45;max-width:36ch;margin-inline:auto;text-align:center;text-shadow:0 1px 10px rgba(26,16,10,.7)}
+.hero-txt{display:grid;gap:8px}
+.hero-guia{font-size:.92em;color:var(--cinta)}
+.hero-guia b{font-weight:700}
 .hero-cta{grid-area:cta;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 @media(min-width:720px){.hero-t{line-height:.9}}
 @media(max-width:719px){.tod{display:block}.ln{display:table;margin-inline:auto}.hero-t{min-height:1.8em}}
@@ -107,11 +110,11 @@ button{cursor:pointer}
 .sin-3d .hero-esc{height:24px}
 .cinta{position:absolute;height:28px;background-color:var(--cinta);color:var(--tinta);background-image:repeating-linear-gradient(90deg,var(--tinta) 0 1px,transparent 1px var(--px,30px));background-size:100% 8px;background-repeat:no-repeat;box-shadow:0 3px 12px rgba(26,16,10,.45)}
 .cinta-nums span{position:absolute;top:10px;font-family:var(--mono);font-size:11.5px;line-height:1;font-weight:500;transform:translateX(-50%);font-variant-numeric:tabular-nums}
-.cinta-t{position:absolute;right:-3px;top:-8px;height:44px;min-width:86px;padding:0 12px;background:var(--tinta);color:var(--cinta);border:2px solid var(--cinta);border-radius:3px;font-family:var(--mono);font-size:15px;font-weight:500;cursor:ew-resize;touch-action:none;animation:llamar 1.8s ease-in-out 2.2s 3}
+.cinta-t{position:absolute;right:-3px;top:-8px;height:44px;min-width:86px;padding:0 12px;background:var(--tinta);color:var(--cinta);border:2px solid var(--cinta);border-radius:3px;font-family:var(--mono);font-size:15px;font-weight:500;cursor:ew-resize;touch-action:none;animation:llamar 1.8s ease-in-out 2.2s 6}
 .cinta-t::before{content:"‹›";margin-right:6px;letter-spacing:1px}
 @keyframes llamar{50%{transform:translateX(10px)}}
-.cinta-pista{position:absolute;right:0;top:40px;font-family:var(--mono);font-size:12.5px;color:var(--yeso);white-space:nowrap;text-shadow:0 1px 6px rgba(26,16,10,.8);transition:opacity .3s}
-.tocado .cinta-pista{opacity:0}
+.cinta-pista{position:absolute;right:0;top:40px;font-family:var(--mono);font-size:13.5px;font-weight:500;color:var(--cinta);white-space:nowrap;text-shadow:0 1px 6px rgba(26,16,10,.8)}
+@media(max-width:719px){.cinta-pista{font-size:12.5px}}
 .tocado .cinta-t{animation:none}
 
 /* Secciones */
@@ -139,6 +142,7 @@ button{cursor:pointer}
 .card h3{font-size:clamp(22px,3vw,27px);font-variation-settings:"wdth" 86,"wght" 780}
 .card-t{font-size:14.5px;color:var(--tinta-suave);line-height:1.3}
 .card-d{font-size:13px}
+.card-p{font-family:var(--display);font-weight:780;font-size:clamp(18px,2.4vw,21px);font-variation-settings:"wdth" 86,"wght" 780;line-height:1.2;margin-top:2px}
 .card-acc{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:7px}
 .enl{background:none;border:0;padding:6px 0;font-weight:650;font-size:15px;color:var(--tinta);text-decoration:underline;text-decoration-color:var(--cinta-hondo);text-decoration-thickness:2px;text-underline-offset:4px}
 .enl:hover{text-decoration-color:var(--tinta)}
@@ -251,6 +255,7 @@ button{cursor:pointer}
 .fi-b h2{font-size:clamp(36px,6vw,50px)}
 .fi-b h3{margin-top:7px;font-size:20px}
 .eti{font-family:var(--mono);font-size:13px;color:var(--tinta-suave)}
+.fi-pr{font-family:var(--display);font-weight:800;font-size:clamp(26px,4vw,34px);font-variation-settings:"wdth" 82,"wght" 800;line-height:1.1}
 .fi-et{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:5px}
 .fi-et li{font-family:var(--mono);font-size:12.5px;padding:3px 7px;background:var(--yeso-hondo)}
 .fi-lista{list-style:none;padding:0;margin:0}
@@ -324,6 +329,9 @@ button{cursor:pointer}
 .dz-cont{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 26px;overscroll-behavior:contain}
 .dz-pie{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 12px;border-top:1px solid var(--linea);background:var(--yeso);min-height:58px}
 .dz-pie .mono{font-size:13px;line-height:1.2;min-width:0}
+.dz-res{display:grid;gap:1px;min-width:0}
+.dz-res b{font-weight:700;font-size:14.5px;line-height:1.15}
+.tk-pr dd{font-size:16px}
 .dz-pie .btn{min-height:42px;font-size:15px;padding:8px 14px;white-space:nowrap}
 .p-h{font-size:27px;font-weight:780;font-variation-settings:"wdth" 80,"wght" 780}
 .p-sub{color:var(--tinta-suave);margin:4px 0 12px;line-height:1.35;font-size:15px}
@@ -342,6 +350,7 @@ button{cursor:pointer}
 .p-card.on .p-img{border-color:var(--cinta-hondo)}
 .p-card b{font-size:15.5px;line-height:1.15}
 .p-card small{font-size:13px;color:var(--tinta-suave);line-height:1.2}
+.p-card .p-pr{font-weight:700;color:var(--tinta);margin-top:1px}
 .p-img-cero{display:grid;place-items:center;background:none;border:2px dashed var(--linea-f)}
 .p-img-cero svg{width:42%;fill:none;stroke:var(--tinta);stroke-width:1.5}
 .bloque{padding-block:13px;border-top:1px solid var(--linea);margin-top:13px}
@@ -459,7 +468,7 @@ button{cursor:pointer}
   <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7.5 2.9h9a4.6 4.6 0 0 1 4.6 4.6v9a4.6 4.6 0 0 1-4.6 4.6h-9a4.6 4.6 0 0 1-4.6-4.6v-9a4.6 4.6 0 0 1 4.6-4.6Z"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></symbol>
 </svg>
 
-<div class="beta"><div class="beta-i"><b>Beta</b><span>Imágenes, nombres y acabados de prueba. Esta página todavía está en construcción.</span></div></div>
+<div class="beta"><div class="beta-i"><b>Beta</b><span>Imágenes, nombres, precios y acabados de prueba. Esta página todavía está en construcción.</span></div></div>
 
 <header class="cab" id="cab">
   <div class="cab-i">
@@ -488,6 +497,7 @@ button{cursor:pointer}
     <div class="hero-grid">
       <div class="hero-txt">
         <p>Bases flotantes para TV, organizadores y piezas de madera hechas al centímetro para tu pared.</p>
+        <p class="hero-guia"><b>Pruébalo:</b> mueve el botón de la cinta y mira cómo cambia el tamaño del mueble.</p>
       </div>
       <div class="hero-esc" id="hero-esc"></div>
       <div class="hero-cta">
@@ -499,7 +509,7 @@ button{cursor:pointer}
   <div class="cinta" id="hero-cinta" hidden>
     <div class="cinta-nums" id="hero-nums" aria-hidden="true"></div>
     <button type="button" class="cinta-t" id="hero-tirador" aria-label="Estirar el mueble. Usa las flechas izquierda y derecha."><span id="hero-cm">180 cm</span></button>
-    <span class="cinta-pista" aria-hidden="true">Arrastra para estirar</span>
+    <span class="cinta-pista">Arrastra el botón para cambiar el tamaño ↑</span>
   </div>
 </section>
 
@@ -511,7 +521,7 @@ button{cursor:pointer}
     </div>
     <div class="filtros" id="cat-filtros" role="group" aria-label="Filtrar por tipo de mueble"></div>
     <div class="cat-grid" id="cat-grid"></div>
-    <p class="nota nota-c">Las imágenes son de prueba y están generadas por computador. Aquí irán las fotos reales de los muebles.</p>
+    <p class="nota nota-c">Las imágenes y los precios son de prueba. Aquí irán las fotos y los precios reales. Si personalizas un mueble, el precio se cotiza según tu diseño.</p>
   </div>
 </section>
 
@@ -609,6 +619,7 @@ button{cursor:pointer}
       <details><summary>¿Las medidas pueden ser exactas?</summary><p>Sí. En el diseñador eliges cada medida al centímetro y antes de fabricar la confirmamos contigo.</p></details>
       <details><summary>¿Un mueble flotante aguanta en mi pared?</summary><p>Depende del material de la pared y del peso que va a cargar. Por eso te preguntamos si es ladrillo, concreto o drywall.</p></details>
       <details><summary>¿Qué pasa después de enviar mi diseño?</summary><p>Nos llega por WhatsApp con tus medidas, la madera y tus datos. Te escribimos para cotizar y resolver dudas.</p></details>
+      <details><summary>¿Cuánto cuesta un mueble personalizado?</summary><p>Depende de las medidas, la madera y las piezas. Envíanos tu diseño y te lo cotizamos.</p></details>
       <details><summary>¿Puedo pedir algo que no está en el catálogo?</summary><p>Claro. Escríbenos por WhatsApp o búscanos en Instagram, cuéntanos la idea y la cotizamos.</p></details>
     </div>
   </div>
@@ -633,7 +644,7 @@ button{cursor:pointer}
 
 <footer class="pie">
   <div class="sec-i pie-i">
-    <div><span class="marca-n" data-negocio>Veta</span><p>Beta para revisión. Imágenes, nombres, modelos y acabados de prueba.</p></div>
+    <div><span class="marca-n" data-negocio>Veta</span><p>Beta para revisión. Imágenes, nombres, modelos, precios y acabados de prueba.</p></div>
     <p class="pie-c">© <span class="ano"></span> <span data-negocio>Veta</span></p>
   </div>
 </footer>
@@ -678,7 +689,7 @@ button{cursor:pointer}
       </div>
       <div class="dz-cont" id="dz-cont"></div>
       <div class="dz-pie">
-        <span class="mono" id="dz-medida"></span>
+        <div class="dz-res"><b id="dz-precio"></b><span class="mono" id="dz-medida"></span></div>
         <button type="button" class="btn btn-p" id="dz-sig">Siguiente</button>
       </div>
     </aside>
@@ -701,6 +712,24 @@ V.NEGOCIO={
   instagram:'',  // sin la @
   urlBeta:'https://bladimirjr.github.io/veta-muebles-beta/'     // link de esta página, para enviar el diseño en 3D
 };
+
+/* ─────────  PRECIOS DE CATÁLOGO (pesos colombianos)  ─────────
+   Son de prueba. Cambia cada valor por el precio real de ese modelo. */
+V.PRECIOS={
+  horizonte:1350000,
+  liston:1590000,
+  nicho:1750000,
+  muro:3450000,
+  umbral:240000,
+  zaguan:690000,
+  cuadricula:890000,
+  mesada:150000,
+  alero:260000,
+  torre:1150000,
+  mesilla:390000,
+  dintel:790000
+};
+V.dinero=n=>'$ '+String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
 
 V.clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 V.rng=function(seed){let s=(Math.imul(seed|0,2654435761)>>>0)||88172645;return function(){s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296;};};
@@ -1180,6 +1209,14 @@ V.svgFrente=function(d,o){
 /* Código del diseño para enviarlo en un link (solo letras, números y guiones) */
 const nodoC=n=>n.c?n.c:[n.s,n.r.map(r=>Math.round(r*1000)/1000),n.k.map(nodoC)];
 const nodoX=n=>typeof n==='string'?{c:n}:{s:n[0],r:n[1],k:n[2].map(nodoX)};
+/* Un diseño conserva el precio de catálogo solo si no cambió nada que afecte su fabricación.
+   El televisor, el color de la pared y la posición son guías: no cuentan. */
+const firmaPedido=d=>JSON.stringify([d.madera,d.frente||0,d.tirador,d.veta,d.piezas.filter(q=>q.t!=='tv').map(q=>[q.t,q.w,q.h,q.d||0,q.g||0,q.m||0,q.led?1:0,q.fondo===false?0:1,q.cables?1:0,q.ganchos||0,q.e||0,q.raiz?nodoC(q.raiz):0])]);
+V.precioDe=function(d){
+  const base=V.PRECIOS[d.perfil];
+  if(!base)return null;
+  return firmaPedido(d)===firmaPedido(V.crearDiseno(d.perfil))?base:null;
+};
 V.compactar=function(d){
   return [1,d.perfil,d.nombre,d.madera,d.frente||0,d.tirador,d.veta,d.pared,d.paredAncho,d.piezas.map(q=>[
     q.t,q.x,q.y,q.w,q.h,q.d||0,q.g||0,q.m||0,q.led?1:0,q.fondo===false?0:1,q.cables?1:0,q.ganchos||0,q.e||0,q.pulgadas||0,q.raiz?nodoC(q.raiz):0
@@ -2035,7 +2072,7 @@ function dibujar(o){
     const c=$('#dz-plano');
     if(c){c.innerHTML=V.svgFrente(St.d,{conTV:true,relleno:'#fff'});}
   }
-  nombre();pintarTV();
+  nombre();pintarTV();pie();
 }
 function nombre(){$('#dz-nombre').textContent=St.d.nombre;}
 
@@ -2092,6 +2129,8 @@ function htmlTV(d,q){
 function pie(){
   const b=V.bbox(St.d,true),n=St.d.piezas.filter(q=>q.t!=='tv').length;
   $('#dz-medida').textContent=b.vacio?'Sin piezas':cm(b.w)+' × '+cm(b.h)+' cm · '+n+(n===1?' pieza':' piezas');
+  const pr=V.precioDe(St.d);
+  $('#dz-precio').textContent=pr?V.dinero(pr):'Personalizado · a cotizar';
   const i=TABS.findIndex(t=>t[0]===St.tab),sig=TABS[i+1];
   const bt=$('#dz-sig');
   bt.hidden=!sig;
@@ -2137,7 +2176,7 @@ function htmlPerfil(){
   <p class="p-sub">Es tu punto de partida. Después puedes cambiar medidas y agregar o quitar piezas.</p>
   <div class="chips" role="group" aria-label="Tipo de mueble">${V.CATEGORIAS.map(c=>`<button type="button" class="chip ${St.cat===c.id?'on':''}" data-a="cat" data-id="${c.id}">${c.n}</button>`).join('')}</div>
   <div class="p-grid">
-    ${lista.map(p=>`<button type="button" class="p-card ${St.d.perfil===p.id?'on':''}" data-a="perfil" data-id="${p.id}"><span class="p-img" data-mini="${p.id}">${imgMini(p.id)}</span><b>${p.nombre}</b><small>${p.tipo}</small></button>`).join('')}
+    ${lista.map(p=>`<button type="button" class="p-card ${St.d.perfil===p.id?'on':''}" data-a="perfil" data-id="${p.id}"><span class="p-img" data-mini="${p.id}">${imgMini(p.id)}</span><b>${p.nombre}</b><small>${p.tipo}</small><small class="p-pr">${V.dinero(V.PRECIOS[p.id])}</small></button>`).join('')}
     <button type="button" class="p-card p-cero ${St.d.perfil==='cero'?'on':''}" data-a="perfil" data-id="cero"><span class="p-img p-img-cero">${ICO.modulo}</span><b>Desde cero</b><small>Una caja vacía para empezar</small></button>
   </div>`;
 }
@@ -2403,12 +2442,13 @@ function htmlEnviar(){
   const desp=pedido.map(q=>V.despiece(q).map(z=>`<tr><td>${z.q}</td><td>${z.n}</td><td class="mono">${cm(z.a)} × ${cm(z.b)}</td></tr>`).join('')).join('');
   const mad=V.MADERAS[d.madera].n+(d.frente?' con frentes en '+V.MADERAS[d.frente].n:'');
   const tir=V.TIRADORES.find(t=>t.id===d.tirador).n;
+  const pr=V.precioDe(d);
   const sel=(id,et,ops,val)=>`<div class="f-c"><label for="f-${id}">${et}</label><select id="f-${id}" data-f="${id}"><option value="">Elige una opción</option>${ops.map(o=>`<option value="${o[0]}" ${val===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></div>`;
   return `<div class="ticket">
     <div class="tk-h"><span>Orden de taller</span><b>${esc(d.nombre)}</b></div>
     <div class="tk-foto">${foto}</div>
     <ul class="tk-lista">${filas||'<li>Agrega al menos una pieza para enviar.</li>'}</ul>
-    <dl class="tk-dl"><div><dt>Madera</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div></dl>
+    <dl class="tk-dl"><div><dt>Madera</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div><div class="tk-pr"><dt>Precio</dt><dd>${pr?V.dinero(pr):'Personalizado: a cotizar'}</dd></div></dl>
     <details class="tk-desp"><summary>Ver despiece para el taller</summary><div class="tk-tabla"><table><thead><tr><th>Cant.</th><th>Pieza</th><th>cm</th></tr></thead><tbody>${desp}</tbody></table></div><p class="nota">Medidas aproximadas. Se confirman antes de fabricar.</p></details>
   </div>
   <form id="f-envio" class="form" novalidate>
@@ -2449,6 +2489,8 @@ function mensaje(){
   L.push('');
   L.push('Madera: '+V.MADERAS[d.madera].n+(d.frente?' · Frentes: '+V.MADERAS[d.frente].n:''));
   L.push('Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
+  const pr=V.precioDe(d);
+  L.push(pr?'Precio publicado: '+V.dinero(pr):'Diseño personalizado: precio por cotizar');
   const tv=d.piezas.find(q=>q.t==='tv');
   if(tv)L.push('Televisor: '+tv.pulgadas+' pulgadas');
   if(d.paredAncho)L.push('Ancho libre de la pared: '+cm(d.paredAncho)+' cm');
@@ -2909,6 +2951,7 @@ function pintarCatalogo(){
       <h3>${p.nombre}</h3>
       <p class="card-t">${p.tipo}</p>
       <p class="mono card-d">${medidaPrincipal(p.id)}</p>
+      <p class="card-p">${V.dinero(V.PRECIOS[p.id])}</p>
       <div class="card-acc">
         <button type="button" class="enl" data-disenar="${p.id}">Personalizar</button>
         <a class="enl enl-s" href="${V.linkWA(msjModelo(p))}" target="_blank" rel="noopener">Cotizar</a>
@@ -2936,12 +2979,13 @@ function abrirFicha(id){
     <div class="fi-b">
       <p class="eti">${p.tipo}</p>
       <h2>${p.nombre}</h2>
+      <p class="fi-pr">${V.dinero(V.PRECIOS[p.id])}</p>
       <p>${p.texto}</p>
       <ul class="fi-et">${p.etiquetas.map(e=>`<li>${e}</li>`).join('')}</ul>
       <h3>Incluye</h3>
       <ul class="fi-lista">${piezas.map(q=>`<li><b>${V.nombrePieza(q)}</b><span class="mono">${V.medidasPieza(q)}</span><small>${V.detallePieza(q)}</small></li>`).join('')}</ul>
       ${tv&&base?`<div class="fi-tv"><h3>¿De cuántas pulgadas es tu TV?</h3><div class="chips" id="fi-pulg">${V.PULGADAS.map(x=>`<button type="button" class="chip ${x===pAct?'on':''}" data-fp="${x}" aria-pressed="${x===pAct}">${x}″</button>`).join('')}</div><p class="nota" id="fi-reco">${recoFicha(pAct,base)}</p></div>`:''}
-      <p class="nota">Madera de esta imagen: ${V.MADERAS[d.madera].n}. Puedes cambiarla, igual que las medidas y las piezas.</p>
+      <p class="nota">Precio de referencia con estas medidas y esta madera (${V.MADERAS[d.madera].n}). Si cambias algo, te lo cotizamos.</p>
       <div class="fi-acc">
         <button type="button" class="btn btn-p" data-disenar="${p.id}">Personalizar este mueble</button>
         <a class="btn btn-wa" id="fi-wa" href="${V.linkWA(msjModelo(p,pAct))}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Cotizar por WhatsApp</a>
