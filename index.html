@@ -1,0 +1,3184 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);color-scheme:light}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style><title>Veta Muebles</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,400..900&family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>/* Concepto: la página es una pared pintada; los muebles flotan en ella y cada medida se marca con cinta métrica. */
+:root{
+  --muro:#2F2219;
+  --muro-hondo:#231812;
+  --muro-claro:#5B4332;
+  --yeso:#F1EADF;
+  --yeso-hondo:#E1D5C3;
+  --papel:#FAF6EF;
+  --tinta:#2A1E16;
+  --tinta-suave:#6A594B;
+  --cinta:#F2B632;
+  --cinta-hondo:#D9991A;
+  --wa:#25D366;
+  --wa-hondo:#128C4A;
+  --linea:rgba(42,30,22,.18);
+  --linea-f:rgba(42,30,22,.32);
+  --linea-c:rgba(241,234,223,.24);
+  --blanco:#FFFFFF;
+  --display:'Anybody','Arial Narrow',Impact,sans-serif;
+  --texto:'Hanken Grotesk','Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'DM Mono',ui-monospace,Menlo,Consolas,monospace;
+  --gutter-i:max(clamp(16px,4vw,48px),env(safe-area-inset-left,0px));
+  --gutter-d:max(clamp(16px,4vw,48px),env(safe-area-inset-right,0px));
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html.con-dz,html.con-dz body{overflow:hidden}
+body{background:var(--yeso);color:var(--tinta);font-family:var(--texto);font-size:17px;line-height:1.55;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--muro-hondo)}
+h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;line-height:1.02}
+h2{font-size:clamp(34px,6vw,60px);font-weight:800;font-variation-settings:"wdth" 74,"wght" 800;letter-spacing:.002em}
+h3{font-size:22px;font-weight:750;font-variation-settings:"wdth" 80,"wght" 750}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--cinta);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.nota{font-size:14px;color:var(--tinta-suave);line-height:1.45}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:10px 20px;border:2px solid transparent;border-radius:3px;background:none;font-family:var(--texto);font-weight:650;font-size:16px;line-height:1.1;text-decoration:none;text-align:center;transition:background-color .15s,color .15s,border-color .15s}
+.btn svg{width:20px;height:20px;flex:none}
+.btn-p{background:var(--cinta);color:var(--tinta)}
+.btn-p:hover{background:var(--cinta-hondo)}
+.btn-f{color:var(--yeso);border-color:var(--linea-c)}
+.btn-f:hover{border-color:var(--yeso)}
+.btn-o{background:var(--tinta);color:var(--papel)}
+.btn-o:hover{background:var(--muro)}
+.btn-t{color:var(--tinta);border-color:var(--tinta)}
+.btn-t:hover{background:var(--tinta);color:var(--cinta)}
+.btn-wa{background:var(--wa);color:var(--tinta)}
+.btn-wa:hover{background:#1DBB59}
+.btn-gde{min-height:54px;font-size:17px;padding-inline:26px}
+.btn-peq{min-height:38px;padding:6px 12px;font-size:14px}
+
+.beta{background:var(--cinta);color:var(--tinta);font-family:var(--mono);font-size:12.5px;line-height:1.35;padding-block:6px;padding-left:var(--gutter-i);padding-right:var(--gutter-d)}
+.beta-i{max-width:1240px;margin-inline:auto;display:flex;flex-wrap:wrap;gap:2px 12px;justify-content:center;text-align:center}
+.beta b{font-weight:500;text-transform:uppercase;letter-spacing:.08em}
+
+.cab{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--muro-hondo);color:var(--yeso);padding-left:var(--gutter-i);padding-right:var(--gutter-d)}
+.cab-i{max-width:1240px;margin-inline:auto;display:flex;align-items:center;gap:18px;min-height:62px;flex-wrap:wrap}
+.marca{display:flex;align-items:baseline;gap:9px;color:inherit;text-decoration:none}
+.marca-n{font-family:var(--display);font-size:30px;font-weight:850;font-variation-settings:"wdth" 130,"wght" 850;letter-spacing:.01em;line-height:1}
+.marca small{font-family:var(--mono);font-size:11.5px;opacity:.72;display:none}
+.nav{display:none;flex-basis:100%;order:3;flex-direction:column;padding-bottom:12px}
+.nav.abierto{display:flex}
+.nav a{color:inherit;text-decoration:none;padding:11px 0;border-top:1px solid var(--linea-c);font-weight:550}
+.cab-acc{margin-left:auto;display:flex;align-items:center;gap:8px}
+.ic{display:grid;place-items:center;width:40px;height:40px;color:inherit}
+.ic svg{width:24px;height:24px}
+.cab .btn-wa span{display:none}
+.menu-btn{background:none;border:1.5px solid var(--linea-c);color:inherit;border-radius:3px;min-height:38px;padding:4px 12px;font-weight:600;font-size:14px}
+@media(min-width:900px){
+  .marca small{display:inline}
+  .nav{display:flex;flex-direction:row;flex-basis:auto;order:0;gap:22px;padding:0;margin-left:14px}
+  .nav a{border:0;padding:6px 0;font-size:15.5px;background:linear-gradient(var(--cinta),var(--cinta)) 0 100%/0 2px no-repeat;transition:background-size .2s}
+  .nav a:hover{background-size:100% 2px}
+  .menu-btn{display:none}
+  .cab .btn-wa span{display:inline}
+}
+
+/* Portada */
+.hero{position:relative;overflow:hidden;background:var(--muro);color:var(--yeso)}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero-velo{position:absolute;left:0;right:0;bottom:0;height:34%;pointer-events:none;background:linear-gradient(to bottom,rgba(35,24,18,0),rgba(35,24,18,.92))}
+.hero-i{position:relative;max-width:1240px;margin-inline:auto;padding-block:clamp(22px,4vw,44px) clamp(24px,4vw,44px);padding-left:var(--gutter-i);padding-right:var(--gutter-d);pointer-events:none}
+.hero-i a,.hero-i button{pointer-events:auto}
+.hero-t{text-align:center;color:var(--yeso);font-weight:820;line-height:.86;white-space:nowrap;font-size:clamp(58px,13vw,118px);font-variation-settings:"wdth" 70,"wght" 820;min-height:.9em}
+.tod{display:inline-block;transform-origin:center}
+.ln{display:inline-block;transform-origin:center}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"esc" "txt" "cta";gap:34px;margin-top:6px}
+.hero-esc{grid-area:esc;height:clamp(250px,72vw,400px)}
+.hero-txt{grid-area:txt;font-size:18px;line-height:1.45;max-width:36ch;margin-inline:auto;text-align:center;text-shadow:0 1px 10px rgba(26,16,10,.7)}
+.hero-cta{grid-area:cta;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+@media(min-width:720px){.hero-t{line-height:.9}}
+@media(max-width:719px){.tod{display:block}.ln{display:table;margin-inline:auto}.hero-t{min-height:1.8em}}
+@media(min-width:960px){
+  .hero-grid{grid-template-columns:minmax(170px,.62fr) minmax(0,3fr) minmax(170px,.62fr);grid-template-areas:"txt esc cta";align-items:end;gap:18px}
+  .hero-esc{height:clamp(330px,calc(100vh - 300px),520px)}
+  .hero-txt{text-align:left;margin:0;font-size:17px;padding-bottom:6px}
+  .hero-cta{flex-direction:column;align-items:stretch;padding-bottom:6px}
+}
+.sin-3d #hero-canvas,.sin-3d .cinta,.sin-3d .hero-velo{display:none}
+.sin-3d .hero-esc{height:24px}
+.cinta{position:absolute;height:28px;background-color:var(--cinta);color:var(--tinta);background-image:repeating-linear-gradient(90deg,var(--tinta) 0 1px,transparent 1px var(--px,30px));background-size:100% 8px;background-repeat:no-repeat;box-shadow:0 3px 12px rgba(26,16,10,.45)}
+.cinta-nums span{position:absolute;top:10px;font-family:var(--mono);font-size:11.5px;line-height:1;font-weight:500;transform:translateX(-50%);font-variant-numeric:tabular-nums}
+.cinta-t{position:absolute;right:-3px;top:-8px;height:44px;min-width:86px;padding:0 12px;background:var(--tinta);color:var(--cinta);border:2px solid var(--cinta);border-radius:3px;font-family:var(--mono);font-size:15px;font-weight:500;cursor:ew-resize;touch-action:none;animation:llamar 1.8s ease-in-out 2.2s 3}
+.cinta-t::before{content:"‹›";margin-right:6px;letter-spacing:1px}
+@keyframes llamar{50%{transform:translateX(10px)}}
+.cinta-pista{position:absolute;right:0;top:40px;font-family:var(--mono);font-size:12.5px;color:var(--yeso);white-space:nowrap;text-shadow:0 1px 6px rgba(26,16,10,.8);transition:opacity .3s}
+.tocado .cinta-pista{opacity:0}
+.tocado .cinta-t{animation:none}
+
+/* Secciones */
+.sec{padding-block:clamp(48px,8vw,96px);padding-left:var(--gutter-i);padding-right:var(--gutter-d)}
+.sec-i{max-width:1240px;margin-inline:auto}
+.sec-h{display:grid;gap:10px;margin-bottom:24px;max-width:62ch}
+.sec-h p{font-size:18px;color:var(--tinta-suave)}
+
+.filtros{display:flex;gap:6px;flex-wrap:wrap}
+.filtro{background:none;border:1.5px solid var(--linea-f);border-radius:2px;padding:8px 13px;font-weight:600;font-size:15px;line-height:1.1;min-height:40px}
+.filtro small{font-family:var(--mono);font-size:12px;opacity:.65;margin-left:3px}
+.filtro:hover{border-color:var(--tinta)}
+.filtro.on{background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
+.cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 12px;margin-top:22px}
+@media(min-width:720px){.cat-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 20px}}
+@media(min-width:1100px){.cat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card{display:flex;flex-direction:column;min-width:0}
+.card-img{display:block;width:100%;aspect-ratio:4/3;padding:0;border:0;background:var(--yeso-hondo);overflow:hidden}
+.card-m{display:block;width:100%;height:100%}
+.card-img img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.card-img:hover img{transform:scale(1.04)}
+.plano{display:grid;place-items:center;width:100%;height:100%;padding:12%}
+.plano svg{width:100%;height:100%}
+.card-b{padding-top:10px;display:grid;gap:2px;flex:1;align-content:start}
+.card h3{font-size:clamp(22px,3vw,27px);font-variation-settings:"wdth" 86,"wght" 780}
+.card-t{font-size:14.5px;color:var(--tinta-suave);line-height:1.3}
+.card-d{font-size:13px}
+.card-acc{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:7px}
+.enl{background:none;border:0;padding:6px 0;font-weight:650;font-size:15px;color:var(--tinta);text-decoration:underline;text-decoration-color:var(--cinta-hondo);text-decoration-thickness:2px;text-underline-offset:4px}
+.enl:hover{text-decoration-color:var(--tinta)}
+.enl-s{color:var(--tinta-suave);text-decoration-color:var(--linea-f)}
+.nota-c{margin-top:26px}
+
+.otra{background:var(--cinta);color:var(--tinta);padding-block:clamp(40px,7vw,76px);padding-left:var(--gutter-i);padding-right:var(--gutter-d);background-image:repeating-linear-gradient(90deg,var(--tinta) 0 1.5px,transparent 1.5px 48px),repeating-linear-gradient(90deg,var(--tinta) 0 1px,transparent 1px 9.6px);background-size:100% 13px,100% 7px;background-repeat:no-repeat}
+.otra-i{max-width:1240px;margin-inline:auto;display:grid;gap:22px;padding-top:8px}
+.otra-tx{display:grid;gap:10px}
+.otra-tx p{font-size:19px;max-width:44ch;line-height:1.4}
+.otra-f{display:grid;gap:8px;min-width:0}
+.otra-f label{font-weight:650}
+.otra-f textarea{width:100%;border:2px solid var(--tinta);background:var(--papel);border-radius:3px;padding:12px;font-size:16px;resize:vertical;min-height:88px}
+.otra-acc{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+@media(min-width:900px){.otra-i{grid-template-columns:1fr 1fr;align-items:center;gap:56px}}
+
+.dis{background:var(--muro);color:var(--yeso)}
+.dis-grid{display:grid;gap:30px}
+.dis-tx{display:grid;gap:18px;justify-items:start;min-width:0}
+.dis-lead{font-size:20px;line-height:1.4}
+.dis-lista{list-style:none;margin:0;padding:0;display:grid;gap:0;width:100%}
+.dis-lista li{padding-block:12px;border-top:1px solid var(--linea-c);font-size:16.5px;line-height:1.4}
+.dis-lista b{color:var(--cinta);font-weight:650}
+.dis-fig{margin:0;min-width:0;background:var(--muro-claro)}
+.dis-fig img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+@media(min-width:900px){.dis-grid{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center;gap:56px}}
+
+.guia{background:var(--papel)}
+.guia-grid{display:grid;gap:30px}
+.guia-c{display:grid;gap:14px;justify-items:start;min-width:0}
+#g-dib{width:100%;max-width:520px;height:auto;display:block}
+.gd-tv{fill:var(--tinta)}
+.gd-tx{fill:var(--papel);font-family:var(--mono);font-size:12px}
+.gd-base{fill:#B98A55}
+.gd-l{stroke:var(--tinta);stroke-width:1.4}
+.gd-et{fill:var(--cinta)}
+.gd-etx{fill:var(--tinta);font-family:var(--mono);font-size:12.5px;font-weight:500}
+.guia-d{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.guia-d dt{font-size:14px;color:var(--tinta-suave);line-height:1.25}
+.guia-d dd{margin:2px 0 0;font-family:var(--mono);font-size:clamp(19px,3.4vw,25px);font-weight:500;font-variant-numeric:tabular-nums}
+.guia-d .fuerte dd{background:var(--cinta);display:inline-block;padding:0 6px}
+.guia-tips{margin:12px 0 0}
+.guia-tips>div{display:grid;grid-template-columns:minmax(0,98px) minmax(0,1fr);gap:12px;padding-block:12px;border-top:1px solid var(--linea)}
+.guia-tips dt{font-weight:650;font-size:15.5px}
+.guia-tips dd{margin:0;font-size:16px;line-height:1.42;color:var(--tinta-suave)}
+@media(min-width:900px){.guia-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px}}
+
+.mad{background:var(--yeso-hondo)}
+.mad-rack{display:flex;flex-direction:column;gap:4px}
+.tabla{position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;text-align:left;border:0;padding:12px 14px;min-height:62px;color:var(--blanco);background:var(--muro);overflow:hidden;transition:min-height .35s ease,flex-grow .35s ease}
+.tabla-t{position:absolute;inset:0;background-size:cover;background-position:center}
+.tabla::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(26,16,10,.72),rgba(26,16,10,.08) 62%)}
+.tabla-n,.tabla-d{position:relative;z-index:1}
+.tabla-n{font-family:var(--display);font-weight:760;font-size:22px;font-variation-settings:"wdth" 84,"wght" 760;line-height:1.05;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+.tabla-d{display:none;font-size:15px;line-height:1.3;margin-top:3px;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.tabla.on{min-height:190px}
+.tabla.on .tabla-d{display:block}
+@media(min-width:800px){
+  .mad-rack{flex-direction:row;height:380px;gap:5px}
+  .tabla{flex:1 1 0;min-width:0;min-height:0;padding:16px 12px}
+  .tabla.on{flex-grow:4.6;min-height:0}
+  .tabla:not(.on) .tabla-n{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap}
+}
+
+.como{background:var(--papel)}
+.pasos{list-style:none;margin:0;padding:18px 0 0;display:grid;gap:0;counter-reset:p;background-image:linear-gradient(var(--cinta),var(--cinta));background-size:100% 6px;background-repeat:no-repeat}
+.pasos li{counter-increment:p;padding-block:14px;border-bottom:1px solid var(--linea)}
+.pasos li::before{content:counter(p);font-family:var(--mono);font-size:14px;display:block;color:var(--tinta-suave)}
+.pasos b{font-family:var(--display);font-size:25px;font-weight:760;font-variation-settings:"wdth" 84,"wght" 760;display:block;line-height:1.1;margin-bottom:3px}
+.pasos p{font-size:16px;color:var(--tinta-suave);line-height:1.42;max-width:34ch}
+@media(min-width:800px){.pasos{grid-template-columns:repeat(4,minmax(0,1fr));gap:26px}.pasos li{border:0}}
+
+.faq-grid{display:grid;gap:18px}
+.faq-l details{border-top:1px solid var(--linea-f);padding-block:13px}
+.faq-l details:last-child{border-bottom:1px solid var(--linea-f)}
+.faq-l summary{font-weight:650;font-size:18px;cursor:pointer;list-style:none;line-height:1.3;display:flex;justify-content:space-between;gap:14px}
+.faq-l summary::-webkit-details-marker{display:none}
+.faq-l summary::after{content:"+";font-family:var(--mono);font-size:22px;line-height:1.05;flex:none}
+.faq-l details[open] summary::after{content:"−"}
+.faq-l p{margin-top:7px;color:var(--tinta-suave);max-width:60ch;line-height:1.5}
+@media(min-width:900px){.faq-grid{grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:56px}}
+
+.contacto{background:var(--muro-hondo);color:var(--yeso);padding-block:clamp(40px,7vw,72px);padding-left:var(--gutter-i);padding-right:var(--gutter-d)}
+.contacto-grid{display:grid;gap:12px}
+.ct{display:grid;gap:4px;padding:24px;border:1.5px solid var(--linea-c);border-radius:3px;color:inherit;text-decoration:none;align-content:start;min-width:0}
+.ct>svg{width:34px;height:34px;margin-bottom:8px}
+.ct-e{font-size:17px}
+.ct strong{font-family:var(--display);font-weight:800;font-size:clamp(26px,5vw,42px);font-variation-settings:"wdth" 72,"wght" 800;line-height:1.05;overflow-wrap:anywhere}
+.ct-wa{background:var(--yeso);color:var(--tinta);border-color:var(--yeso)}
+.ct-wa>svg{color:var(--wa-hondo)}
+.ct-wa:hover{background:var(--yeso-hondo);border-color:var(--yeso-hondo)}
+.ct-acc{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+@media(min-width:760px){.contacto-grid{grid-template-columns:1fr 1fr;gap:14px}}
+
+.pie{background:var(--tinta);color:var(--yeso);padding-block:28px 92px;padding-left:var(--gutter-i);padding-right:var(--gutter-d)}
+.pie-i{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:14.5px}
+.pie p{opacity:.72}
+.pie .marca-n{font-size:24px}
+
+.flota{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:50%;background:var(--wa);color:var(--tinta);display:grid;place-items:center;z-index:25;box-shadow:0 6px 18px rgba(26,16,10,.32)}
+.flota svg{width:30px;height:30px}
+
+.ficha{border:0;padding:0;width:calc(100vw - 20px);max-width:960px;max-height:calc(100dvh - 20px);background:var(--papel);color:var(--tinta);border-radius:3px;overflow:auto}
+.ficha::backdrop{background:rgba(26,16,10,.66)}
+.ficha-x{position:absolute;right:8px;top:8px;z-index:2;width:42px;height:42px;background:var(--tinta);color:var(--papel);border:0;border-radius:3px;font-size:26px;line-height:1}
+.ficha-c{display:grid}
+.fi-img{background:var(--yeso-hondo);aspect-ratio:4/3;min-width:0}
+.fi-img img,.fi-img .plano{display:block;width:100%;height:100%;object-fit:cover}
+.fi-b{padding:20px;display:grid;gap:9px;align-content:start;min-width:0}
+.fi-b h2{font-size:clamp(36px,6vw,50px)}
+.fi-b h3{margin-top:7px;font-size:20px}
+.eti{font-family:var(--mono);font-size:13px;color:var(--tinta-suave)}
+.fi-et{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:5px}
+.fi-et li{font-family:var(--mono);font-size:12.5px;padding:3px 7px;background:var(--yeso-hondo)}
+.fi-lista{list-style:none;padding:0;margin:0}
+.fi-lista li{padding-block:7px;border-top:1px solid var(--linea);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 12px}
+.fi-lista .mono{font-size:13.5px}
+.fi-lista small{grid-column:1/-1;color:var(--tinta-suave);font-size:14px}
+.fi-acc{display:grid;gap:8px;margin-top:5px}
+@media(min-width:800px){.ficha-c{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}.fi-img{aspect-ratio:auto;min-height:100%}}
+
+/* Diseñador */
+.dz{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--papel);color:var(--tinta);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);font-size:16px;line-height:1.4}
+.dz-top{flex:none;display:flex;align-items:center;gap:10px;min-height:52px;padding:4px 10px;background:var(--muro-hondo);color:var(--yeso)}
+.dz-ic{background:none;border:0;color:inherit;min-width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-weight:600;font-size:15.5px;border-radius:3px;padding:0 6px}
+.dz-ic:disabled{opacity:.32;cursor:default}
+.dz-ic svg{width:22px;height:22px}
+.dz-salir{font-size:17px}
+.dz-t{flex:1;min-width:0;text-align:center;display:grid;line-height:1.1}
+.dz-t small{font-family:var(--mono);font-size:11px;opacity:.7}
+.dz-t strong{font-family:var(--display);font-weight:780;font-size:20px;font-variation-settings:"wdth" 86,"wght" 780;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dz-hist{display:flex}
+.dz-cuerpo{flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,44fr) minmax(0,56fr)}
+.en-enviar .dz-cuerpo{grid-template-rows:minmax(0,22fr) minmax(0,78fr)}
+.en-enviar .dz-ayuda{display:none}
+@media(min-width:900px){
+  .dz-cuerpo,.en-enviar .dz-cuerpo{grid-template-rows:none;grid-template-columns:minmax(0,1fr) minmax(360px,420px)}
+}
+.dz-lienzo{position:relative;overflow:hidden;background:var(--yeso-hondo);touch-action:none;user-select:none;-webkit-user-select:none}
+#dz-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.dz-plano{position:absolute;inset:0;display:grid;place-items:center;padding:8%;background:var(--papel)}
+.dz-plano svg{width:100%;height:100%}
+.dz-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.c-e{stroke:var(--cinta);stroke-width:1;opacity:.7}
+.c-b{stroke:rgba(26,16,10,.55);stroke-width:4;stroke-linecap:round}
+.c-l{stroke:var(--cinta);stroke-width:1.75}
+.c-g{stroke:var(--blanco);stroke-width:1;stroke-dasharray:5 5}
+.c-p{stroke:var(--cinta);stroke-width:2;stroke-dasharray:9 6}
+.s-p{fill:none;stroke:var(--cinta);stroke-width:2}
+.s-c{fill:rgba(242,182,50,.3);stroke:var(--cinta);stroke-width:2.5}
+.s-h{fill:rgba(255,255,255,.14);stroke:rgba(255,255,255,.85);stroke-width:1.5}
+.dz-capa{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.cota{position:absolute;left:0;top:0;pointer-events:auto;background:var(--cinta);color:var(--tinta);font-family:var(--mono);font-size:12px;font-weight:500;line-height:1;padding:4px 6px;border:0;border-radius:2px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cota-c{background:rgba(42,30,22,.84);color:var(--blanco)}
+.tir{position:absolute;left:0;top:0;pointer-events:auto;border:2px solid var(--tinta);background:var(--cinta);border-radius:3px;padding:0;touch-action:none}
+.tir::after{content:"";position:absolute;inset:-14px}
+.tir-v{width:13px;height:34px;cursor:ew-resize}
+.tir-h{width:34px;height:13px;cursor:ns-resize}
+.tir-d{background:var(--blanco)}
+@media(max-width:899px){.tir-v{width:10px;height:26px}.tir-h{width:26px;height:10px}}
+.dz-ayuda{position:absolute;left:10px;right:10px;top:10px;font-size:13.5px;line-height:1.3;color:var(--blanco);background:rgba(42,30,22,.74);padding:6px 9px;border-radius:2px;width:fit-content;max-width:calc(100% - 158px);pointer-events:none}
+.dz-tv{position:absolute;right:10px;top:10px;display:flex;align-items:center;background:var(--cinta);color:var(--tinta);border-radius:2px;font-weight:700;font-size:13.5px;line-height:1;padding-left:9px;box-shadow:0 2px 8px rgba(26,16,10,.32)}
+.dz-tv::after{content:"▾";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px;pointer-events:none}
+.dz-tv select{appearance:none;-webkit-appearance:none;border:0;background:transparent;color:var(--tinta);font-family:var(--mono);font-size:16px;font-weight:500;padding:7px 24px 7px 6px;min-height:36px;cursor:pointer}
+.pa-c label{font-weight:600;font-size:15px}
+.tv-nota{margin-top:8px}
+.tv-reco{margin:10px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.tv-reco dt{font-size:13px;color:var(--tinta-suave);line-height:1.2}
+.tv-reco dd{margin:1px 0 0;font-family:var(--mono);font-size:17px;font-variant-numeric:tabular-nums}
+.tv-reco .corta dd{color:#9B2C1B}
+.fi-tv{display:grid;gap:7px;margin-top:6px}
+.dz-aviso{position:absolute;left:50%;top:52px;transform:translateX(-50%);background:var(--tinta);color:var(--papel);padding:7px 11px;font-size:14px;border-radius:2px;width:max-content;max-width:90%}
+.dz-vista{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.dz-vista::-webkit-scrollbar{display:none}
+.dz-vista button{flex:none;background:rgba(42,30,22,.82);color:var(--blanco);border:0;border-radius:2px;padding:7px 10px;font-size:13.5px;font-weight:600;min-height:34px}
+.dz-vista button.on{background:var(--cinta);color:var(--tinta)}
+.dz-panel{display:flex;flex-direction:column;min-height:0;min-width:0;background:var(--papel);border-top:1px solid var(--linea)}
+@media(min-width:900px){.dz-panel{border-top:0;border-left:1px solid var(--linea)}}
+.dz-tabs{flex:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--linea)}
+.dz-tab{background:none;border:0;border-bottom:4px solid transparent;padding:10px 2px 7px;font-weight:650;font-size:15px;display:flex;gap:5px;align-items:center;justify-content:center;color:var(--tinta-suave)}
+.dz-tab i{font-style:normal;font-family:var(--mono);font-size:12px;font-weight:400}
+.dz-tab.on{color:var(--tinta);border-bottom-color:var(--cinta)}
+.dz-cont{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 26px;overscroll-behavior:contain}
+.dz-pie{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 12px;border-top:1px solid var(--linea);background:var(--yeso);min-height:58px}
+.dz-pie .mono{font-size:13px;line-height:1.2;min-width:0}
+.dz-pie .btn{min-height:42px;font-size:15px;padding:8px 14px;white-space:nowrap}
+.p-h{font-size:27px;font-weight:780;font-variation-settings:"wdth" 80,"wght" 780}
+.p-sub{color:var(--tinta-suave);margin:4px 0 12px;line-height:1.35;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:none;border:1.5px solid var(--linea-f);border-radius:2px;padding:7px 11px;font-size:14.5px;font-weight:600;line-height:1.1;min-height:36px}
+.chip:hover{border-color:var(--tinta)}
+.chip.on{background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
+.chip-mas{border-style:dashed;border-color:var(--tinta)}
+.chip-mas.on{background:var(--cinta);color:var(--tinta);border-style:solid}
+.p-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px;margin-top:12px}
+.p-card{background:none;border:0;padding:0;text-align:left;display:grid;gap:1px;min-width:0}
+.p-img{display:block;aspect-ratio:4/3;background:var(--yeso-hondo);overflow:hidden;border:3px solid transparent;margin-bottom:3px}
+.p-img img,.p-sin{display:block;width:100%;height:100%;object-fit:cover}
+.p-sin{padding:12%}
+.p-sin svg{width:100%;height:100%}
+.p-card.on .p-img{border-color:var(--cinta-hondo)}
+.p-card b{font-size:15.5px;line-height:1.15}
+.p-card small{font-size:13px;color:var(--tinta-suave);line-height:1.2}
+.p-img-cero{display:grid;place-items:center;background:none;border:2px dashed var(--linea-f)}
+.p-img-cero svg{width:42%;fill:none;stroke:var(--tinta);stroke-width:1.5}
+.bloque{padding-block:13px;border-top:1px solid var(--linea);margin-top:13px}
+.bloque h3{font-family:var(--texto);font-size:13.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;font-variation-settings:normal;margin-bottom:8px}
+.bloque-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.bloque-h h3{margin:0}
+.nota+.chips{margin-top:8px}
+.sel-t{margin-top:12px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 10px;font-size:16.5px}
+.sel-t .mono{font-size:14px}
+.vacio{margin-top:16px;color:var(--tinta-suave)}
+.paleta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:9px;background:var(--yeso);padding:7px}
+.pal{background:var(--papel);border:1.5px solid var(--linea);border-radius:2px;padding:7px 2px 6px;display:grid;justify-items:center;gap:2px;font-size:12.5px;line-height:1.1;font-weight:600}
+.pal:hover{border-color:var(--tinta)}
+.pal svg{width:28px;height:28px;fill:none;stroke:var(--tinta);stroke-width:1.5}
+.med{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 10px;padding-block:5px}
+.med label{font-weight:600;font-size:15px;line-height:1.15}
+.med-num{display:flex;align-items:center;border:1.5px solid var(--linea-f);border-radius:2px;background:var(--blanco)}
+.med-b{width:36px;height:38px;background:none;border:0;font-size:20px;line-height:1;font-family:var(--mono)}
+.med-b:hover{background:var(--yeso)}
+.med-i{width:56px;height:38px;border:0;background:none;text-align:right;font-family:var(--mono);font-size:16px;font-variant-numeric:tabular-nums;appearance:textfield;-moz-appearance:textfield;padding:0}
+.med-i::-webkit-outer-spin-button,.med-i::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.med-u{font-family:var(--mono);font-size:12px;padding:0 3px 0 4px;color:var(--tinta-suave)}
+.med-r{grid-column:1/-1;width:100%;height:28px;background:none;-webkit-appearance:none;appearance:none;margin:0}
+.med-r::-webkit-slider-runnable-track{height:9px;background:var(--cinta);background-image:repeating-linear-gradient(90deg,var(--tinta) 0 1px,transparent 1px 8px);background-size:100% 5px;background-repeat:no-repeat}
+.med-r::-moz-range-track{height:9px;background:var(--cinta)}
+.med-r::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:27px;margin-top:-9px;background:var(--tinta);border:2px solid var(--cinta);border-radius:2px}
+.med-r::-moz-range-thumb{width:13px;height:25px;background:var(--tinta);border:2px solid var(--cinta);border-radius:2px}
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:6px}
+.step{display:grid;gap:4px;font-weight:600;font-size:15px;min-width:0}
+.step-c{display:flex;align-items:center;justify-content:space-between;border:1.5px solid var(--linea-f);border-radius:2px;background:var(--blanco)}
+.step-c button{width:42px;height:40px;background:none;border:0;font-family:var(--mono);font-size:20px}
+.step-c button:disabled{opacity:.28;cursor:default}
+.step-c b{font-family:var(--mono);font-weight:500;font-size:15px}
+.ciclo{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:13px}
+.ciclo button{width:34px;height:32px;background:var(--yeso);border:0;font-size:19px;line-height:1;border-radius:2px}
+.cont-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.cont{background:var(--blanco);border:1.5px solid var(--linea-f);border-radius:2px;padding:6px 0 5px;display:grid;justify-items:center;gap:1px;font-size:12.5px;font-weight:600;line-height:1.1;min-width:0}
+.cont svg{width:30px;height:30px;fill:none;stroke:var(--tinta);stroke-width:1.5}
+.cont:hover{border-color:var(--tinta)}
+.cont.on{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
+.cont.on svg{stroke:var(--cinta)}
+.acc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:9px}
+.acc{background:none;border:1.5px solid var(--linea-f);border-radius:2px;padding:8px 6px;font-size:14px;font-weight:600;line-height:1.15;min-height:40px;text-align:center;color:var(--tinta);text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.acc:hover{border-color:var(--tinta)}
+.acc-q{color:#9B2C1B;border-color:rgba(155,44,27,.42)}
+.acc-q:hover{border-color:#9B2C1B}
+.acc-pie{border-top:1px solid var(--linea);padding-top:13px;margin-top:13px}
+.toggs{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.togg{background:none;border:1.5px solid var(--linea-f);border-radius:2px;padding:7px 10px 7px 8px;font-size:14.5px;font-weight:600;display:flex;align-items:center;gap:7px;line-height:1.1;min-height:38px}
+.togg i{width:15px;height:15px;border:1.5px solid var(--tinta);display:block;border-radius:1px;background:var(--blanco)}
+.togg.on i{background:var(--cinta);box-shadow:inset 0 0 0 2px var(--blanco)}
+.togg.on{border-color:var(--tinta)}
+.tips{background:var(--cinta);padding:9px 11px;margin-top:13px;font-size:14.5px;line-height:1.35;display:grid;gap:5px}
+.sw-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 6px}
+.sw{background:none;border:0;padding:0;display:grid;gap:3px;font-size:12.5px;line-height:1.12;font-weight:600;text-align:left;min-width:0}
+.sw i{display:block;aspect-ratio:1;background-size:cover;background-position:center;border:3px solid transparent;outline:1px solid var(--linea)}
+.sw.on i{border-color:var(--tinta);outline-color:var(--tinta)}
+.sw.on span{text-decoration:underline;text-decoration-thickness:2px;text-decoration-color:var(--cinta-hondo);text-underline-offset:2px}
+.sw-mini{grid-template-columns:repeat(7,minmax(0,1fr));margin-top:8px}
+.sw-mini span{display:none}
+.sw-mini .on i{border-color:var(--tinta)}
+.op-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.op{background:none;border:1.5px solid var(--linea-f);border-radius:2px;padding:8px 10px;text-align:left;display:grid;font-size:14.5px;line-height:1.15;min-width:0}
+.op small{font-size:13px;color:var(--tinta-suave)}
+.op.on{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
+.op.on small{color:var(--yeso-hondo)}
+.pa-c{display:flex;align-items:center;gap:7px;margin-top:8px}
+.pa-c input{width:120px;font-family:var(--mono);font-size:16px;padding:9px 10px;border:1.5px solid var(--linea-f);border-radius:2px;background:var(--blanco);min-height:44px}
+.par-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-top:8px}
+.par{background:none;border:0;padding:0;display:grid;gap:3px;font-size:11.5px;font-weight:600;line-height:1.1;text-align:center;min-width:0}
+.par i{display:block;aspect-ratio:1;border:3px solid transparent;outline:1px solid var(--linea-f)}
+.par.on i{border-color:var(--tinta);outline-color:var(--tinta)}
+.ticket{background:var(--blanco);border:1.5px solid var(--tinta);border-radius:2px}
+.tk-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:8px 11px;background:var(--tinta);color:var(--papel)}
+.tk-h span{font-family:var(--mono);font-size:12.5px;color:var(--cinta)}
+.tk-h b{font-family:var(--display);font-size:19px;font-weight:780;font-variation-settings:"wdth" 84,"wght" 780;text-align:right;line-height:1.1}
+.tk-foto img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--yeso-hondo)}
+.tk-foto svg{display:block;width:100%;max-height:170px;padding:12px}
+.tk-lista{list-style:none;margin:0;padding:3px 11px}
+.tk-lista li{padding-block:7px;border-bottom:1px dashed var(--linea-f)}
+.tk-lista li>div{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 10px}
+.tk-lista .mono{font-size:13.5px}
+.tk-lista small{color:var(--tinta-suave);font-size:13.5px;line-height:1.25;display:block}
+.tk-dl{margin:0;padding:6px 11px;display:grid;gap:3px;font-size:14.5px}
+.tk-dl div{display:flex;justify-content:space-between;gap:12px}
+.tk-dl dt{color:var(--tinta-suave)}
+.tk-dl dd{margin:0;font-weight:600;text-align:right}
+.tk-desp{padding:0 11px 9px;font-size:14.5px}
+.tk-desp summary{cursor:pointer;font-weight:650;padding-block:5px}
+.tk-tabla{overflow-x:auto}
+.tk-desp table{width:100%;border-collapse:collapse;font-size:13.5px}
+.tk-desp th{text-align:left;font-weight:600;color:var(--tinta-suave);border-bottom:1px solid var(--linea-f);padding:3px 5px 3px 0}
+.tk-desp td{padding:3px 5px 3px 0;border-bottom:1px solid var(--linea)}
+.tk-desp .nota{margin-top:6px;font-size:13px}
+.form{display:grid;gap:11px;margin-top:20px}
+.form .p-sub{margin:-7px 0 2px}
+.f-c{display:grid;gap:3px;min-width:0}
+.f-c label{font-weight:600;font-size:15px}
+.f-c em{font-style:normal;color:#9B2C1B}
+.f-c input,.f-c select,.f-c textarea{width:100%;font-size:16px;padding:10px;border:1.5px solid var(--linea-f);border-radius:2px;background:var(--blanco);min-height:44px}
+.f-c [aria-invalid="true"]{border-color:#9B2C1B}
+.err{color:#9B2C1B;font-size:14px}
+.luego{background:var(--yeso);padding:10px 12px;font-size:15px}
+.f-sec{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.f-texto{width:100%;min-height:150px;font-family:var(--mono);font-size:13px;padding:8px}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Zm0 1.8a8.2 8.2 0 1 1-4.2 15.2l-.3-.2-2.9.8.8-2.8-.2-.3A8.2 8.2 0 0 1 12 3.8Zm-3.2 4.4c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.8 2.1.8 2.6.7 3.1.6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3l-1.9-.9c-.3-.1-.5-.1-.7.2l-.8 1c-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6l.4-.5.3-.5v-.5l-.9-2c-.2-.5-.4-.5-.6-.5h-.2Z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7.5 2.9h9a4.6 4.6 0 0 1 4.6 4.6v9a4.6 4.6 0 0 1-4.6 4.6h-9a4.6 4.6 0 0 1-4.6-4.6v-9a4.6 4.6 0 0 1 4.6-4.6Z"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></symbol>
+</svg>
+
+<div class="beta"><div class="beta-i"><b>Beta</b><span>Imágenes, nombres y acabados de prueba. Esta página todavía está en construcción.</span></div></div>
+
+<header class="cab" id="cab">
+  <div class="cab-i">
+    <a class="marca" href="#inicio" data-ir="inicio"><span class="marca-n" data-negocio>Veta</span><small data-lema>taller de madera</small></a>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <a href="#catalogo" data-ir="catalogo">Catálogo</a>
+      <a href="#disenar" data-ir="disenar">Diseña el tuyo</a>
+      <a href="#guia" data-ir="guia">Guía de medidas</a>
+      <a href="#maderas" data-ir="maderas">Maderas</a>
+      <a href="#contacto" data-ir="contacto">Contacto</a>
+    </nav>
+    <div class="cab-acc">
+      <a class="ic" data-ig aria-label="Instagram" href="https://www.instagram.com/"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>
+      <a class="btn btn-wa btn-peq" data-wa="general" href="https://wa.me/"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg><span>WhatsApp</span></a>
+      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">Menú</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-velo" aria-hidden="true"></div>
+  <div class="hero-i">
+    <h1 class="hero-t" id="hero-tit" aria-label="A tu medida"><span class="tod" aria-hidden="true"><span class="ln">A TU</span> <span class="ln">MEDIDA</span></span></h1>
+    <div class="hero-grid">
+      <div class="hero-txt">
+        <p>Bases flotantes para TV, organizadores y piezas de madera hechas al centímetro para tu pared.</p>
+      </div>
+      <div class="hero-esc" id="hero-esc"></div>
+      <div class="hero-cta">
+        <button type="button" class="btn btn-p btn-gde" data-disenar="">Diseñar mi mueble</button>
+        <a class="btn btn-f" href="#catalogo" data-ir="catalogo">Ver catálogo</a>
+      </div>
+    </div>
+  </div>
+  <div class="cinta" id="hero-cinta" hidden>
+    <div class="cinta-nums" id="hero-nums" aria-hidden="true"></div>
+    <button type="button" class="cinta-t" id="hero-tirador" aria-label="Estirar el mueble. Usa las flechas izquierda y derecha."><span id="hero-cm">180 cm</span></button>
+    <span class="cinta-pista" aria-hidden="true">Arrastra para estirar</span>
+  </div>
+</section>
+
+<section class="sec cat" id="catalogo">
+  <div class="sec-i">
+    <div class="sec-h">
+      <h2>Catálogo</h2>
+      <p>Cada modelo es un punto de partida: cambia sus medidas, quítale o agrégale piezas y escoge la madera.</p>
+    </div>
+    <div class="filtros" id="cat-filtros" role="group" aria-label="Filtrar por tipo de mueble"></div>
+    <div class="cat-grid" id="cat-grid"></div>
+    <p class="nota nota-c">Las imágenes son de prueba y están generadas por computador. Aquí irán las fotos reales de los muebles.</p>
+  </div>
+</section>
+
+<section class="otra" id="otra-cosa">
+  <div class="otra-i">
+    <div class="otra-tx">
+      <h2>¿No ves lo que buscas?</h2>
+      <p>Cuéntanos tu idea y te cotizamos algo diferente: un mueble, un organizador o cualquier pieza en madera.</p>
+    </div>
+    <form class="otra-f" onsubmit="return false">
+      <label for="otra-idea">Tu idea</label>
+      <textarea id="otra-idea" rows="3" placeholder="Ej: una repisa en esquina de 60 cm para plantas"></textarea>
+      <div class="otra-acc">
+        <a class="btn btn-wa btn-gde" id="otra-wa" target="_blank" rel="noopener" href="https://wa.me/"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Cotizar por WhatsApp</a>
+        <a class="btn btn-t" data-ig href="https://www.instagram.com/"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg>Búscanos en Instagram</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="sec dis" id="disenar">
+  <div class="sec-i dis-grid">
+    <div class="dis-tx">
+      <h2>Diseña el tuyo</h2>
+      <p class="dis-lead">Arma tu mueble en 3D, como si ya estuviera en tu pared.</p>
+      <ul class="dis-lista">
+        <li><b>Empieza con un perfil.</b> Bases para TV, organizadores, repisas o una caja vacía.</li>
+        <li><b>Agrega o quita piezas.</b> Puertas, cajones, listones, repisas, paneles y luz.</li>
+        <li><b>Ajusta las medidas.</b> Escríbelas al centímetro o arrastra en el dibujo.</li>
+        <li><b>Envíalo con tus datos.</b> Nos llega por WhatsApp y te contactamos.</li>
+      </ul>
+      <button type="button" class="btn btn-p btn-gde" data-disenar="">Abrir el diseñador</button>
+    </div>
+    <figure class="dis-fig"><img data-mini="muro" alt="Imagen de prueba de un centro de TV diseñado con la herramienta" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="></figure>
+  </div>
+</section>
+
+<section class="sec guia" id="guia">
+  <div class="sec-i">
+    <div class="sec-h">
+      <h2>¿Qué medida necesita tu TV?</h2>
+      <p>Elige las pulgadas y te mostramos el ancho que le queda bien a la base.</p>
+    </div>
+    <div class="guia-grid">
+      <div class="guia-c">
+        <div class="filtros" id="g-pulg" role="group" aria-label="Pulgadas del televisor"></div>
+        <svg id="g-dib" viewBox="-150 0 300 170" role="img" aria-label="Dibujo a escala del televisor sobre la base"></svg>
+        <dl class="guia-d">
+          <div><dt>Ancho de tu TV</dt><dd id="g-tv">–</dd></div>
+          <div><dt>Base mínima</dt><dd id="g-min">–</dd></div>
+          <div class="fuerte"><dt>Base ideal</dt><dd id="g-ideal">–</dd></div>
+        </dl>
+        <button type="button" class="btn btn-o" id="g-empezar">Empezar con estas medidas</button>
+      </div>
+      <div class="guia-t">
+        <h3>Antes de medir</h3>
+        <dl class="guia-tips">
+          <div><dt>Altura</dt><dd>Si ves TV sentado, deja el centro de la pantalla cerca de 105 cm del piso.</dd></div>
+          <div><dt>Fondo</dt><dd>Con 35 cm alcanza si la TV va en la pared. Usa unos 45 cm si va apoyada o tienes barra de sonido.</dd></div>
+          <div><dt>Pared</dt><dd>Revisa si es ladrillo, concreto o drywall. De eso depende el soporte de un mueble flotante.</dd></div>
+          <div><dt>Cables</dt><dd>Ubica los enchufes y deja una salida de cables en la parte de atrás.</dd></div>
+          <div><dt>Control remoto</dt><dd>Las puertas de listones o vidrio dejan pasar la señal hacia el decodificador.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec mad" id="maderas">
+  <div class="sec-i">
+    <div class="sec-h">
+      <h2>Maderas y acabados</h2>
+      <p>Toca una tabla para verla de cerca. Acabados de muestra para esta beta.</p>
+    </div>
+    <div class="mad-rack" id="mad-rack"></div>
+  </div>
+</section>
+
+<section class="sec como" id="como">
+  <div class="sec-i">
+    <div class="sec-h"><h2>Cómo funciona</h2></div>
+    <ol class="pasos">
+      <li><b>Mide tu pared</b><p>Anota el ancho libre y ubica los enchufes.</p></li>
+      <li><b>Elige o diseña</b><p>Parte de un modelo o arma el tuyo pieza por pieza.</p></li>
+      <li><b>Envía tu diseño</b><p>Llega con tus medidas y tus datos de contacto.</p></li>
+      <li><b>Te cotizamos</b><p>Revisamos contigo cada medida antes de fabricar.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec faq" id="preguntas">
+  <div class="sec-i faq-grid">
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq-l">
+      <details><summary>¿Las medidas pueden ser exactas?</summary><p>Sí. En el diseñador eliges cada medida al centímetro y antes de fabricar la confirmamos contigo.</p></details>
+      <details><summary>¿Un mueble flotante aguanta en mi pared?</summary><p>Depende del material de la pared y del peso que va a cargar. Por eso te preguntamos si es ladrillo, concreto o drywall.</p></details>
+      <details><summary>¿Qué pasa después de enviar mi diseño?</summary><p>Nos llega por WhatsApp con tus medidas, la madera y tus datos. Te escribimos para cotizar y resolver dudas.</p></details>
+      <details><summary>¿Puedo pedir algo que no está en el catálogo?</summary><p>Claro. Escríbenos por WhatsApp o búscanos en Instagram, cuéntanos la idea y la cotizamos.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="contacto" id="contacto">
+  <div class="sec-i contacto-grid">
+    <a class="ct ct-wa" data-wa="general" href="https://wa.me/">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
+      <span class="ct-e">Escríbenos por WhatsApp</span>
+      <strong data-wa-num>Número pendiente</strong>
+    </a>
+    <div class="ct ct-ig">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg>
+      <span class="ct-e">Búscanos en Instagram</span>
+      <strong data-ig-nombre>@tu_instagram</strong>
+      <div class="ct-acc"><a class="btn btn-f btn-peq" data-ig href="https://www.instagram.com/">Abrir Instagram</a><button type="button" class="btn btn-f btn-peq" id="copiar-ig">Copiar usuario</button></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="pie">
+  <div class="sec-i pie-i">
+    <div><span class="marca-n" data-negocio>Veta</span><p>Beta para revisión. Imágenes, nombres, modelos y acabados de prueba.</p></div>
+    <p class="pie-c">© <span class="ano"></span> <span data-negocio>Veta</span></p>
+  </div>
+</footer>
+
+<a class="flota" data-wa="general" href="https://wa.me/" aria-label="Escribir por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg></a>
+
+<dialog id="ficha" class="ficha" aria-label="Detalle del producto">
+  <button type="button" class="ficha-x" id="ficha-x" aria-label="Cerrar">×</button>
+  <div id="ficha-c" class="ficha-c"></div>
+</dialog>
+
+<section class="dz" id="dz" hidden aria-label="Diseñador de muebles">
+  <header class="dz-top">
+    <button type="button" class="dz-ic dz-salir" id="dz-salir" aria-label="Volver a la tienda">‹ <span>Tienda</span></button>
+    <div class="dz-t"><small>Diseñando</small><strong id="dz-nombre">Horizonte</strong></div>
+    <div class="dz-hist">
+      <button type="button" class="dz-ic" id="dz-undo" aria-label="Deshacer" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5M4 12h11a5 5 0 0 1 0 10h-3" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+      <button type="button" class="dz-ic" id="dz-redo" aria-label="Rehacer" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 7 5 5-5 5m5-5H9a5 5 0 0 0 0 10h3" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    </div>
+  </header>
+  <div class="dz-cuerpo">
+    <div class="dz-lienzo" id="dz-lienzo">
+      <canvas id="dz-canvas"></canvas>
+      <svg id="dz-svg" class="dz-svg" aria-hidden="true"></svg>
+      <div id="dz-capa" class="dz-capa"></div>
+      <div class="dz-ayuda" id="dz-ayuda">Toca un espacio del mueble para cambiarlo. Arrastra el fondo para girar.</div>
+      <div class="dz-aviso" id="dz-aviso" hidden role="status"></div>
+      <label class="dz-tv" id="dz-tv"><span>Tu TV</span><select id="dz-tv-sel" aria-label="Pulgadas de tu televisor"></select></label>
+      <div class="dz-vista" id="dz-vista">
+        <button type="button" data-vista="frente">Frente</button>
+        <button type="button" data-vista="angulo">Ángulo</button>
+        <button type="button" id="dz-ajustar">Centrar</button>
+        <button type="button" id="dz-puertas" aria-pressed="false">Abrir puertas</button>
+      </div>
+    </div>
+    <aside class="dz-panel" aria-label="Opciones del mueble">
+      <div class="dz-tabs" role="tablist">
+        <button type="button" class="dz-tab on" role="tab" data-tab="perfil" aria-selected="true"><i>1</i>Perfil</button>
+        <button type="button" class="dz-tab" role="tab" data-tab="piezas" aria-selected="false"><i>2</i>Piezas</button>
+        <button type="button" class="dz-tab" role="tab" data-tab="acabado" aria-selected="false"><i>3</i>Acabado</button>
+        <button type="button" class="dz-tab" role="tab" data-tab="enviar" aria-selected="false"><i>4</i>Enviar</button>
+      </div>
+      <div class="dz-cont" id="dz-cont"></div>
+      <div class="dz-pie">
+        <span class="mono" id="dz-medida"></span>
+        <button type="button" class="btn btn-p" id="dz-sig">Siguiente</button>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>/* Modelo de datos de la tienda: perfiles, piezas, divisiones internas y despiece. */
+(function(){
+'use strict';
+const V=window.Veta=window.Veta||{};
+
+/* ─────────  DATOS DEL NEGOCIO  ─────────
+   Cambia estos valores cuando estén los reales. */
+V.NEGOCIO={
+  nombre:'Veta',
+  lema:'taller de madera',
+  whatsapp:'573028404383',   // solo números, con indicativo
+  whatsappTexto:'Abrir el chat',   // lo que se lee en la sección de contacto
+  instagram:'',  // sin la @
+  urlBeta:'https://bladimirjr.github.io/veta-muebles-beta/'     // link de esta página, para enviar el diseño en 3D
+};
+
+V.clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+V.rng=function(seed){let s=(Math.imul(seed|0,2654435761)>>>0)||88172645;return function(){s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296;};};
+V.cm=v=>String(Math.round(v*10)/10).replace('.',',');
+const clone=o=>JSON.parse(JSON.stringify(o));
+V.clone=clone;
+
+V.linkWA=function(texto){
+  const n=(V.NEGOCIO.whatsapp||'').replace(/\D/g,'');
+  return 'https://wa.me/'+n+'?text='+encodeURIComponent(texto||'');
+};
+V.linkIG=function(){
+  const u=V.NEGOCIO.instagram;
+  return u?'https://www.instagram.com/'+encodeURIComponent(u)+'/':'https://www.instagram.com/';
+};
+
+/* Hojas: a=abierto p=puerta l=listones v=vidrio j=cajón */
+const a=()=>({c:'a'}),p=()=>({c:'p'}),l=()=>({c:'l'}),v=()=>({c:'v'}),j=()=>({c:'j'});
+/* C = columnas (izquierda a derecha)  F = filas (arriba hacia abajo) */
+const C=(k,r)=>({s:'c',k,r:r||k.map(()=>1)});
+const F=(k,r)=>({s:'f',k,r:r||k.map(()=>1)});
+
+V.CONTENIDOS=[
+  {id:'a',n:'Abierto'},
+  {id:'p',n:'Puerta'},
+  {id:'l',n:'Listones'},
+  {id:'v',n:'Vidrio'},
+  {id:'j',n:'Cajón'}
+];
+
+V.CATEGORIAS=[
+  {id:'todo',n:'Todo'},
+  {id:'tv',n:'Bases para TV'},
+  {id:'org',n:'Organizadores'},
+  {id:'rep',n:'Repisas y estantes'},
+  {id:'mes',n:'Mesas'}
+];
+
+V.LIMITES={
+  mueble:{w:[15,300],h:[8,240],d:[12,70]},
+  repisa:{w:[20,300],h:[2,10],d:[10,50]},
+  panel:{w:[20,400],h:[8,260]}
+};
+V.MIN_CELDA=6;
+V.PULGADAS=[32,40,43,50,55,58,65,70,75,85];
+/* Medidas de una pantalla 16:9 y base recomendada, en cm */
+V.tvMedidas=function(p){
+  const dg=p*2.54,w=dg*.8716,h=dg*.4903;
+  return{w,h,min:Math.ceil(w+15),ideal:Math.ceil((w+30)/5)*5};
+};
+
+V.PERFILES=[
+  {id:'horizonte',cat:'tv',nombre:'Horizonte',tipo:'Base flotante para TV',
+   texto:'Tres puertas lisas con la veta corrida y luz bajo el mueble. Deja el piso libre y esconde los equipos.',
+   madera:'roble',pared:'yeso',etiquetas:['Flotante','Luz LED'],
+   piezas:[{t:'mueble',w:180,h:32,d:38,cx:0,y:28,led:true,cables:true,raiz:C([p(),p(),p()])},{t:'tv',pulgadas:55,cx:0,y:72}]},
+  {id:'liston',cat:'tv',nombre:'Listón',tipo:'Base flotante para TV',
+   texto:'Frente de listones que deja pasar la señal del control remoto y mantiene ventilados los equipos.',
+   madera:'nogal',pared:'arena',etiquetas:['Flotante','Listones'],
+   piezas:[{t:'mueble',w:160,h:34,d:36,cx:0,y:26,led:true,cables:true,raiz:C([l(),l(),l(),l()])},{t:'tv',pulgadas:50,cx:0,y:74}]},
+  {id:'nicho',cat:'tv',nombre:'Nicho',tipo:'Base flotante para TV',
+   texto:'Cuatro cajones y un hueco central para la consola o el decodificador, siempre a mano.',
+   madera:'fresno',pared:'arcilla',tirador:'laton',etiquetas:['Flotante','Cajones'],
+   piezas:[{t:'mueble',w:200,h:30,d:40,cx:0,y:30,cables:true,raiz:C([F([j(),j()]),a(),F([j(),j()])],[.3,.4,.3])},{t:'tv',pulgadas:65,cx:0,y:74}]},
+  {id:'muro',cat:'tv',nombre:'Muro',tipo:'Centro de TV con panel',
+   texto:'Panel de listones detrás de la pantalla y base flotante del mismo ancho. Convierte la pared en protagonista.',
+   madera:'nogal',pared:'yeso',etiquetas:['Panel','Luz LED'],
+   piezas:[{t:'panel',w:230,h:176,cx:0,y:58,e:'listones',led:true},{t:'mueble',w:230,h:30,d:38,cx:0,y:28,led:true,cables:true,raiz:C([p(),l(),l(),p()])},{t:'tv',pulgadas:65,cx:0,y:90}]},
+  {id:'umbral',cat:'org',nombre:'Umbral',tipo:'Organizador de entrada',
+   texto:'Perchero y repisa en una sola pieza para llaves, bolsos y chaquetas.',
+   madera:'pino',pared:'arcilla',etiquetas:['Perchero','Repisa'],
+   piezas:[{t:'repisa',w:90,h:3,d:20,cx:0,y:176},{t:'panel',w:90,h:16,cx:0,y:160,e:'liso',ganchos:5}]},
+  {id:'zaguan',cat:'org',nombre:'Zaguán',tipo:'Zapatero flotante',
+   texto:'Listones que ventilan el calzado y un nicho arriba para llaves y correo.',
+   madera:'roble',pared:'piedra',etiquetas:['Flotante','Listones'],
+   piezas:[{t:'mueble',w:100,h:64,d:30,cx:0,y:24,raiz:F([a(),C([l(),l()])],[.28,.72])}]},
+  {id:'cuadricula',cat:'org',nombre:'Cuadrícula',tipo:'Organizador de pared',
+   texto:'Nueve espacios para libros, cajas y plantas. Cambia cualquiera por un cajón o una puerta.',
+   madera:'blanco',frente:'roble',pared:'arcilla',etiquetas:['De pared','9 espacios'],
+   piezas:[{t:'mueble',w:96,h:96,d:25,cx:0,y:90,raiz:F([C([a(),a(),j()]),C([a(),j(),a()]),C([j(),a(),a()])])}]},
+  {id:'mesada',cat:'org',nombre:'Mesada',tipo:'Organizador de escritorio',
+   texto:'Dos cajoncitos y dos huecos para esferos, cuadernos y cargadores.',
+   madera:'nogal',pared:'arena',tirador:'pomo',etiquetas:['De mesa','Compacto'],
+   piezas:[{t:'mueble',w:42,h:16,d:18,cx:0,y:75,m:'mesa',g:1.2,fondo:true,raiz:C([a(),F([j(),j()]),a()],[.35,.3,.35])}]},
+  {id:'alero',cat:'rep',nombre:'Alero',tipo:'Repisa flotante',
+   texto:'Una tabla gruesa, sin soportes a la vista, con luz opcional por debajo.',
+   madera:'cedro',pared:'cacao',etiquetas:['Flotante','Luz LED'],
+   piezas:[{t:'repisa',w:110,h:5,d:22,cx:0,y:120,led:true}]},
+  {id:'torre',cat:'rep',nombre:'Torre',tipo:'Estantería de piso',
+   texto:'Tres niveles abiertos y un par de puertas abajo para lo que no quieres a la vista.',
+   madera:'roble',pared:'arena',tirador:'barra',etiquetas:['De piso','Puertas'],
+   piezas:[{t:'mueble',w:60,h:190,d:32,cx:0,y:0,m:'piso',raiz:F([a(),a(),a(),C([p(),p()])],[1,1,1,1.2])}]},
+  {id:'mesilla',cat:'mes',nombre:'Mesilla',tipo:'Mesa de noche flotante',
+   texto:'Un cajón y un hueco para el libro de turno. El piso queda libre para limpiar.',
+   madera:'nogal',pared:'piedra',tirador:'ranura',etiquetas:['Flotante','Cajón'],
+   piezas:[{t:'mueble',w:48,h:32,d:36,cx:0,y:38,raiz:F([j(),a()])}]},
+  {id:'dintel',cat:'mes',nombre:'Dintel',tipo:'Escritorio flotante',
+   texto:'Tablero con dos cajones y repisa alta. Ideal para espacios donde no cabe un escritorio con patas.',
+   madera:'pino',pared:'cacao',tirador:'barra',etiquetas:['Flotante','Con repisa'],
+   piezas:[{t:'mueble',w:130,h:13,d:55,cx:0,y:62,raiz:C([j(),a(),j()],[1,1.2,1])},{t:'repisa',w:130,h:3.5,d:22,cx:0,y:122}]}
+];
+
+V.PERFIL_CERO={id:'cero',cat:'',nombre:'Desde cero',tipo:'Una caja vacía para empezar',madera:'roble',pared:'yeso',
+  piezas:[{t:'mueble',w:100,h:40,d:32,cx:0,y:60,raiz:a()}]};
+
+V.PALETA=[
+  {id:'repisa',n:'Repisa',f:()=>({t:'repisa',w:80,h:4,d:22})},
+  {id:'modulo',n:'Módulo abierto',f:()=>({t:'mueble',w:60,h:30,d:28,raiz:a()})},
+  {id:'puertas',n:'Con puertas',f:()=>({t:'mueble',w:80,h:36,d:32,raiz:C([p(),p()])})},
+  {id:'cajones',n:'Cajonera',f:()=>({t:'mueble',w:50,h:40,d:35,raiz:F([j(),j()])})},
+  {id:'torre',n:'Torre',f:()=>({t:'mueble',w:40,h:120,d:28,raiz:F([a(),a(),p()])})},
+  {id:'panel',n:'Panel de pared',f:()=>({t:'panel',w:160,h:100,e:'listones'})},
+  {id:'perchero',n:'Perchero',f:()=>({t:'panel',w:70,h:12,e:'liso',ganchos:4})},
+  {id:'tv',n:'Televisor (guía)',f:()=>({t:'tv',pulgadas:55})}
+];
+
+let idPieza=1;
+V.normalizar=function(q){
+  if(!q.id)q.id='p'+(idPieza++);
+  if(q.t==='tv'){
+    const dg=q.pulgadas*2.54;
+    q.w=Math.round(dg*.8716*10)/10;q.h=Math.round(dg*.4903*10)/10;q.d=6;
+  }
+  if(q.t==='mueble'){
+    q.g=q.g||1.8;q.m=q.m||'flotante';
+    if(q.fondo===undefined)q.fondo=true;
+    q.raiz=q.raiz||a();
+  }
+  if(q.t==='panel'){q.e=q.e||'listones';q.d=q.e==='listones'?2.6:1.8;}
+  if(q.cx!==undefined){q.x=q.cx-q.w/2;delete q.cx;}
+  if(q.x===undefined)q.x=-q.w/2;
+  if(q.y===undefined)q.y=40;
+  return q;
+};
+
+V.crearDiseno=function(id){
+  const pf=id==='cero'?V.PERFIL_CERO:(V.PERFILES.find(x=>x.id===id)||V.PERFILES[0]);
+  const d={perfil:pf.id,nombre:pf.nombre,madera:pf.madera,frente:pf.frente||null,tirador:pf.tirador||'push',veta:'h',pared:pf.pared||'yeso',paredAncho:0,piezas:clone(pf.piezas)};
+  d.piezas.forEach(V.normalizar);
+  return d;
+};
+
+V.prepararZ=function(d){
+  const paneles=d.piezas.filter(q=>q.t==='panel');
+  d.piezas.forEach(q=>{
+    q.z=0;
+    if(q.t==='panel')return;
+    paneles.forEach(pa=>{
+      if(q.x<pa.x+pa.w&&q.x+q.w>pa.x&&q.y<pa.y+pa.h&&q.y+q.h>pa.y)q.z=Math.max(q.z,pa.d);
+    });
+  });
+};
+
+V.bbox=function(d,soloPedido){
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9,z1=0,n=0;
+  d.piezas.forEach(q=>{
+    if(soloPedido&&q.t==='tv')return;
+    n++;x0=Math.min(x0,q.x);x1=Math.max(x1,q.x+q.w);y0=Math.min(y0,q.y);y1=Math.max(y1,q.y+q.h);z1=Math.max(z1,(q.z||0)+(q.d||2));
+  });
+  if(!n)return{x0:-50,x1:50,y0:40,y1:120,z1:20,w:100,h:80,vacio:true};
+  return{x0,x1,y0,y1,z1,w:x1-x0,h:y1-y0};
+};
+
+/* Recorre el árbol de divisiones llamando a f.hoja() y f.div() con posiciones reales en cm */
+V.recorrer=function recorrer(n,cx,cy,cw,ch,g,f,ruta){
+  ruta=ruta||[];
+  if(n.c){f.hoja&&f.hoja(n,cx,cy,cw,ch,ruta);return;}
+  const m=n.k.length,tot=n.r.reduce((a,b)=>a+b,0);
+  if(n.s==='c'){
+    const disp=cw-(m-1)*g;let px=cx;
+    n.k.forEach((k,i)=>{
+      const an=disp*n.r[i]/tot;
+      recorrer(k,px,cy,an,ch,g,f,ruta.concat(i));
+      px+=an;
+      if(i<m-1){f.div&&f.div('v',px,cy,g,ch,ruta,i);px+=g;}
+    });
+  }else{
+    const disp=ch-(m-1)*g;let py=cy+ch;
+    n.k.forEach((k,i)=>{
+      const al=disp*n.r[i]/tot;py-=al;
+      recorrer(k,cx,py,cw,al,g,f,ruta.concat(i));
+      if(i<m-1){py-=g;f.div&&f.div('h',cx,py,cw,g,ruta,i);}
+    });
+  }
+};
+
+V.celdas=function(q){
+  const out=[];
+  V.recorrer(q.raiz,q.x+q.g,q.y+q.g,q.w-2*q.g,q.h-2*q.g,q.g,{hoja(n,x,y,w,h,ruta){out.push({n,x,y,w,h,ruta});}});
+  return out;
+};
+V.divisores=function(q){
+  const out=[];
+  V.recorrer(q.raiz,q.x+q.g,q.y+q.g,q.w-2*q.g,q.h-2*q.g,q.g,{div(t,x,y,w,h,ruta,i){out.push({t,x,y,w,h,ruta,i});}});
+  return out;
+};
+V.celdaEn=function(q,x,y){
+  if(q.t!=='mueble')return null;
+  let mejor=null,md=1e9;
+  V.celdas(q).forEach(c=>{
+    const dx=Math.max(c.x-x,0,x-(c.x+c.w)),dy=Math.max(c.y-y,0,y-(c.y+c.h)),di=dx*dx+dy*dy;
+    if(di<md){md=di;mejor=c;}
+  });
+  return mejor;
+};
+V.celdaPorRuta=function(q,ruta){
+  const clave=ruta.join(',');
+  return V.celdas(q).find(c=>c.ruta.join(',')===clave)||null;
+};
+V.nodo=function(r,ruta){let n=r;for(const i of ruta){if(!n.k)return null;n=n.k[i];if(!n)return null;}return n;};
+V.primeraHoja=function(r,ruta){const out=ruta.slice();let n=V.nodo(r,out);while(n&&!n.c){out.push(0);n=n.k[0];}return out;};
+
+V.dividir=function(q,ruta,eje){
+  const n=V.nodo(q.raiz,ruta);
+  if(!n||!n.c)return ruta;
+  const copia={c:n.c};
+  if(ruta.length){
+    const rp=ruta.slice(0,-1),pad=V.nodo(q.raiz,rp),i=ruta[ruta.length-1];
+    if(pad.s===eje){
+      const mitad=pad.r[i]/2;
+      pad.r[i]=mitad;pad.r.splice(i+1,0,mitad);pad.k.splice(i+1,0,copia);
+      return ruta;
+    }
+    pad.k[i]={s:eje,k:[{c:n.c},copia],r:[1,1]};
+    return ruta.concat(0);
+  }
+  q.raiz={s:eje,k:[{c:n.c},copia],r:[1,1]};
+  return [0];
+};
+V.quitarEspacio=function(q,ruta){
+  if(!ruta.length)return null;
+  const rp=ruta.slice(0,-1),pad=V.nodo(q.raiz,rp),i=ruta[ruta.length-1];
+  pad.k.splice(i,1);pad.r.splice(i,1);
+  if(pad.k.length===1){
+    const solo=pad.k[0];
+    if(rp.length){const ab=V.nodo(q.raiz,rp.slice(0,-1));ab.k[rp[rp.length-1]]=solo;}
+    else q.raiz=solo;
+    return V.primeraHoja(q.raiz,rp);
+  }
+  return V.primeraHoja(q.raiz,rp.concat(Math.min(i,pad.k.length-1)));
+};
+
+V.estructura=function(r){
+  if(r.c)return{c:1,f:1};
+  const o=r.s==='c'?'f':'c',n=r.k.length;
+  let cruz=null;
+  if(r.k.every(x=>x.s===o)&&new Set(r.k.map(x=>x.k.length)).size===1)cruz=r.k[0].k.length;
+  else if(r.k.every(x=>x.c))cruz=1;
+  return r.s==='c'?{c:n,f:cruz}:{c:cruz,f:n};
+};
+const prom=a=>a.reduce((x,y)=>x+y,0)/a.length;
+const colapsar=q=>{if(q.raiz.k&&q.raiz.k.length===1)q.raiz=q.raiz.k[0];};
+V.agregarEje=function(q,eje){
+  const r=q.raiz;
+  if(r.c){q.raiz={s:eje,k:[{c:r.c},{c:r.c}],r:[1,1]};return;}
+  if(r.s===eje){r.k.push(clone(r.k[r.k.length-1]));r.r.push(prom(r.r));return;}
+  if(r.k.every(x=>x.s===eje)&&new Set(r.k.map(x=>x.k.length)).size===1){
+    r.k.forEach(x=>{x.k.push(clone(x.k[x.k.length-1]));x.r.push(prom(x.r));});return;
+  }
+  q.raiz={s:eje,k:[r,clone(r)],r:[1,1]};
+};
+V.quitarEje=function(q,eje){
+  const r=q.raiz;
+  if(r.c)return;
+  if(r.s===eje){if(r.k.length>1){r.k.pop();r.r.pop();colapsar(q);}return;}
+  if(r.k.every(x=>x.s===eje)&&new Set(r.k.map(x=>x.k.length)).size===1){
+    r.k.forEach(x=>{x.k.pop();x.r.pop();});
+    if(r.k[0].k.length===1){r.k=r.k.map(x=>x.k[0]);}
+  }
+};
+
+V.minNodo=function minNodo(n,eje,g){
+  if(n.c)return V.MIN_CELDA;
+  const vals=n.k.map(x=>minNodo(x,eje,g));
+  if(n.s===eje)return vals.reduce((a,b)=>a+b,0)+(n.k.length-1)*g;
+  return Math.max(...vals);
+};
+V.minPieza=function(q,campo){
+  const lim=V.LIMITES[q.t];
+  if(!lim||!lim[campo])return 1;
+  if(q.t!=='mueble'||campo==='d')return lim[campo][0];
+  const eje=campo==='w'?'c':'f';
+  return Math.max(lim[campo][0],Math.ceil(V.minNodo(q.raiz,eje,q.g)+2*q.g));
+};
+
+/* Mueve el divisor i del nodo en `ruta` hasta la posición `pos` (cm en X o Y) */
+V.rectNodo=function(q,ruta){
+  let x=q.x+q.g,y=q.y+q.g,w=q.w-2*q.g,h=q.h-2*q.g,n=q.raiz;
+  for(const idx of ruta){
+    const m=n.k.length,tot=n.r.reduce((a,b)=>a+b,0);
+    if(n.s==='c'){
+      const disp=w-(m-1)*q.g;let px=x;
+      for(let i=0;i<idx;i++)px+=disp*n.r[i]/tot+q.g;
+      x=px;w=disp*n.r[idx]/tot;
+    }else{
+      const disp=h-(m-1)*q.g;let top=y+h;
+      for(let i=0;i<idx;i++)top-=disp*n.r[i]/tot+q.g;
+      h=disp*n.r[idx]/tot;y=top-h;
+    }
+    n=n.k[idx];
+  }
+  return{x,y,w,h};
+};
+V.moverDivisor=function(q,ruta,i,pos){
+  const n=V.nodo(q.raiz,ruta),R=V.rectNodo(q,ruta),m=n.k.length,tot=n.r.reduce((a,b)=>a+b,0),g=q.g;
+  const eje=n.s,disp=(eje==='c'?R.w:R.h)-(m-1)*g;
+  const tam=n.r.map(r=>disp*r/tot);
+  let inicio;
+  if(eje==='c'){inicio=R.x;for(let k=0;k<i;k++)inicio+=tam[k]+g;}
+  else{inicio=R.y+R.h;for(let k=0;k<i;k++)inicio-=tam[k]+g;}
+  const par=tam[i]+tam[i+1];
+  const min1=V.minNodo(n.k[i],eje,g),min2=V.minNodo(n.k[i+1],eje,g);
+  let nuevo=eje==='c'?pos-inicio:inicio-pos;
+  nuevo=V.clamp(Math.round(nuevo),min1,par-min2);
+  tam[i]=nuevo;tam[i+1]=par-nuevo;
+  n.r=tam.map(t=>t/disp);
+};
+/* Fija el tamaño de un espacio en su eje; los demás se reparten el resto */
+V.fijarEspacio=function(q,ruta,eje,valor){
+  for(let nivel=ruta.length-1;nivel>=0;nivel--){
+    const rp=ruta.slice(0,nivel),pad=V.nodo(q.raiz,rp);
+    if(pad.s!==eje)continue;
+    const i=ruta[nivel],R=V.rectNodo(q,rp),m=pad.k.length,g=q.g,disp=(eje==='c'?R.w:R.h)-(m-1)*g;
+    const tot=pad.r.reduce((a,b)=>a+b,0),tam=pad.r.map(r=>disp*r/tot);
+    const minOtros=pad.k.reduce((s,k,j)=>j===i?s:s+V.minNodo(k,eje,g),0);
+    const nuevo=V.clamp(valor,V.minNodo(pad.k[i],eje,g),disp-minOtros);
+    const resto=disp-tam[i],nuevoResto=disp-nuevo;
+    pad.r=tam.map((t,j)=>j===i?nuevo/disp:(resto>0?t*nuevoResto/resto/disp:nuevoResto/(m-1)/disp));
+    return true;
+  }
+  return false;
+};
+V.tieneEje=function(q,ruta,eje){
+  for(let nivel=ruta.length-1;nivel>=0;nivel--){
+    const pad=V.nodo(q.raiz,ruta.slice(0,nivel));
+    if(pad.s===eje)return true;
+  }
+  return false;
+};
+/* Divisores vecinos de un espacio, para mostrar sus tiradores */
+V.divisoresDe=function(q,ruta){
+  const out=[];const vistos={};
+  for(let nivel=ruta.length-1;nivel>=0;nivel--){
+    const rp=ruta.slice(0,nivel),pad=V.nodo(q.raiz,rp),i=ruta[nivel];
+    if(vistos[pad.s])continue;
+    vistos[pad.s]=true;
+    const clave=rp.join(',');
+    V.divisores(q).forEach(dv=>{
+      if(dv.ruta.join(',')===clave&&(dv.i===i||dv.i===i-1))out.push(dv);
+    });
+  }
+  return out;
+};
+
+V.hayFrentes=function(n){return n.c?n.c!=='a':n.k.some(V.hayFrentes);};
+V.rectFrente=function(q,cx,cy,cw,ch){
+  const g=q.g,tol=.02,gap=.16;
+  const eL=Math.abs(cx-(q.x+g))<tol?g:g/2,eR=Math.abs(cx+cw-(q.x+q.w-g))<tol?g:g/2;
+  const eB=Math.abs(cy-(q.y+g))<tol?g:g/2,eT=Math.abs(cy+ch-(q.y+q.h-g))<tol?g:g/2;
+  return{x0:cx-eL+gap,x1:cx+cw+eR-gap,y0:cy-eB+gap,y1:cy+ch+eT-gap,gap};
+};
+
+V.contar=function(q){
+  const c={a:0,p:0,l:0,v:0,j:0};
+  if(q.t==='mueble')V.celdas(q).forEach(k=>c[k.n.c]++);
+  return c;
+};
+V.nombrePieza=function(q){
+  if(q.t==='tv')return 'Televisor '+q.pulgadas+'″';
+  if(q.t==='repisa')return 'Repisa';
+  if(q.t==='panel')return q.ganchos?'Perchero':(q.e==='listones'?'Panel de listones':'Panel liso');
+  return {flotante:'Mueble flotante',patas:'Mueble con patas',piso:'Mueble de piso',mesa:'Organizador de mesa'}[q.m]||'Mueble';
+};
+V.medidasPieza=function(q){
+  if(q.t==='tv')return V.cm(q.w)+' × '+V.cm(q.h)+' cm';
+  if(q.t==='panel')return V.cm(q.w)+' × '+V.cm(q.h)+' cm';
+  return V.cm(q.w)+' × '+V.cm(q.h)+' × '+V.cm(q.d)+' cm';
+};
+const plural=(n,s,p)=>n+' '+(n===1?s:p);
+V.detallePieza=function(q){
+  const t=[];
+  if(q.t==='mueble'){
+    const c=V.contar(q);
+    if(c.p)t.push(plural(c.p,'puerta','puertas'));
+    if(c.l)t.push(plural(c.l,'puerta de listones','puertas de listones'));
+    if(c.v)t.push(plural(c.v,'puerta de vidrio','puertas de vidrio'));
+    if(c.j)t.push(plural(c.j,'cajón','cajones'));
+    if(c.a)t.push(plural(c.a,'espacio abierto','espacios abiertos'));
+    if(q.cables)t.push('salida de cables');
+    if(q.m==='flotante'&&q.y>0)t.push('a '+V.cm(q.y)+' cm del piso');
+    if(q.m==='patas')t.push('patas de '+V.cm(q.y)+' cm');
+  }
+  if(q.t==='repisa'&&q.y>0)t.push('a '+V.cm(q.y)+' cm del piso');
+  if(q.t==='panel'){t.push(q.e==='listones'?'listones':'liso');t.push('a '+V.cm(q.y)+' cm del piso');}
+  if(q.ganchos)t.push(plural(q.ganchos,'gancho','ganchos'));
+  if(q.led)t.push('luz LED');
+  return t.join(' · ');
+};
+
+/* Despiece aproximado para el taller */
+V.despiece=function(q){
+  const lista=[],mapa={};
+  const add=(n,a,b,c)=>{
+    const clave=n+'|'+V.cm(a)+'|'+V.cm(b);
+    if(mapa[clave])mapa[clave].q+=c||1;
+    else{mapa[clave]={n,a,b,q:c||1};lista.push(mapa[clave]);}
+  };
+  if(q.t==='repisa'){add('Tabla',q.w,q.d,1);}
+  else if(q.t==='panel'){
+    add(q.e==='listones'?'Panel base':'Panel',q.w,q.h,1);
+    if(q.e==='listones'){const n=Math.max(1,Math.round((q.w+1.1)/3.7));add('Listón',q.h,((q.w-(n-1)*1.1)/n),n);}
+  }else if(q.t==='mueble'){
+    const g=q.g,dc=q.d-(V.hayFrentes(q.raiz)?1.8:0);
+    add('Techo y piso',q.w,dc,2);
+    add('Lateral',q.h-2*g,dc,2);
+    if(q.fondo)add('Fondo',q.w-2*g,q.h-2*g,1);
+    V.recorrer(q.raiz,q.x+g,q.y+g,q.w-2*g,q.h-2*g,g,{
+      div(t,x,y,w,h){if(t==='v')add('División',h,dc,1);else add('Entrepaño',w,dc,1);},
+      hoja(n,cx,cy,cw,ch){
+        if(n.c==='a')return;
+        const r=V.rectFrente(q,cx,cy,cw,ch),W=r.x1-r.x0,H=r.y1-r.y0;
+        add({p:'Puerta',l:'Puerta de listones',v:'Puerta de vidrio',j:'Frente de cajón'}[n.c],W,H,1);
+      }
+    });
+  }
+  return lista;
+};
+
+V.tips=function(d,q){
+  const t=[];
+  if(!q)return t;
+  if(q.t==='mueble'){
+    const cs=V.celdas(q);
+    if(cs.some(c=>(c.n.c==='p'||c.n.c==='l'||c.n.c==='v')&&c.w>65))t.push('Una puerta de más de 65 cm pesa mucho. Prueba dividirla en dos.');
+    if(q.m==='flotante'&&(q.w>240||q.h>70))t.push('A este tamaño, el mueble flotante necesita soportes reforzados. Te asesoramos.');
+    const tv=d.piezas.find(x=>x.t==='tv');
+    if(tv&&q.w<tv.w+15&&q.m!=='mesa')t.push('Tu TV de '+tv.pulgadas+'″ mide '+V.cm(tv.w)+' cm. Te recomendamos que la base mida al menos '+Math.ceil(tv.w+15)+' cm.');
+  }
+  if(d.paredAncho>0){
+    const b=V.bbox(d,true);
+    if(b.x0<-d.paredAncho/2-.01||b.x1>d.paredAncho/2+.01)t.push('Tu diseño se sale de los '+V.cm(d.paredAncho)+' cm de tu pared. Muévelo o ajusta el ancho.');
+  }
+  return t;
+};
+
+/* Plano frontal en SVG: sirve para la orden de taller y como reserva si el 3D no está disponible */
+V.svgFrente=function(d,o){
+  o=o||{};
+  const tinta=o.tinta||'#13211F',relleno=o.relleno||'none';
+  const piezas=d.piezas.filter(q=>o.conTV||q.t!=='tv');
+  const dd={piezas};
+  const b=V.bbox(dd);
+  const m=Math.max(b.w,b.h)*.04+4;
+  const Y=y=>b.y1+m-y;
+  const sw=Math.max(b.w,b.h)/320;
+  const r=(x,y,w,h,e)=>`<rect x="${x.toFixed(1)}" y="${Y(y+h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" ${e||''}/>`;
+  let s='';
+  piezas.forEach(q=>{
+    if(q.t==='tv'){s+=r(q.x,q.y,q.w,q.h,`fill="${tinta}" opacity=".85"`);return;}
+    s+=r(q.x,q.y,q.w,q.h,`fill="${relleno}" stroke="${tinta}" stroke-width="${sw*1.6}"`);
+    if(q.t==='mueble'){
+      V.celdas(q).forEach(c=>{
+        s+=r(c.x,c.y,c.w,c.h,`fill="none" stroke="${tinta}" stroke-width="${sw*.8}"`);
+        const cx=c.x+c.w/2,cy=c.y+c.h/2;
+        if(c.n.c==='j')s+=`<line x1="${cx-c.w*.18}" x2="${cx+c.w*.18}" y1="${Y(cy)}" y2="${Y(cy)}" stroke="${tinta}" stroke-width="${sw*1.4}"/>`;
+        if(c.n.c==='p')s+=`<line x1="${c.x+c.w*.85}" x2="${c.x+c.w*.85}" y1="${Y(cy-c.h*.12)}" y2="${Y(cy+c.h*.12)}" stroke="${tinta}" stroke-width="${sw*1.4}"/>`;
+        if(c.n.c==='l'){const n=Math.floor(c.w/4);for(let i=1;i<n;i++){const x=c.x+c.w*i/n;s+=`<line x1="${x}" x2="${x}" y1="${Y(c.y)}" y2="${Y(c.y+c.h)}" stroke="${tinta}" stroke-width="${sw*.5}"/>`;}}
+        if(c.n.c==='v')s+=`<line x1="${c.x}" y1="${Y(c.y)}" x2="${c.x+c.w}" y2="${Y(c.y+c.h)}" stroke="${tinta}" stroke-width="${sw*.5}"/>`;
+      });
+    }
+    if(q.t==='panel'&&q.e==='listones'){const n=Math.floor(q.w/6);for(let i=1;i<n;i++){const x=q.x+q.w*i/n;s+=`<line x1="${x}" x2="${x}" y1="${Y(q.y)}" y2="${Y(q.y+q.h)}" stroke="${tinta}" stroke-width="${sw*.5}"/>`;}}
+  });
+  const vb=`${(b.x0-m).toFixed(1)} 0 ${(b.w+2*m).toFixed(1)} ${(b.h+2*m).toFixed(1)}`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" role="img" aria-label="Plano frontal del diseño">${s}</svg>`;
+};
+
+/* Código del diseño para enviarlo en un link (solo letras, números y guiones) */
+const nodoC=n=>n.c?n.c:[n.s,n.r.map(r=>Math.round(r*1000)/1000),n.k.map(nodoC)];
+const nodoX=n=>typeof n==='string'?{c:n}:{s:n[0],r:n[1],k:n[2].map(nodoX)};
+V.compactar=function(d){
+  return [1,d.perfil,d.nombre,d.madera,d.frente||0,d.tirador,d.veta,d.pared,d.paredAncho,d.piezas.map(q=>[
+    q.t,q.x,q.y,q.w,q.h,q.d||0,q.g||0,q.m||0,q.led?1:0,q.fondo===false?0:1,q.cables?1:0,q.ganchos||0,q.e||0,q.pulgadas||0,q.raiz?nodoC(q.raiz):0
+  ])];
+};
+V.expandir=function(c){
+  const d={perfil:c[1],nombre:c[2],madera:c[3],frente:c[4]||null,tirador:c[5],veta:c[6],pared:c[7],paredAncho:c[8],piezas:c[9].map(z=>{
+    const q={t:z[0],x:z[1],y:z[2],w:z[3],h:z[4],d:z[5]};
+    if(z[6])q.g=z[6];if(z[7])q.m=z[7];if(z[8])q.led=true;q.fondo=!!z[9];if(z[10])q.cables=true;if(z[11])q.ganchos=z[11];if(z[12])q.e=z[12];if(z[13])q.pulgadas=z[13];if(z[14])q.raiz=nodoX(z[14]);
+    return q;
+  })};
+  d.piezas.forEach(V.normalizar);
+  return d;
+};
+const AB='abcdefghijklmnopqrstuvwxyz234567';
+function b32(bytes){let bits=0,val=0,out='';for(const b of bytes){val=(val<<8)|b;bits+=8;while(bits>=5){out+=AB[(val>>>(bits-5))&31];bits-=5;}val&=(1<<bits)-1;}if(bits)out+=AB[(val<<(5-bits))&31];return out;}
+function d32(s){let bits=0,val=0;const out=[];for(const ch of s){const i=AB.indexOf(ch);if(i<0)continue;val=(val<<5)|i;bits+=5;if(bits>=8){out.push((val>>>(bits-8))&255);bits-=8;val&=(1<<bits)-1;}}return new Uint8Array(out);}
+V.cifrar=async function(d){
+  let bytes=new TextEncoder().encode(JSON.stringify(V.compactar(d))),flag='r';
+  if(window.CompressionStream){
+    try{
+      const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();
+      w.write(bytes);w.close();
+      bytes=new Uint8Array(await new Response(cs.readable).arrayBuffer());flag='z';
+    }catch(e){}
+  }
+  return 'd-'+flag+b32(bytes);
+};
+V.descifrar=async function(cod){
+  if(!cod||cod.slice(0,2)!=='d-')return null;
+  try{
+    const flag=cod[2];let bytes=d32(cod.slice(3));
+    if(flag==='z'){
+      const ds=new DecompressionStream('deflate-raw'),w=ds.writable.getWriter();
+      w.write(bytes);w.close();
+      bytes=new Uint8Array(await new Response(ds.readable).arrayBuffer());
+    }
+    return V.expandir(JSON.parse(new TextDecoder().decode(bytes)));
+  }catch(e){return null;}
+};
+})();
+
+/* Motor 3D: texturas de madera procedurales, construcción de muebles y escena */
+(function(){
+'use strict';
+const V=window.Veta;
+const clamp=V.clamp,rng=V.rng;
+const T=window.THREE;
+
+V.MADERAS={
+  roble:{n:'Roble natural',nota:'Tono miel y veta marcada. Combina con casi todo.',base:'#B98A55',osc:'#7E5730',cla:'#D9B583',mod:'fina',r:.56},
+  nogal:{n:'Nogal',nota:'Oscuro y cálido, con vetas onduladas.',base:'#6A4630',osc:'#3B2418',cla:'#8F6549',mod:'catedral',r:.48},
+  cedro:{n:'Cedro rojizo',nota:'Tono rojizo con vetas amplias.',base:'#A0603C',osc:'#6E3B22',cla:'#C78A60',mod:'catedral',r:.52},
+  pino:{n:'Pino claro',nota:'Claro, con nudos naturales.',base:'#D8B781',osc:'#AC8349',cla:'#EDD4AA',mod:'nudos',r:.6},
+  fresno:{n:'Fresno negro',nota:'Negro teñido que deja ver la veta.',base:'#2A2725',osc:'#100E0D',cla:'#4A443E',mod:'fina',r:.44},
+  blanco:{n:'Blanco mate',nota:'Pintura mate, sin veta.',base:'#E9E6DD',liso:true,r:.72},
+  arena:{n:'Arena mate',nota:'Pintura mate en tono arena.',base:'#CBB89C',liso:true,r:.68}
+};
+V.TIRADORES=[
+  {id:'push',n:'Sin tirador',nota:'Se abre al presionar'},
+  {id:'ranura',n:'Ranura',nota:'Hendidura arriba'},
+  {id:'barra',n:'Barra negra',nota:'Metal mate'},
+  {id:'laton',n:'Barra latón',nota:'Dorado cepillado'},
+  {id:'pomo',n:'Pomo',nota:'Botón de madera'}
+];
+V.PAREDES={
+  yeso:{n:'Blanco yeso',c:'#E9E4DA'},
+  arena:{n:'Arena',c:'#D8C8AF'},
+  piedra:{n:'Gris piedra',c:'#B9B2A6'},
+  arcilla:{n:'Arcilla',c:'#BF896A'},
+  cacao:{n:'Cacao',c:'#4A372B'},
+  grafito:{n:'Grafito',c:'#55504A'}
+};
+
+function rgb(h){const n=parseInt(h.slice(1),16);return[(n>>16)&255,(n>>8)&255,n&255];}
+
+/* Pinta una tabla de madera en un canvas: anillos, fibras y poros */
+V.pintarMadera=function(clave,W,H){
+  const def=V.MADERAS[clave];
+  W=W||1024;H=H||512;
+  const c=document.createElement('canvas');c.width=W;c.height=H;
+  const g=c.getContext('2d');
+  const seed=clave.split('').reduce((a,ch)=>(a*31+ch.charCodeAt(0))|0,7);
+  const r=rng(seed);
+  if(def.liso){
+    g.fillStyle=def.base;g.fillRect(0,0,W,H);
+    for(let i=0;i<3200;i++){g.globalAlpha=.02+r()*.03;g.fillStyle=r()<.5?'#000':'#fff';g.fillRect(r()*W,r()*H,2,2);}
+    g.globalAlpha=1;return c;
+  }
+  const base=rgb(def.base),osc=rgb(def.osc),cla=rgb(def.cla);
+  const GW=12,GH=18,A=new Float32Array(GW*GH),B=new Float32Array(GW*GH);
+  for(let i=0;i<A.length;i++){A[i]=r();B[i]=r();}
+  const suav=F=>{
+    for(let p=0;p<3;p++){
+      const S=F.slice();
+      for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+        const xl=(x+GW-1)%GW,xr=(x+1)%GW,yu=(y+GH-1)%GH,yd=(y+1)%GH;
+        F[y*GW+x]=(S[y*GW+x]*2+S[y*GW+xl]+S[y*GW+xr]+S[yu*GW+x]+S[yd*GW+x])/6;
+      }
+    }
+    let mi=1,ma=0;for(const v of F){if(v<mi)mi=v;if(v>ma)ma=v;}
+    for(let i=0;i<F.length;i++)F[i]=(F[i]-mi)/(ma-mi||1);
+  };
+  suav(A);suav(B);
+  const mue=(F,u,v)=>{
+    const x=u*(GW-1),y=v*(GH-1),xi=x|0,yi=y|0,fx=x-xi,fy=y-yi,x2=Math.min(xi+1,GW-1),y2=Math.min(yi+1,GH-1);
+    const p=F[yi*GW+xi],q=F[yi*GW+x2],s=F[y2*GW+xi],t=F[y2*GW+x2];
+    return p+(q-p)*fx+(s-p)*fy+(p-q-s+t)*fx*fy;
+  };
+  const FN=H*3,fib=new Float32Array(FN);
+  let lento=.5;
+  for(let i=0;i<FN;i++){lento=clamp(lento+(r()-.5)*.16,.05,.95);fib[i]=lento*.6+r()*.4;}
+  const img=g.createImageData(W,H),D=img.data;
+  const cx=.2+.6*r(),cy=.1+.8*r();
+  const cat=def.mod==='catedral',nud=def.mod==='nudos';
+  const frec=cat?15:nud?16:24,amp=cat?.5:nud?.36:.28,pot=cat?2:1.5,est=cat?.075:.05;
+  for(let y=0,k=0;y<H;y++){
+    const v=y/H;
+    for(let x=0;x<W;x++,k+=4){
+      const u=x/W,w1=mue(A,u,v),w2=mue(B,u,v);
+      const du=(u-cx)*est,dv=(v-cy)+(w1-.5)*.12;
+      const di=Math.sqrt(du*du+dv*dv);
+      let an=.5+.5*Math.sin(di*frec*6.2832+(w2-.5)*3);
+      an=Math.pow(an,pot);
+      const fy=clamp((y+(w1-.5)*44+H)|0,0,FN-1);
+      const t=clamp(an*amp+fib[fy]*(1-amp),0,1);
+      let a1,a2,kk;
+      if(t<.5){a1=cla;a2=base;kk=t*2;}else{a1=base;a2=osc;kk=(t-.5)*2;}
+      D[k]=a1[0]+(a2[0]-a1[0])*kk;D[k+1]=a1[1]+(a2[1]-a1[1])*kk;D[k+2]=a1[2]+(a2[2]-a1[2])*kk;D[k+3]=255;
+    }
+  }
+  g.putImageData(img,0,0);
+  g.strokeStyle='rgb('+osc.join(',')+')';
+  const N=W*H/280;
+  for(let i=0;i<N;i++){
+    const x=r()*W,y=r()*H,len=6+r()*26;
+    g.globalAlpha=.08+r()*.22;g.lineWidth=.6+r()*.7;
+    g.beginPath();g.moveTo(x,y);g.lineTo(x+len,y+(r()-.5)*1.4);g.stroke();
+  }
+  if(nud){
+    for(let i=0;i<3;i++){
+      const x=W*(.12+.76*r()),y=H*(.15+.7*r()),R=10+r()*12;
+      const gr=g.createRadialGradient(x,y,1,x,y,R*2.3);
+      gr.addColorStop(0,'rgba(58,34,14,.95)');gr.addColorStop(.35,'rgba(112,72,34,.7)');gr.addColorStop(1,'rgba(112,72,34,0)');
+      g.globalAlpha=1;g.fillStyle=gr;g.save();g.translate(x,y);g.scale(1.7,1);g.translate(-x,-y);g.beginPath();g.arc(x,y,R*2.3,0,6.2832);g.fill();g.restore();
+    }
+  }
+  g.globalAlpha=1;
+  return c;
+};
+
+V.muestraMadera=function(clave,W,H){
+  V._muestras=V._muestras||{};
+  const k=clave+'|'+(W||0)+'|'+(H||0);
+  if(V._muestras[k])return V._muestras[k];
+  const src=V.pintarMadera(clave,720,360);
+  const c=document.createElement('canvas');c.width=W||360;c.height=H||360;
+  c.getContext('2d').drawImage(src,0,0,c.width*2.4,c.height*1.2);
+  return V._muestras[k]=c.toDataURL('image/jpeg',.82);
+};
+
+V.webgl=(function(){
+  if(!T)return false;
+  try{const c=document.createElement('canvas');return !!(c.getContext('webgl2')||c.getContext('webgl'));}catch(e){return false;}
+})();
+if(!V.webgl)return;
+
+const TU=170,TV=52;
+const CARAS=[
+  {n:[1,0,0],v:[[1,0,1],[1,0,0],[1,1,0],[1,1,1]]},
+  {n:[-1,0,0],v:[[0,0,0],[0,0,1],[0,1,1],[0,1,0]]},
+  {n:[0,1,0],v:[[0,1,1],[1,1,1],[1,1,0],[0,1,0]]},
+  {n:[0,-1,0],v:[[0,0,0],[1,0,0],[1,0,1],[0,0,1]]},
+  {n:[0,0,1],v:[[0,0,1],[1,0,1],[1,1,1],[0,1,1]]},
+  {n:[0,0,-1],v:[[1,0,0],[0,0,0],[0,1,0],[1,1,0]]}
+];
+
+/* Acumula cajas y cilindros en una sola malla: menos llamadas de dibujo */
+class Lote{
+  constructor(){this.pos=[];this.nor=[];this.uvs=[];this.col=[];this.idx=[];this.n=0;}
+  caja(x0,y0,z0,x1,y1,z1,veta,of,tono){
+    const sx=x1-x0,sy=y1-y0,sz=z1-z0;
+    if(sx<.005||sy<.005||sz<.005)return this;
+    const t=tono===undefined?[1,1,1]:(typeof tono==='number'?[tono,tono,tono]:tono);
+    const ou=of?of.u:0,ov=of?of.v:0;
+    for(let c=0;c<6;c++){
+      const K=CARAS[c],nx=Math.abs(K.n[0]),ny=Math.abs(K.n[1]);
+      for(let i=0;i<4;i++){
+        const v=K.v[i],X=x0+v[0]*sx,Y=y0+v[1]*sy,Z=z0+v[2]*sz;
+        this.pos.push(X,Y,Z);this.nor.push(K.n[0],K.n[1],K.n[2]);this.col.push(t[0],t[1],t[2]);
+        let a,b;
+        if(veta==='y'){if(nx){a=Y;b=Z;}else if(ny){a=Z;b=X;}else{a=Y;b=X;}}
+        else{if(nx){a=Z;b=Y;}else if(ny){a=X;b=Z;}else{a=X;b=Y;}}
+        this.uvs.push((a+ou)/TU,(b+ov)/TV);
+      }
+      const n=this.n;this.idx.push(n,n+1,n+2,n,n+2,n+3);this.n+=4;
+    }
+    return this;
+  }
+  cilindro(eje,cx,cy,c0,c1,r0,r1,seg){
+    seg=seg||14;if(r1===undefined)r1=r0;
+    const base=this.n,P=(an,ra,t)=>{const c=Math.cos(an)*ra,s=Math.sin(an)*ra;return eje==='z'?[cx+c,cy+s,t]:[cx+c,t,cy+s];};
+    for(let i=0;i<=seg;i++){
+      const an=i/seg*6.2832,ca=Math.cos(an),sa=Math.sin(an),N=eje==='z'?[ca,sa,0]:[ca,0,sa];
+      const p0=P(an,r0,c0),p1=P(an,r1,c1);
+      this.pos.push(p0[0],p0[1],p0[2],p1[0],p1[1],p1[2]);
+      this.nor.push(N[0],N[1],N[2],N[0],N[1],N[2]);
+      this.col.push(1,1,1,1,1,1);
+      this.uvs.push(i/seg,0,i/seg,1);
+      this.n+=2;
+    }
+    for(let i=0;i<seg;i++){
+      const a=base+i*2;
+      if(eje==='z')this.idx.push(a,a+2,a+3,a,a+3,a+1);
+      else this.idx.push(a,a+3,a+2,a,a+1,a+3);
+    }
+    const ct=this.n,N=eje==='z'?[0,0,1]:[0,1,0],pc=eje==='z'?[cx,cy,c1]:[cx,c1,cy];
+    this.pos.push(pc[0],pc[1],pc[2]);this.nor.push(N[0],N[1],N[2]);this.col.push(1,1,1);this.uvs.push(.5,.5);this.n++;
+    for(let i=0;i<=seg;i++){
+      const an=i/seg*6.2832,p=P(an,r1,c1);
+      this.pos.push(p[0],p[1],p[2]);this.nor.push(N[0],N[1],N[2]);this.col.push(1,1,1);this.uvs.push(.5,.5);this.n++;
+    }
+    for(let i=0;i<seg;i++){
+      if(eje==='z')this.idx.push(ct,ct+1+i,ct+2+i);
+      else this.idx.push(ct,ct+2+i,ct+1+i);
+    }
+    return this;
+  }
+  malla(mat){
+    if(!this.n)return null;
+    const g=new T.BufferGeometry();
+    g.setAttribute('position',new T.Float32BufferAttribute(this.pos,3));
+    g.setAttribute('normal',new T.Float32BufferAttribute(this.nor,3));
+    g.setAttribute('uv',new T.Float32BufferAttribute(this.uvs,2));
+    g.setAttribute('color',new T.Float32BufferAttribute(this.col,3));
+    g.setIndex(this.idx);
+    const m=new T.Mesh(g,mat);
+    m.castShadow=!mat.userData.sinSombra;m.receiveShadow=!mat.userData.sinSombra;
+    m.userData.desechar=true;
+    return m;
+  }
+}
+class Lotes{
+  constructor(){this.m={};}
+  de(k){return this.m[k]||(this.m[k]=new Lote());}
+  mallas(mats){const r=[];for(const k in this.m){const g=this.m[k].malla(mats[k]);if(g)r.push(g);}return r;}
+}
+
+/* Texturas y materiales compartidos */
+const texCache={};
+function texMadera(clave){
+  if(texCache[clave])return texCache[clave];
+  const t=new T.CanvasTexture(V.pintarMadera(clave,1024,512));
+  t.wrapS=t.wrapT=T.MirroredRepeatWrapping;t.encoding=T.sRGBEncoding;t.anisotropy=8;
+  return texCache[clave]=t;
+}
+const matCache={};
+function matMadera(clave){
+  if(matCache[clave])return matCache[clave];
+  const def=V.MADERAS[clave],tex=texMadera(clave);
+  return matCache[clave]=new T.MeshStandardMaterial({map:tex,bumpMap:def.liso?null:tex,bumpScale:def.liso?0:.016,roughness:def.r,metalness:0,envMapIntensity:.6,vertexColors:true});
+}
+let FIJOS=null;
+function fijos(){
+  if(FIJOS)return FIJOS;
+  const est=(o)=>new T.MeshStandardMaterial(o);
+  FIJOS={
+    oscuro:est({color:0x14110f,roughness:.9}),
+    negro:est({color:0x1a1a1b,roughness:.42,metalness:.55,envMapIntensity:.9}),
+    laton:est({color:0xB48F4E,roughness:.3,metalness:1,envMapIntensity:1.3}),
+    vidrio:est({color:0x8fa6a8,roughness:.06,metalness:.1,transparent:true,opacity:.26,envMapIntensity:1.6}),
+    led:new T.MeshBasicMaterial({color:0xFFD9A8,toneMapped:false}),
+    ceramica:est({color:0xE8E0D2,roughness:.82}),
+    terracota:est({color:0xB4683F,roughness:.86}),
+    hoja:est({color:0x3F6B4C,roughness:.7}),
+    libro:est({color:0xffffff,roughness:.88,vertexColors:true}),
+    tablero:est({color:0xC9B79C,roughness:.7})
+  };
+  FIJOS.vidrio.userData.sinSombra=true;FIJOS.led.userData.sinSombra=true;
+  return FIJOS;
+}
+const tex={};
+function canvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
+function texBrillo(){
+  if(tex.brillo)return tex.brillo;
+  const c=canvas(256,128),g=c.getContext('2d'),im=g.createImageData(256,128);
+  for(let y=0,k=0;y<128;y++)for(let x=0;x<256;x++,k+=4){
+    const u=x/255,v=y/127,e=clamp(Math.min(u,1-u)/.2,0,1),b=Math.pow(1-v,2.2)*(e*e*(3-2*e));
+    const n=255*b;im.data[k]=n;im.data[k+1]=n;im.data[k+2]=n;im.data[k+3]=255;
+  }
+  g.putImageData(im,0,0);
+  const tb=new T.CanvasTexture(c);tb.encoding=T.sRGBEncoding;
+  return tex.brillo=tb;
+}
+function texHalo(){
+  if(tex.halo)return tex.halo;
+  const c=canvas(256,256),g=c.getContext('2d');
+  g.fillStyle='#000';g.fillRect(0,0,256,256);
+  g.shadowColor='#fff';g.shadowBlur=46;g.shadowOffsetX=1000;g.fillStyle='#fff';g.fillRect(-1000+60,60,136,136);
+  const th=new T.CanvasTexture(c);th.encoding=T.sRGBEncoding;
+  return tex.halo=th;
+}
+function texSombra(){
+  if(tex.sombra)return tex.sombra;
+  const c=canvas(256,256),g=c.getContext('2d');
+  g.clearRect(0,0,256,256);
+  g.shadowColor='rgba(0,0,0,1)';g.shadowBlur=42;g.shadowOffsetX=1000;g.fillStyle='#000';g.fillRect(-1000+52,52,152,152);
+  const ts=new T.CanvasTexture(c);ts.encoding=T.sRGBEncoding;
+  return tex.sombra=ts;
+}
+function texTV(){
+  if(tex.tv)return tex.tv;
+  const c=canvas(1024,576),g=c.getContext('2d'),r=rng(41);
+  const cielo=g.createLinearGradient(0,0,0,576);
+  cielo.addColorStop(0,'#16324F');cielo.addColorStop(.42,'#8C5A68');cielo.addColorStop(.62,'#E79A5C');cielo.addColorStop(.74,'#F6C583');
+  g.fillStyle=cielo;g.fillRect(0,0,1024,576);
+  const sol=g.createRadialGradient(690,372,6,690,372,240);
+  sol.addColorStop(0,'rgba(255,240,205,1)');sol.addColorStop(.14,'rgba(255,214,150,.9)');sol.addColorStop(1,'rgba(255,190,120,0)');
+  g.fillStyle=sol;g.fillRect(0,0,1024,576);
+  [['#6F5468',372],['#4A3B55',414],['#2C2A41',458],['#16192B',510]].forEach((cap,i)=>{
+    let y=cap[1];
+    g.fillStyle=cap[0];g.beginPath();g.moveTo(0,576);
+    const f1=.004+r()*.004,f2=.013+r()*.008,fa=r()*6;
+    for(let x=0;x<=1024;x+=6)g.lineTo(x,y+Math.sin(x*f1+fa)*(26-i*3)+Math.sin(x*f2+fa*2)*(9-i));
+    g.lineTo(1024,576);g.fill();
+  });
+  const t=new T.CanvasTexture(c);t.encoding=T.sRGBEncoding;
+  return tex.tv=t;
+}
+function texPiso(){
+  if(tex.piso)return tex.piso;
+  const c=canvas(1024,1024),g=c.getContext('2d'),r=rng(77);
+  const filas=7,alt=1024/filas;
+  for(let f=0;f<filas;f++){
+    let x=-r()*300;
+    while(x<1024){
+      const l=260+r()*340,t=r();
+      g.fillStyle=`rgb(${118+t*26|0},${92+t*22|0},${68+t*18|0})`;
+      g.fillRect(x,f*alt,l,alt);
+      g.globalAlpha=.14;g.strokeStyle='#3b2a1b';
+      for(let i=0;i<26;i++){const y=f*alt+r()*alt;g.lineWidth=.5+r();g.beginPath();g.moveTo(x,y);g.lineTo(x+l,y+(r()-.5)*5);g.stroke();}
+      g.globalAlpha=1;g.fillStyle='rgba(30,20,12,.55)';g.fillRect(x+l-1.5,f*alt,2.5,alt);
+      x+=l;
+    }
+    g.fillStyle='rgba(30,20,12,.5)';g.fillRect(0,f*alt-1,1024,2.5);
+  }
+  const t=new T.CanvasTexture(c);t.wrapS=t.wrapT=T.RepeatWrapping;t.encoding=T.sRGBEncoding;t.anisotropy=8;t.repeat.set(11,5);
+  return tex.piso=t;
+}
+
+const PLANO=new T.PlaneGeometry(1,1);
+function plano(gr,x0,y0,x1,y1,z,mat,orden){
+  const m=new T.Mesh(PLANO,mat);
+  m.position.set((x0+x1)/2,(y0+y1)/2,z);m.scale.set(x1-x0,y1-y0,1);m.renderOrder=orden||1;
+  gr.add(m);return m;
+}
+function matAditivo(mapa,color,op){return new T.MeshBasicMaterial({map:mapa,color,transparent:true,opacity:op,blending:T.AdditiveBlending,depthWrite:false,toneMapped:false});}
+function matSombra(op){return new T.MeshBasicMaterial({map:texSombra(),color:0x000000,transparent:true,opacity:op,depthWrite:false,toneMapped:false});}
+
+function ponerLuzBajo(ctx,x0,x1,y,z,prof){
+  ctx.L.de('led').caja(x0+2.5,y-.25,z+prof*.32,x1-2.5,y,z+prof*.32+1.4,'x');
+  const int=ctx.opc.noche?.85:.7;
+  const alto=clamp((x1-x0)*.3,26,58);
+  plano(ctx.g,x0-18,y-alto,x1+18,y,z+.08,ctx.opc._mBrillo(int),3);
+}
+
+function ponerTirador(M,tipo,r,zf,cajon,abatible,bisIzq){
+  if(tipo==='push')return;
+  const W=r.x1-r.x0,H=r.y1-r.y0,mx=(r.x0+r.x1)/2;
+  if(tipo==='ranura'){
+    M.de('oscuro').caja(r.x0+1,r.y1-1.5,zf-.2,r.x1-1,r.y1-.5,zf+.02,'x');
+    return;
+  }
+  const mat=tipo==='laton'?'laton':'negro';
+  if(tipo==='barra'||tipo==='laton'){
+    const hor=cajon||abatible;
+    if(hor){
+      const L=Math.min(16,W*.5),y=r.y1-Math.min(3.2,H*.2);
+      M.de(mat).caja(mx-L/2,y-.45,zf+1.4,mx+L/2,y+.45,zf+2.2,'x');
+      M.de(mat).caja(mx-L/2+1,y-.3,zf,mx-L/2+1.8,y+.3,zf+1.4,'x');
+      M.de(mat).caja(mx+L/2-1.8,y-.3,zf,mx+L/2-1,y+.3,zf+1.4,'x');
+    }else{
+      const L=Math.min(18,H*.45),x=bisIzq?r.x1-2.8:r.x0+2.8,y=(r.y0+r.y1)/2;
+      M.de(mat).caja(x-.45,y-L/2,zf+1.4,x+.45,y+L/2,zf+2.2,'y');
+      M.de(mat).caja(x-.3,y-L/2+1,zf,x+.3,y-L/2+1.8,zf+1.4,'y');
+      M.de(mat).caja(x-.3,y+L/2-1.8,zf,x+.3,y+L/2-1,zf+1.4,'y');
+    }
+    return;
+  }
+  if(tipo==='pomo'){
+    const hor=cajon||abatible;
+    const x=hor?mx:(bisIzq?r.x1-2.8:r.x0+2.8),y=hor?(cajon?(r.y0+r.y1)/2:r.y1-3.2):(r.y0+r.y1)/2;
+    M.de('frente').cilindro('z',x,y,zf,zf+2.4,Math.min(1.5,H*.14),undefined,16);
+  }
+}
+
+function construirMueble(q,d,ctx){
+  const {x,y,w,h}=q,g=q.g,prof=q.d,z0=q.z||0,zf=z0+prof;
+  const hay=V.hayFrentes(q.raiz),zc=hay?zf-1.8:zf,L=ctx.L,O=ctx.of,O0={u:0,v:0};
+  const vetaF=d.veta==='v'?'y':'x',zi=z0+(q.fondo?.6:0);
+  L.de('cuerpo').caja(x,y+h-g,z0,x+w,y+h,zc,'x',O());
+  L.de('cuerpo').caja(x,y,z0,x+w,y+g,zc,'x',O());
+  L.de('cuerpo').caja(x,y+g,z0,x+g,y+h-g,zc,'y',O());
+  L.de('cuerpo').caja(x+w-g,y+g,z0,x+w,y+h-g,zc,'y',O());
+  if(q.fondo)L.de('cuerpo').caja(x+g,y+g,z0,x+w-g,y+h-g,z0+.6,'y',O(),.72);
+  const mitadX=x+w/2;
+  V.recorrer(q.raiz,x+g,y+g,w-2*g,h-2*g,g,{
+    div(t,px,py,a,b){L.de('cuerpo').caja(px,py,zi,px+a,py+b,zc,t==='v'?'y':'x',O(),.96);},
+    hoja(n,cx,cy,cw,ch){
+      if(n.c==='a')return;
+      const r=V.rectFrente(q,cx,cy,cw,ch),gap=r.gap,M=new Lotes(),W=r.x1-r.x0,H=r.y1-r.y0;
+      M.de('oscuro').caja(r.x0-gap,r.y0-gap,zc,r.x1+gap,r.y1+gap,zc+.1,'x');
+      const abatible=n.c!=='j'&&W>H*1.25&&H<50,bisIzq=(r.x0+r.x1)/2<mitadX;
+      if(n.c==='p'||n.c==='j'){
+        M.de('frente').caja(r.x0,r.y0,zc+.1,r.x1,r.y1,zf,vetaF,O0);
+      }else if(n.c==='l'){
+        M.de('oscuro').caja(r.x0,r.y0,zc+.1,r.x1,r.y1,zc+.7,'y');
+        const sw=2.8,gp=.7,nl=Math.max(2,Math.round((W+gp)/(sw+gp))),real=(W-(nl-1)*gp)/nl;
+        for(let i=0;i<nl;i++){
+          const px=r.x0+i*(real+gp),tn=.95+ctx.rnd()*.1;
+          M.de('frente').caja(px,r.y0,zc+.7,px+real,r.y1,zf,'y',O(),tn);
+        }
+      }else if(n.c==='v'){
+        const m=Math.min(2.2,W*.14);
+        M.de('frente').caja(r.x0,r.y0,zc+.1,r.x0+m,r.y1,zf,'y',O());
+        M.de('frente').caja(r.x1-m,r.y0,zc+.1,r.x1,r.y1,zf,'y',O());
+        M.de('frente').caja(r.x0+m,r.y0,zc+.1,r.x1-m,r.y0+m,zf,'x',O());
+        M.de('frente').caja(r.x0+m,r.y1-m,zc+.1,r.x1-m,r.y1,zf,'x',O());
+        M.de('vidrio').caja(r.x0+m,r.y0+m,zc+.8,r.x1-m,r.y1-m,zc+1.1,'x');
+      }
+      if(n.c!=='l')ponerTirador(M,d.tirador,r,zf,n.c==='j',abatible,bisIzq);
+      const piv=new T.Group();
+      let hx=0,hy=0,hz=zf;
+      if(n.c==='j'){
+        const fondoC=Math.max(6,prof-5),ix0=cx+.5,ix1=cx+cw-.5,iy0=cy+.8,iy1=cy+ch-1.4,zb=zc-fondoC;
+        const k=M.de('cuerpo');
+        k.caja(ix0,iy0,zb,ix1,iy0+.8,zc,'x',O(),.9);
+        k.caja(ix0,iy0,zb,ix0+1,iy1,zc,'x',O(),.9);
+        k.caja(ix1-1,iy0,zb,ix1,iy1,zc,'x',O(),.9);
+        k.caja(ix0,iy0,zb,ix1,iy1,zb+1,'x',O(),.9);
+        M.mallas(ctx.mats).forEach(m=>piv.add(m));
+        ctx.g.add(piv);
+        ctx.anim.push({o:piv,p:'z',v:prof*.56});
+        return;
+      }
+      if(abatible){hx=0;hy=r.y0;ctx.anim.push({o:piv,p:'rx',v:1.48});}
+      else if(bisIzq){hx=r.x0;hy=0;ctx.anim.push({o:piv,p:'ry',v:-1.92});}
+      else{hx=r.x1;hy=0;ctx.anim.push({o:piv,p:'ry',v:1.92});}
+      piv.position.set(hx,hy,hz);
+      M.mallas(ctx.mats).forEach(m=>{m.position.set(-hx,-hy,-hz);piv.add(m);});
+      ctx.g.add(piv);
+    }
+  });
+  if(q.cables){
+    const cxb=x+w/2,cb=z0+Math.min(6,prof*.25);
+    L.de('oscuro').cilindro('y',cxb,cb,y+h-.02,y+h+.03,3.1,3.1,24);
+  }
+  if(q.m==='patas'&&y>0){
+    const ins=Math.min(7,w*.12),zA=z0+Math.min(5,prof*.2),zB=zf-Math.min(5,prof*.2);
+    [[x+ins,zA],[x+w-ins,zA],[x+ins,zB],[x+w-ins,zB]].forEach(pt=>L.de('negro').cilindro('y',pt[0],pt[1],0,y,.9,1.6,14));
+  }
+  if(q.m==='mesa'){
+    const an=Math.max(w+90,130),pr=Math.max(prof+36,64),x0=x+w/2-an/2,x1=x0+an;
+    L.de('tablero').caja(x0,y-3,0,x1,y,pr,'x',O());
+    L.de('tablero').caja(x0+5,0,pr*.15,x0+8,y-3,pr*.85,'y',O());
+    L.de('tablero').caja(x1-8,0,pr*.15,x1-5,y-3,pr*.85,'y',O());
+  }
+  if(q.led&&q.m!=='piso')ponerLuzBajo(ctx,x,x+w,y,z0,prof);
+  if(q.m==='flotante')plano(ctx.g,x-16,y-20,x+w+16,y+h+12,z0+.05,ctx.opc._mSombra,1);
+}
+
+function ponerGanchos(q,ctx,yc,zb){
+  const n=q.ganchos||0;if(!n)return;
+  const mat=ctx.d.tirador==='laton'?'laton':'negro';
+  for(let i=0;i<n;i++){
+    const hx=q.x+q.w*(i+.5)/n;
+    ctx.L.de(mat).cilindro('z',hx,yc,zb,zb+5.5,.55,.55,12);
+    ctx.L.de(mat).cilindro('y',hx,zb+5.5,yc-.2,yc+2.4,.55,.55,12);
+  }
+}
+function construirRepisa(q,d,ctx){
+  const {x,y,w,h}=q,z0=q.z||0,prof=q.d;
+  ctx.L.de('cuerpo').caja(x,y,z0,x+w,y+h,z0+prof,'x',ctx.of());
+  if(q.ganchos)ponerGanchos(q,ctx,y-2.6,z0);
+  if(q.led)ponerLuzBajo(ctx,x,x+w,y,z0,prof);
+  plano(ctx.g,x-12,y-16,x+w+12,y+h+8,z0+.05,ctx.opc._mSombra,1);
+}
+function construirPanel(q,d,ctx){
+  const {x,y,w,h}=q,L=ctx.L,O=ctx.of;
+  if(q.e==='listones'){
+    L.de('oscuro').caja(x,y,0,x+w,y+h,.9,'y');
+    const sw=2.6,gp=1.1,n=Math.max(1,Math.round((w+gp)/(sw+gp))),real=(w-(n-1)*gp)/n;
+    for(let i=0;i<n;i++){
+      const px=x+i*(real+gp),tn=.93+ctx.rnd()*.14;
+      L.de('cuerpo').caja(px,y,.9,px+real,y+h,2.6,'y',O(),tn);
+    }
+  }else{
+    L.de('cuerpo').caja(x,y,0,x+w,y+h,1.8,'x',O());
+  }
+  if(q.ganchos)ponerGanchos(q,ctx,y+h*.5,1.8);
+  if(q.led){
+    const m=26;
+    plano(ctx.g,x-m,y-m,x+w+m,y+h+m,.04,ctx.opc._mHalo(ctx.opc.noche?.9:.55),2);
+  }
+}
+function construirTV(q,ctx){
+  const {x,y,w,h}=q,z0=q.z||0;
+  ctx.L.de('negro').caja(x-.4,y-.4,z0+1,x+w+.4,y+h+.4,z0+3.4,'x');
+  plano(ctx.g,x-12,y-14,x+w+12,y+h+10,z0+.05,ctx.opc._mSombra,1);
+  const scr=new T.Mesh(PLANO,ctx.opc._mTV);
+  scr.position.set(x+w/2,y+h/2,z0+3.42);scr.scale.set(w,h,1);
+  ctx.g.add(scr);
+  if(ctx.opc.noche){plano(ctx.g,x-44,y-34,x+w+44,y+h+40,z0+.07,ctx.opc._mHalo(.3,0xE8A070),2);}
+}
+
+/* Objetos decorativos para las imágenes: dan escala y vida */
+function decorar(q,ctx){
+  const r=ctx.rnd,zb=(q.z||0)+q.d*.5,top=q.y+q.h,L=ctx.L;
+  const tonos=[[.74,.68,.56],[.32,.4,.38],[.62,.34,.24],[.86,.83,.76],[.2,.24,.3]];
+  const libros=(x,y,n)=>{
+    let yy=y;
+    for(let i=0;i<n;i++){
+      const an=19+r()*7,alt=2.2+r()*2,pr=Math.min(q.d*.62,14+r()*4),dx=(r()-.5)*2.4;
+      L.de('libro').caja(x-an/2+dx,yy,zb-pr/2,x+an/2+dx,yy+alt,zb+pr/2,'x',null,tonos[(r()*tonos.length)|0]);
+      yy+=alt;
+    }
+    return yy;
+  };
+  const jarron=(x,y,esc,mat)=>{
+    const pts=[[0,0],[5,0],[6.2,3],[7,9],[6.2,15],[3.8,20],[2.8,24],[3.4,26.5],[3,26.5]].map(p=>new T.Vector2(p[0]*esc,p[1]*esc));
+    const m=new T.Mesh(new T.LatheGeometry(pts,28),ctx.mats[mat]);
+    m.position.set(x,y,zb);m.castShadow=true;m.receiveShadow=true;m.userData.desechar=true;ctx.g.add(m);
+  };
+  const planta=(x,y)=>{
+    L.de('terracota').cilindro('y',x,zb,y,y+11,4.6,6.2,20);
+    for(let i=0;i<12;i++){
+      const an=r()*6.28,el=.5+r()*.7,lar=11+r()*11;
+      const g=new T.SphereGeometry(1,10,8);
+      const m=new T.Mesh(g,ctx.mats.hoja);
+      m.scale.set(lar*.5,.28,2.3+r()*1.2);
+      const cx=Math.cos(an)*Math.cos(el)*lar*.46,cz=Math.sin(an)*Math.cos(el)*lar*.46,cy=Math.sin(el)*lar*.46;
+      m.position.set(x+cx,y+11+cy,zb+cz);
+      m.rotation.set(0,-an,el);m.castShadow=true;m.userData.desechar=true;ctx.g.add(m);
+    }
+  };
+  if(q.t==='repisa'||q.t==='mueble'){
+    if(q.h>60||top>170){/* muy alto: decoramos el interior */}
+    else if(q.w>=70){
+      const x1=q.x+q.w*.14,x2=q.x+q.w*.86;
+      if(q.d>=20){
+        const yy=libros(x2,top,2+((r()*2)|0));
+        if(r()>.5)jarron(x2,yy,.34,'ceramica');
+        if(r()>.45)planta(x1,top);else jarron(x1,top,.72,r()>.5?'ceramica':'terracota');
+      }
+    }else if(q.w>=36&&q.d>=20){
+      jarron(q.x+q.w*.5,top,.52,'ceramica');
+    }
+  }
+  if(q.t==='mueble'){
+    V.celdas(q).forEach((c,i)=>{
+      if(c.n.c!=='a'||c.h<9)return;
+      if(c.h>=19&&c.w>=14){
+        let px=c.x+1.4,n=3+((r()*5)|0);
+        for(let k=0;k<n&&px<c.x+c.w*.62;k++){
+          const an=1.8+r()*2.6,al=Math.min(c.h-1.2,17+r()*7),pr=Math.min(q.d*.7,15);
+          L.de('libro').caja(px,c.y,(q.z||0)+2,px+an,c.y+al,(q.z||0)+2+pr,'y',null,tonos[(r()*tonos.length)|0]);
+          px+=an+.12;
+        }
+        if(c.w>=26&&i%2===0)jarron(c.x+c.w*.8,c.y,.42,'ceramica');
+      }else if(c.w>=26){
+        libros(c.x+c.w*.5,c.y,1+((r()*2)|0));
+      }
+    });
+  }
+}
+
+V.construirDiseno=function(d,opc){
+  if(!V.MADERAS[d.madera])d.madera='roble';
+  if(d.frente&&!V.MADERAS[d.frente])d.frente=null;
+  V.prepararZ(d);
+  const grupo=new T.Group(),anim=[];
+  const F=fijos(),mC=matMadera(d.madera),mF=d.frente?matMadera(d.frente):mC;
+  const mats=Object.assign({cuerpo:mC,frente:mF},F);
+  d.piezas.forEach((q,iq)=>{
+    const r=rng((iq+3)*97+13);
+    const ctx={g:grupo,anim,mats,L:new Lotes(),rnd:r,d,opc,of:()=>({u:r()*340,v:r()*104})};
+    if(q.t==='mueble')construirMueble(q,d,ctx);
+    else if(q.t==='repisa')construirRepisa(q,d,ctx);
+    else if(q.t==='panel')construirPanel(q,d,ctx);
+    else if(q.t==='tv')construirTV(q,ctx);
+    if(opc.decorar&&q.t!=='tv'&&q.t!=='panel')decorar(q,ctx);
+    ctx.L.mallas(mats).forEach(m=>grupo.add(m));
+  });
+  return{grupo,anim};
+};
+
+/* ── Escena ─────────────────────────────────────── */
+class Escena{
+  constructor(canvas,o){
+    o=o||{};this.canvas=canvas;this.o=o;
+    const R=this.R=new T.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:!!o.capturar,powerPreference:'high-performance'});
+    R.setPixelRatio(o.capturar?1:Math.min(window.devicePixelRatio||1,o.pr||2));
+    R.outputEncoding=T.sRGBEncoding;R.toneMapping=T.ACESFilmicToneMapping;
+    R.toneMappingExposure=o.exposicion||(o.noche?1.1:1.02);
+    R.setClearColor(o.noche?0x2F2219:0xE1D5C3,1);
+    R.shadowMap.enabled=true;R.shadowMap.type=T.PCFShadowMap;
+    const S=this.S=new T.Scene();
+    this.cam=new T.PerspectiveCamera(o.fov||24,1,20,8000);
+    this.noche=!!o.noche;
+    const mPared=this.mPared=new T.MeshStandardMaterial({color:'#E6E2D8',roughness:.96,envMapIntensity:o.noche?.04:.08});
+    const pared=new T.Mesh(new T.PlaneGeometry(3200,1200),mPared);pared.position.set(0,600,0);pared.receiveShadow=true;S.add(pared);
+    const piso=new T.Mesh(new T.PlaneGeometry(3200,1800),new T.MeshStandardMaterial({map:texPiso(),roughness:.62,envMapIntensity:.5}));
+    piso.rotation.x=-Math.PI/2;piso.position.set(0,0,900);piso.receiveShadow=true;S.add(piso);
+    const zocalo=new T.Mesh(new T.BoxGeometry(3200,9,1.4),new T.MeshStandardMaterial({color:'#EFEDE6',roughness:.7}));zocalo.position.set(0,4.5,.7);zocalo.receiveShadow=true;S.add(zocalo);
+    this.zocalo=zocalo;
+    const hemi=this.hemi=new T.HemisphereLight(0xffffff,0xb7a58d,o.noche?.17:.46);S.add(hemi);
+    const key=this.key=new T.DirectionalLight(o.noche?0xffe0c0:0xfff1df,o.noche?.22:.92);
+    key.castShadow=true;key.shadow.mapSize.set(o.capturar?2048:(window.innerWidth<700?1024:2048),o.capturar?2048:(window.innerWidth<700?1024:2048));
+    key.shadow.radius=o.noche?8:5;key.shadow.bias=-.0006;key.shadow.normalBias=.5;
+    key.shadow.camera.near=60;key.shadow.camera.far=2200;
+    S.add(key);S.add(key.target);
+    const fill=new T.DirectionalLight(o.noche?0x8a6f55:0xf5eee2,o.noche?.1:.16);fill.position.set(400,160,500);S.add(fill);
+    this._entorno();
+    this.opc={noche:!!o.noche,decorar:!!o.decorar,
+      _mSombra:matSombra(o.noche?.42:.22),
+      _mTV:new T.MeshBasicMaterial({map:texTV(),toneMapped:false,color:o.noche?0xffffff:0xd9d9d9}),
+      _cacheB:{},_cacheH:{},
+      _mBrillo:(i)=>{const k=i.toFixed(2);return this.opc._cacheB[k]||(this.opc._cacheB[k]=matAditivo(texBrillo(),0xFFB56B,i));},
+      _mHalo:(i,col)=>{const k=i.toFixed(2)+(col||'');return this.opc._cacheH[k]||(this.opc._cacheH[k]=matAditivo(texHalo(),col||0xFFB56B,i));}
+    };
+    this.grupo=null;this.anim=[];
+    this.t=new T.Vector3(0,80,10);this._t=this.t.clone();
+    this.az=-.3;this.el=.1;this.dist=500;this._az=this.az;this._el=this.el;this._dist=this.dist;
+    this.ab=0;this._ab=0;this.fitDist=500;
+    this.w=this.h=1;this.margen=o.margen||.8;
+    this.pausada=false;this._raf=0;
+    if(!o.capturar&&canvas.parentElement){
+      this._ro=new ResizeObserver(()=>this.ajustar());
+      this._ro.observe(canvas.parentElement);
+    }
+  }
+  _entorno(){
+    const s=new T.Scene();s.background=new T.Color(this.noche?0x2a211b:0x918b80);
+    const pan=(col,w,h,x,y,z,ry,rx)=>{const m=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({color:col,side:T.DoubleSide}));m.position.set(x,y,z);m.rotation.set(rx||0,ry||0,0);s.add(m);return m;};
+    const k=this.noche?.8:3.4;
+    pan(new T.Color(k,k*.96,k*.9),6,4,-4,3,5,.7);
+    pan(new T.Color(k*.8,k*.76,k*.7),5,6,6,2,3,-1.1);
+    pan(new T.Color(k*.8,k*.8,k*.76),10,10,0,8,0,0,1.57);
+    const pm=new T.PMREMGenerator(this.R);
+    this.S.environment=pm.fromScene(s,.05).texture;
+    pm.dispose();
+  }
+  ajustar(){
+    const el=this.canvas.parentElement;if(!el)return;
+    const w=el.clientWidth,h=el.clientHeight;
+    if(!w||!h)return;
+    if(w===this.w&&h===this.h)return;
+    this.tam(w,h);
+    if(this.alRedimensionar)this.alRedimensionar();
+    else this.encuadrar(true);
+    if(!this.pausada)this.renderizar();
+  }
+  tam(w,h){this.w=w;this.h=h;this.R.setSize(w,h,false);this.cam.aspect=w/h;this.cam.updateProjectionMatrix();}
+  setDiseno(d,o){
+    o=o||{};
+    if(this.grupo){this.S.remove(this.grupo);this.grupo.traverse(m=>{if(m.isMesh&&m.userData.desechar)m.geometry.dispose();});}
+    const opc=Object.assign({},this.opc,{decorar:o.decorar!==undefined?o.decorar:this.opc.decorar});
+    const res=V.construirDiseno(d,opc);
+    this.grupo=res.grupo;this.anim=res.anim;this.S.add(this.grupo);
+    this.d=d;
+    const col=(V.PAREDES[d.pared]||V.PAREDES.yeso).c;
+    this.mPared.color.set(col);this.S.background=new T.Color(col);
+    this.bb=V.bbox(d);
+    this._sombras();
+    this._aplicarAb();
+    if(o.encuadrar)this.encuadrar(o.instantaneo);
+    this.invalidar();
+  }
+  _sombras(){
+    const bb=this.bb,cx=(bb.x0+bb.x1)/2,cy=(bb.y0+bb.y1)/2,L=Math.max(bb.w,bb.h)*.75+110;
+    const k=this.key;
+    k.position.set(cx-.42*900,cy+.62*900,.72*900);k.target.position.set(cx,cy,0);k.target.updateMatrixWorld();
+    const c=k.shadow.camera;c.left=-L;c.right=L;c.top=L;c.bottom=-L;c.updateProjectionMatrix();
+  }
+  vista(nombre,instant){
+    if(nombre==='frente'){this._az=0;this._el=.02;}
+    else if(nombre==='lado'){this._az=.72;this._el=.08;}
+    else{this._az=-.34;this._el=.12;}
+    this.encuadrar(instant);
+  }
+  encuadrar(instant){
+    const bb=this.bb;if(!bb)return;
+    const cx=(bb.x0+bb.x1)/2,cy=(bb.y0+bb.y1)/2,cz=bb.z1/2,tg=this._t.set(cx,cy,cz);
+    const az=this._az,el=this._el;
+    const f=new T.Vector3(-Math.sin(az)*Math.cos(el),-Math.sin(el),-Math.cos(az)*Math.cos(el));
+    const r=new T.Vector3(Math.cos(az),0,-Math.sin(az));
+    const u=new T.Vector3().crossVectors(r,f);
+    const tv=Math.tan(this.cam.fov*Math.PI/360),th=tv*this.cam.aspect,m=this.margen;
+    let dist=60;
+    for(const X of [bb.x0,bb.x1])for(const Y of [bb.y0,bb.y1])for(const Z of [0,bb.z1]){
+      const c=new T.Vector3(X-tg.x,Y-tg.y,Z-tg.z),xr=c.dot(r),yu=c.dot(u),zf=c.dot(f);
+      dist=Math.max(dist,Math.abs(xr)/(th*m)-zf,Math.abs(yu)/(tv*m)-zf);
+    }
+    this.fitDist=dist;this._dist=clamp(dist,60,4000);
+    if(this.o.subirPx)tg.y-=this.o.subirPx/(this.h/(2*tv*this._dist));
+    if(instant){this.az=this._az;this.el=this._el;this.dist=this._dist;this.t.copy(this._t);}
+    this.invalidar();
+  }
+  setAbierto(a){this._ab=a?1:0;this.invalidar();}
+  _aplicarAb(){
+    const e=this.ab*this.ab*(3-2*this.ab);
+    this.anim.forEach(a=>{
+      if(a.p==='z')a.o.position.z=a.v*e;
+      else if(a.p==='ry')a.o.rotation.y=a.v*e;
+      else if(a.p==='rx')a.o.rotation.x=a.v*e;
+    });
+  }
+  invalidar(){if(this._raf||this.pausada)return;this._raf=requestAnimationFrame(()=>this._tick());}
+  _tick(){
+    this._raf=0;
+    const k=.2;let sigue=false;
+    const paso=(n,c,eps)=>{const dv=this[c]-this[n];if(Math.abs(dv)>eps){this[n]+=dv*k;sigue=true;}else this[n]=this[c];};
+    paso('az','_az',.0008);paso('el','_el',.0008);paso('dist','_dist',.2);
+    const dt=this._t.clone().sub(this.t);
+    if(dt.length()>.05){this.t.addScaledVector(dt,k);sigue=true;}else this.t.copy(this._t);
+    if(Math.abs(this._ab-this.ab)>.004){this.ab+=(this._ab-this.ab)*.16;this._aplicarAb();sigue=true;}
+    else if(this.ab!==this._ab){this.ab=this._ab;this._aplicarAb();}
+    this.renderizar();
+    if(sigue)this.invalidar();
+  }
+  renderizar(){
+    const c=this.cam,ce=Math.cos(this.el);
+    c.position.set(this.t.x+this.dist*Math.sin(this.az)*ce,Math.max(6,this.t.y+this.dist*Math.sin(this.el)),this.t.z+this.dist*Math.cos(this.az)*ce);
+    c.lookAt(this.t);c.updateMatrixWorld();
+    this.R.render(this.S,c);
+    if(this.onRender)this.onRender();
+  }
+  proyectar(x,y,z){
+    const v=new T.Vector3(x,y,z).project(this.cam);
+    return{x:(v.x+1)/2*this.w,y:(1-v.y)/2*this.h};
+  }
+  rayo(px,py){
+    const nx=px/this.w*2-1,ny=1-py/this.h*2;
+    const o=this.cam.position.clone(),d=new T.Vector3(nx,ny,.5).unproject(this.cam).sub(o).normalize();
+    return{o,d};
+  }
+  enPlanoZ(px,py,z){
+    const {o,d}=this.rayo(px,py),t=(z-o.z)/d.z;
+    return{x:o.x+t*d.x,y:o.y+t*d.y};
+  }
+  piezaEn(px,py,incluirTV){
+    if(!this.d)return null;
+    const {o,d}=this.rayo(px,py);
+    let mejor=null,mt=1e12;
+    this.d.piezas.forEach(q=>{
+      if(q.t==='tv'&&!incluirTV)return;
+      const z0=q.z||0,mn=[q.x,q.y,z0],mx=[q.x+q.w,q.y+q.h,z0+(q.d||2)],O=[o.x,o.y,o.z],D=[d.x,d.y,d.z];
+      let t0=-1e12,t1=1e12;
+      for(let i=0;i<3;i++){
+        if(Math.abs(D[i])<1e-8){if(O[i]<mn[i]||O[i]>mx[i])return;continue;}
+        let a=(mn[i]-O[i])/D[i],b=(mx[i]-O[i])/D[i];
+        if(a>b){const s=a;a=b;b=s;}
+        t0=Math.max(t0,a);t1=Math.min(t1,b);
+        if(t0>t1)return;
+      }
+      /* los paneles quedan detrás: solo ganan si no hay otra pieza */
+      const tt=q.t==='panel'?t0+50:t0;
+      if(tt<mt){mt=tt;mejor={q,x:o.x+t0*d.x,y:o.y+t0*d.y};}
+    });
+    return mejor;
+  }
+  capturar(tipo,calidad){this.renderizar();return this.canvas.toDataURL(tipo||'image/jpeg',calidad||.84);}
+  destruir(){
+    if(this._raf)cancelAnimationFrame(this._raf);
+    if(this._ro)this._ro.disconnect();
+    if(this.grupo)this.grupo.traverse(m=>{if(m.isMesh&&m.userData.desechar)m.geometry.dispose();});
+    this.R.dispose();
+    try{this.R.forceContextLoss();}catch(e){}
+  }
+}
+V.Escena=Escena;
+})();
+
+/* Diseñador: interfaz para elegir un perfil, agregar piezas, medir y enviar */
+(function(){
+'use strict';
+const V=window.Veta,clamp=V.clamp,cm=V.cm;
+const $=(s,r)=>(r||document).querySelector(s),$$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const ICO={
+  a:'<svg viewBox="0 0 32 32"><rect x="5" y="5" width="22" height="22"/></svg>',
+  p:'<svg viewBox="0 0 32 32"><rect x="5" y="5" width="22" height="22"/><line x1="22" y1="13" x2="22" y2="19"/></svg>',
+  l:'<svg viewBox="0 0 32 32"><rect x="5" y="5" width="22" height="22"/><line x1="10.5" y1="5" x2="10.5" y2="27"/><line x1="16" y1="5" x2="16" y2="27"/><line x1="21.5" y1="5" x2="21.5" y2="27"/></svg>',
+  v:'<svg viewBox="0 0 32 32"><rect x="5" y="5" width="22" height="22"/><line x1="9" y1="19" x2="19" y2="9"/><line x1="13" y1="23" x2="23" y2="13"/></svg>',
+  j:'<svg viewBox="0 0 32 32"><rect x="5" y="5" width="22" height="22"/><line x1="11" y1="16" x2="21" y2="16"/></svg>',
+  repisa:'<svg viewBox="0 0 32 32"><rect x="4" y="14" width="24" height="4"/></svg>',
+  modulo:'<svg viewBox="0 0 32 32"><rect x="6" y="9" width="20" height="14"/></svg>',
+  puertas:'<svg viewBox="0 0 32 32"><rect x="4" y="9" width="24" height="14"/><line x1="16" y1="9" x2="16" y2="23"/></svg>',
+  cajones:'<svg viewBox="0 0 32 32"><rect x="8" y="6" width="16" height="20"/><line x1="8" y1="16" x2="24" y2="16"/><line x1="13" y1="11" x2="19" y2="11"/><line x1="13" y1="21" x2="19" y2="21"/></svg>',
+  torre:'<svg viewBox="0 0 32 32"><rect x="11" y="3" width="10" height="26"/><line x1="11" y1="11.5" x2="21" y2="11.5"/><line x1="11" y1="20" x2="21" y2="20"/></svg>',
+  panel:'<svg viewBox="0 0 32 32"><rect x="4" y="6" width="24" height="20"/><line x1="10" y1="6" x2="10" y2="26"/><line x1="16" y1="6" x2="16" y2="26"/><line x1="22" y1="6" x2="22" y2="26"/></svg>',
+  perchero:'<svg viewBox="0 0 32 32"><rect x="4" y="11" width="24" height="5"/><path d="M10 16v4a2 2 0 0 0 3 0M21 16v4a2 2 0 0 0 3 0"/></svg>',
+  tv:'<svg viewBox="0 0 32 32"><rect x="3" y="7" width="26" height="16"/><line x1="11" y1="27" x2="21" y2="27"/></svg>'
+};
+
+const St={d:null,sel:null,tab:'perfil',ab:false,esc:null,hist:[],hi:-1,cat:'todo',paleta:false,iniciado:false,abierto:false,drag:null,hover:null,guia:null,compartido:false,
+  form:{nombre:'',tel:'',ciudad:'',correo:'',pared:'',instala:'',notas:''},codigo:'',enviado:false};
+
+const pieza=id=>St.d&&St.d.piezas.find(q=>q.id===id);
+const pSel=()=>St.sel?pieza(St.sel.id):null;
+function celdaSel(){const q=pSel();if(!q||q.t!=='mueble'||!St.sel.ruta)return null;return V.celdaPorRuta(q,St.sel.ruta);}
+
+function seleccionar(id,ruta){
+  const q=pieza(id);
+  if(!q){St.sel=null;return;}
+  if(q.t==='mueble'){
+    let r=ruta;
+    if(!r||!V.celdaPorRuta(q,r))r=V.primeraHoja(q.raiz,[]);
+    St.sel={id,ruta:r};
+  }else St.sel={id,ruta:null};
+}
+function validarSel(){
+  if(St.sel&&pieza(St.sel.id)){seleccionar(St.sel.id,St.sel.ruta);return;}
+  const q=St.d.piezas.find(x=>x.t==='mueble')||St.d.piezas.find(x=>x.t!=='tv')||St.d.piezas[0];
+  if(q)seleccionar(q.id,null);else St.sel=null;
+}
+
+/* Historial para deshacer y rehacer */
+function reiniciarHist(){St.hist=[JSON.stringify(St.d)];St.hi=0;botonesHist();}
+function commit(){
+  const s=JSON.stringify(St.d);
+  if(St.hist[St.hi]===s)return;
+  St.hist=St.hist.slice(0,St.hi+1);St.hist.push(s);
+  if(St.hist.length>60)St.hist.shift();
+  St.hi=St.hist.length-1;
+  botonesHist();borrador();
+}
+function irHist(p){
+  const n=St.hi+p;
+  if(n<0||n>=St.hist.length)return;
+  St.hi=n;St.d=JSON.parse(St.hist[n]);
+  validarSel();dibujar();pintarTab();botonesHist();pie();borrador();
+}
+function botonesHist(){$('#dz-undo').disabled=St.hi<=0;$('#dz-redo').disabled=St.hi>=St.hist.length-1;}
+function borrador(){try{localStorage.setItem('veta-borrador',JSON.stringify(St.d));}catch(e){}}
+function leerBorrador(){try{const s=localStorage.getItem('veta-borrador');return s?JSON.parse(s):null;}catch(e){return null;}}
+
+/* Pintado 3D, o plano si este equipo no tiene 3D */
+function dibujar(o){
+  if(St.esc)St.esc.setDiseno(St.d,o);
+  else{
+    const c=$('#dz-plano');
+    if(c){c.innerHTML=V.svgFrente(St.d,{conTV:true,relleno:'#fff'});}
+  }
+  nombre();pintarTV();
+}
+function nombre(){$('#dz-nombre').textContent=St.d.nombre;}
+
+/* Televisor del cliente: lo muestra a escala y dice qué base le conviene */
+function pintarTV(forzar){
+  const s=$('#dz-tv-sel');if(!s||!St.d)return;
+  const tv=St.d.piezas.find(x=>x.t==='tv'),v=tv?String(tv.pulgadas):'0';
+  if(!forzar&&s.dataset.v===v)return;
+  s.dataset.v=v;
+  const lista=V.PULGADAS.slice();
+  if(tv&&lista.indexOf(tv.pulgadas)<0){lista.push(tv.pulgadas);lista.sort((a,b)=>a-b);}
+  s.innerHTML='<option value="0">Sin TV</option>'+lista.map(p=>`<option value="${p}">${p}″</option>`).join('')+'<option value="otra">Otra</option>';
+  s.value=v;
+}
+function baseDeTV(d,tv){
+  const ms=d.piezas.filter(x=>x.t==='mueble');
+  if(!ms.length)return null;
+  const cx=tv.x+tv.w/2,abajo=ms.filter(m=>m.y+m.h<=tv.y+2&&m.x<=cx&&m.x+m.w>=cx);
+  return abajo[0]||ms[0];
+}
+function ponerPulgadas(p){
+  let tv=St.d.piezas.find(x=>x.t==='tv');
+  if(tv){const cx=tv.x+tv.w/2;tv.pulgadas=p;V.normalizar(tv);tv.x=cx-tv.w/2;}
+  else{tv=V.normalizar({t:'tv',pulgadas:p});colocar(tv);St.d.piezas.push(tv);}
+  V.tvElegida=p;
+  return tv;
+}
+function elegirTV(p){
+  if(!p){
+    St.d.piezas=St.d.piezas.filter(x=>x.t!=='tv');St.sel=null;validarSel();
+    dibujar({encuadrar:true});commit();pintarTab();pie();return;
+  }
+  const tv=ponerPulgadas(p);
+  seleccionar(tv.id,null);
+  dibujar({encuadrar:true});commit();pintarTab();pie();
+  $('#dz-ayuda').hidden=true;
+  const m=V.tvMedidas(p),b=baseDeTV(St.d,tv);
+  aviso('Tu TV de '+p+'″ mide '+Math.round(m.w)+' cm de ancho.'+(b?(b.w>=m.min?' Tu base le queda bien.':' Te conviene una base de '+m.ideal+' cm.'):''));
+}
+function infoTV(q){return 'Mide '+cm(q.w)+' × '+cm(q.h)+' cm. Es una guía para medir y no se incluye en la cotización.';}
+function centroTV(q){return 'El centro de la pantalla queda a '+cm(q.y+q.h/2)+' cm del piso. Si ves TV sentado, lo cómodo es cerca de 105 cm.';}
+function htmlTV(d,q){
+  const m=V.tvMedidas(q.pulgadas),b=baseDeTV(d,q),enLista=V.PULGADAS.indexOf(q.pulgadas)>=0,ly=limitesY(q);
+  const reco=b?`<dl class="tv-reco"><div><dt>Base mínima</dt><dd>${m.min} cm</dd></div><div><dt>Base ideal</dt><dd>${m.ideal} cm</dd></div><div class="${b.w>=m.min?'ok':'corta'}"><dt>Tu base</dt><dd>${cm(b.w)} cm</dd></div></dl>
+    <div class="acc-grid"><button type="button" class="acc" data-a="ajustarBase">Ajustar la base a mi TV</button><button type="button" class="acc" data-a="centrarTV">Centrar sobre la base</button></div>`:'';
+  return `<div class="bloque"><h3>¿De cuántas pulgadas es tu TV?</h3>
+    ${chipsOp('pulgadas',V.PULGADAS.map(p=>[String(p),p+'″']),enLista?String(q.pulgadas):'')}
+    <div class="pa-c"><label for="tv-otra">Otra medida</label><input id="tv-otra" type="number" inputmode="decimal" min="19" max="120" step="1" value="${enLista?'':q.pulgadas}" placeholder="Ej: 60"><span class="mono">pulgadas</span></div>
+    <p class="nota tv-nota" id="tv-info">${infoTV(q)}</p>
+    ${reco}
+  </div>
+  <div class="bloque"><h3>Posición en la pared</h3>${filaMedida('y','Altura desde el piso',num(q.y),ly[0],ly[1])}<p class="nota" id="tv-centro">${centroTV(q)}</p></div>`;
+}
+function pie(){
+  const b=V.bbox(St.d,true),n=St.d.piezas.filter(q=>q.t!=='tv').length;
+  $('#dz-medida').textContent=b.vacio?'Sin piezas':cm(b.w)+' × '+cm(b.h)+' cm · '+n+(n===1?' pieza':' piezas');
+  const i=TABS.findIndex(t=>t[0]===St.tab),sig=TABS[i+1];
+  const bt=$('#dz-sig');
+  bt.hidden=!sig;
+  if(sig)bt.textContent='Siguiente: '+sig[1];
+}
+
+function cargarPerfil(id,ajuste){
+  St.d=V.crearDiseno(id);
+  if(ajuste)ajuste(St.d);
+  if(V.tvElegida){
+    const tv=St.d.piezas.find(x=>x.t==='tv');
+    if(tv){const cx=tv.x+tv.w/2;tv.pulgadas=V.tvElegida;V.normalizar(tv);tv.x=cx-tv.w/2;}
+  }
+  St.sel=null;St.paleta=false;St.compartido=false;validarSel();
+  if(St.esc){St.esc.vista('angulo',true);}
+  dibujar({encuadrar:true,instantaneo:false});
+  reiniciarHist();pie();borrador();
+}
+
+const TABS=[['perfil','Perfil'],['piezas','Piezas'],['acabado','Acabado'],['enviar','Enviar']];
+function irTab(t){
+  St.tab=t;
+  $$('.dz-tab').forEach(b=>{const on=b.dataset.tab===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on?'true':'false');});
+  $('#dz').classList.toggle('en-enviar',t==='enviar');
+  pintarTab();pie();
+  $('#dz-cont').scrollTop=0;
+  if(St.esc)St.esc.invalidar();
+}
+function pintarTab(){
+  const c=$('#dz-cont');
+  c.innerHTML={perfil:htmlPerfil,piezas:htmlPiezas,acabado:htmlAcabado,enviar:htmlEnviar}[St.tab]();
+  if(St.tab==='enviar')prepararEnvio();
+}
+
+/* ─── Pestaña Perfil ─── */
+function imgMini(id){
+  const u=V.miniaturas&&V.miniaturas[id];
+  return u?`<img alt="" src="${u}">`:`<span class="p-sin">${V.svgFrente(V.crearDiseno(id),{conTV:true})}</span>`;
+}
+function htmlPerfil(){
+  const lista=V.PERFILES.filter(p=>St.cat==='todo'||p.cat===St.cat);
+  return `<h2 class="p-h">Elige un perfil</h2>
+  <p class="p-sub">Es tu punto de partida. Después puedes cambiar medidas y agregar o quitar piezas.</p>
+  <div class="chips" role="group" aria-label="Tipo de mueble">${V.CATEGORIAS.map(c=>`<button type="button" class="chip ${St.cat===c.id?'on':''}" data-a="cat" data-id="${c.id}">${c.n}</button>`).join('')}</div>
+  <div class="p-grid">
+    ${lista.map(p=>`<button type="button" class="p-card ${St.d.perfil===p.id?'on':''}" data-a="perfil" data-id="${p.id}"><span class="p-img" data-mini="${p.id}">${imgMini(p.id)}</span><b>${p.nombre}</b><small>${p.tipo}</small></button>`).join('')}
+    <button type="button" class="p-card p-cero ${St.d.perfil==='cero'?'on':''}" data-a="perfil" data-id="cero"><span class="p-img p-img-cero">${ICO.modulo}</span><b>Desde cero</b><small>Una caja vacía para empezar</small></button>
+  </div>`;
+}
+
+/* ─── Pestaña Piezas ─── */
+function limitesY(q){
+  if(q.t==='mueble'){
+    if(q.m==='patas')return[8,40];
+    return[0,Math.max(0,250-q.h)];
+  }
+  return[0,Math.max(0,270-q.h)];
+}
+function filaMedida(c,etq,val,min,max){
+  return `<div class="med"><label for="n-${c}">${etq}</label>
+    <div class="med-num"><button type="button" class="med-b" data-a="paso" data-c="${c}" data-v="-1" aria-label="Restar 1 centímetro">−</button><input id="n-${c}" class="med-i" type="number" inputmode="decimal" min="${min}" max="${max}" step="0.5" value="${val}" data-m="${c}"><span class="med-u">cm</span><button type="button" class="med-b" data-a="paso" data-c="${c}" data-v="1" aria-label="Sumar 1 centímetro">+</button></div>
+    <input id="r-${c}" class="med-r" type="range" min="${min}" max="${max}" step="1" value="${val}" data-m="${c}" aria-label="${etq}"></div>`;
+}
+const num=v=>Math.round(v*10)/10;
+function htmlMedidas(q){
+  const L=V.LIMITES[q.t];
+  let h='';
+  if(q.t==='tv')return '';
+  h+=filaMedida('w','Ancho',num(q.w),V.minPieza(q,'w'),L.w[1]);
+  if(q.t==='repisa'){
+    h+=filaMedida('d','Fondo',num(q.d),L.d[0],L.d[1]);
+    h+=filaMedida('h','Grosor',num(q.h),L.h[0],L.h[1]);
+  }else{
+    h+=filaMedida('h','Alto',num(q.h),V.minPieza(q,'h'),L.h[1]);
+    if(q.t==='mueble')h+=filaMedida('d','Fondo',num(q.d),L.d[0],L.d[1]);
+  }
+  if(!(q.t==='mueble'&&(q.m==='piso'||q.m==='mesa'))){
+    const ly=limitesY(q);
+    h+=filaMedida('y',q.m==='patas'?'Alto de patas':'Altura desde el piso',num(q.y),ly[0],ly[1]);
+  }
+  return `<div class="bloque"><h3>Medidas</h3>${h}</div>`;
+}
+function htmlEspacio(q){
+  const k=celdaSel();
+  if(!k)return '';
+  const cs=V.celdas(q),i=cs.findIndex(c=>c.ruta.join(',')===k.ruta.join(','));
+  const cont=V.CONTENIDOS.map(c=>`<button type="button" class="cont ${k.n.c===c.id?'on':''}" data-a="contenido" data-id="${c.id}" aria-pressed="${k.n.c===c.id}">${ICO[c.id]}<span>${c.n}</span></button>`).join('');
+  let extra='';
+  if(V.tieneEje(q,k.ruta,'c'))extra+=filaMedida('cw','Ancho del espacio',num(k.w),V.MIN_CELDA,Math.ceil(q.w));
+  if(V.tieneEje(q,k.ruta,'f'))extra+=filaMedida('ch','Alto del espacio',num(k.h),V.MIN_CELDA,Math.ceil(q.h));
+  return `<div class="bloque" id="b-espacio">
+    <div class="bloque-h"><h3>Este espacio</h3>${cs.length>1?`<div class="ciclo"><button type="button" data-a="ciclar" data-v="-1" aria-label="Espacio anterior">‹</button><span>${i+1} de ${cs.length}</span><button type="button" data-a="ciclar" data-v="1" aria-label="Espacio siguiente">›</button></div>`:''}</div>
+    <div class="cont-grid">${cont}</div>
+    ${extra}
+    <div class="acc-grid">
+      <button type="button" class="acc" data-a="dividir" data-e="c">Partir en 2 columnas</button>
+      <button type="button" class="acc" data-a="dividir" data-e="f">Partir en 2 niveles</button>
+      ${cs.length>1?'<button type="button" class="acc acc-q" data-a="quitarEsp">Quitar este espacio</button>':''}
+    </div></div>`;
+}
+function stepper(et,val,acc,eje){
+  const dis=val===null;
+  return `<div class="step"><span>${et}</span><div class="step-c"><button type="button" data-a="${acc}" data-e="${eje}" data-v="-1" ${dis||val<=1?'disabled':''} aria-label="Quitar">−</button><b>${dis?'Mixto':val}</b><button type="button" data-a="${acc}" data-e="${eje}" data-v="1" ${(val||0)>=12?'disabled':''} aria-label="Agregar">+</button></div></div>`;
+}
+function togg(id,et,on){return `<button type="button" class="togg ${on?'on':''}" data-a="toggle" data-id="${id}" aria-pressed="${!!on}"><i></i>${et}</button>`;}
+function chipsOp(acc,ops,act){return `<div class="chips">${ops.map(o=>`<button type="button" class="chip ${o[0]===act?'on':''}" data-a="${acc}" data-id="${o[0]}">${o[1]}</button>`).join('')}</div>`;}
+function htmlPiezas(){
+  const d=St.d,q=pSel();
+  let h=`<div class="chips chips-p">`+d.piezas.map(x=>`<button type="button" class="chip ${q&&q.id===x.id?'on':''}" data-a="pieza" data-id="${x.id}">${esc(V.nombrePieza(x))}</button>`).join('')+`<button type="button" class="chip chip-mas ${St.paleta?'on':''}" data-a="paleta" aria-expanded="${St.paleta}">+ Agregar pieza</button></div>`;
+  if(St.paleta)h+=`<div class="paleta">${V.PALETA.map(p=>`<button type="button" class="pal" data-a="agregar" data-id="${p.id}">${ICO[p.id]}<span>${p.n}</span></button>`).join('')}</div>`;
+  if(!q)return h+`<p class="vacio">Toca una pieza en el dibujo o agrega una nueva.</p>`;
+  h+=`<p class="sel-t"><b>${esc(V.nombrePieza(q))}</b> <span class="mono" id="sel-med">${V.medidasPieza(q)}</span></p>`;
+  if(q.t==='tv'){
+    h+=htmlTV(d,q);
+  }else{
+    h+=htmlMedidas(q);
+    if(q.t==='mueble'){
+      const es=V.estructura(q.raiz);
+      h+=`<div class="bloque"><h3>Distribución</h3><div class="steps">${stepper('Columnas',es.c,'eje','c')}${stepper('Niveles',es.f,'eje','f')}</div></div>`;
+      h+=htmlEspacio(q);
+      h+=`<div class="bloque"><h3>Cómo se instala</h3>${chipsOp('montaje',[['flotante','Flotante'],['patas','Con patas'],['piso','En el piso'],['mesa','Sobre mesa']],q.m)}
+        <div class="toggs">${togg('led','Luz LED abajo',q.led)}${togg('fondo','Fondo',q.fondo)}${togg('cables','Salida de cables',q.cables)}</div></div>`;
+      h+=`<div class="bloque"><h3>Grosor del tablero</h3>${chipsOp('grosor',[['1.2','12 mm'],['1.5','15 mm'],['1.8','18 mm'],['2.5','25 mm']],String(q.g))}</div>`;
+    }
+    if(q.t==='repisa'){
+      h+=`<div class="bloque"><h3>Extras</h3><div class="toggs">${togg('led','Luz LED abajo',q.led)}</div><div class="steps">${stepper('Ganchos abajo',q.ganchos||0,'ganchos','')}</div></div>`;
+    }
+    if(q.t==='panel'){
+      h+=`<div class="bloque"><h3>Estilo del panel</h3>${chipsOp('estilo',[['listones','Listones'],['liso','Liso']],q.e)}<div class="toggs">${togg('led','Luz LED detrás',q.led)}</div><div class="steps">${stepper('Ganchos',q.ganchos||0,'ganchos','')}</div></div>`;
+    }
+  }
+  const tips=V.tips(d,q);
+  if(tips.length)h+=`<div class="tips">${tips.map(t=>`<p>${esc(t)}</p>`).join('')}</div>`;
+  h+=`<div class="acc-grid acc-pie">${q.t!=='tv'?'<button type="button" class="acc" data-a="duplicar">Duplicar pieza</button>':''}<button type="button" class="acc acc-q" data-a="quitarPieza">Quitar pieza</button></div>`;
+  return h;
+}
+
+function syncMedidas(){
+  const q=pSel();if(!q)return;
+  const sm=$('#sel-med');if(sm)sm.textContent=V.medidasPieza(q);
+  if(q.t==='tv'){
+    const ti=$('#tv-info'),tc=$('#tv-centro');
+    if(ti)ti.textContent=infoTV(q);
+    if(tc)tc.textContent=centroTV(q);
+  }
+  ['w','h','d','y','cw','ch'].forEach(c=>{
+    const n=$('#n-'+c),r=$('#r-'+c);if(!n)return;
+    let v;
+    if(c==='cw'||c==='ch'){const k=celdaSel();if(!k)return;v=num(c==='cw'?k.w:k.h);}
+    else v=num(q[c]);
+    if(document.activeElement!==n)n.value=v;
+    if(r&&document.activeElement!==r)r.value=v;
+    else if(r&&St.drag===null)r.value=v;
+  });
+  pie();
+}
+
+function setMedida(c,v){
+  const q=pSel();if(!q||isNaN(v))return;
+  if(c==='cw'||c==='ch'){V.fijarEspacio(q,St.sel.ruta,c==='cw'?'c':'f',v);}
+  else if(c==='y'){const l=limitesY(q);q.y=clamp(v,l[0],l[1]);}
+  else{
+    const L=V.LIMITES[q.t];
+    const min=V.minPieza(q,c),old=q[c];
+    q[c]=clamp(v,min,L[c][1]);
+    if(c==='w')q.x-=(q[c]-old)/2;
+    if(c==='h'&&q.t==='mueble'){const l=limitesY(q);q.y=clamp(q.y,l[0],Math.max(l[0],l[1]));}
+  }
+  dibujar();syncMedidas();
+}
+
+/* Dónde poner una pieza nueva sin encimarla */
+function colocar(q){
+  const d=St.d,bb=V.bbox(d,true),tv=d.piezas.find(x=>x.t==='tv'),base=d.piezas.find(x=>x.t==='mueble')||d.piezas.find(x=>x.t!=='tv');
+  if(q.t==='tv'){q.x=(base?base.x+base.w/2:0)-q.w/2;q.y=base?base.y+base.h+12:90;return;}
+  if(q.t==='panel'&&!q.ganchos){q.x=(bb.x0+bb.x1)/2-q.w/2;q.y=bb.vacio?60:bb.y1;return;}
+  if(bb.vacio){q.x=-q.w/2;q.y=q.t==='repisa'?120:60;return;}
+  const libre=(x,y)=>!d.piezas.some(o=>o.t!=='panel'&&x<o.x+o.w&&x+q.w>o.x&&y<o.y+o.h&&y+q.h>o.y);
+  const cen=(bb.x0+bb.x1)/2-q.w/2,cands=[];
+  if(tv&&q.t==='repisa')cands.push([tv.x+tv.w+14,tv.y+tv.h*.45],[tv.x-14-q.w,tv.y+tv.h*.45]);
+  cands.push([cen,bb.y1+16],[bb.x1+14,bb.y0],[bb.x0-14-q.w,bb.y0],[cen,Math.max(0,bb.y0-q.h-16)]);
+  for(const c of cands){if(libre(c[0],c[1])&&c[1]+q.h<=255){q.x=c[0];q.y=c[1];return;}}
+  q.x=bb.x1+14;q.y=bb.y0;
+}
+
+const acciones={
+  cat(b){St.cat=b.dataset.id;pintarTab();},
+  perfil(b){cargarPerfil(b.dataset.id);pintarTab();},
+  pieza(b){seleccionar(b.dataset.id,null);pintarTab();invalidar();},
+  paleta(){St.paleta=!St.paleta;pintarTab();},
+  agregar(b){
+    const p=V.PALETA.find(x=>x.id===b.dataset.id);if(!p)return;
+    if(p.id==='tv'&&St.d.piezas.some(x=>x.t==='tv')){St.paleta=false;seleccionar(St.d.piezas.find(x=>x.t==='tv').id);pintarTab();invalidar();return;}
+    const q=p.f();V.normalizar(q);colocar(q);
+    if(q.t==='panel'&&!q.ganchos)St.d.piezas.unshift(q);else St.d.piezas.push(q);
+    St.paleta=false;seleccionar(q.id,null);
+    dibujar({encuadrar:true});commit();pintarTab();pie();
+  },
+  paso(b){
+    const q=pSel();if(!q)return;
+    const c=b.dataset.c,dv=parseFloat(b.dataset.v);
+    let v;
+    if(c==='cw'||c==='ch'){const k=celdaSel();if(!k)return;v=(c==='cw'?k.w:k.h)+dv;}
+    else v=q[c]+dv;
+    setMedida(c,Math.round(v));commit();
+  },
+  contenido(b){const k=celdaSel();if(!k)return;k.n.c=b.dataset.id;dibujar();commit();pintarTab();},
+  dividir(b){
+    const q=pSel();if(!q||!St.sel.ruta)return;
+    const eje=b.dataset.e,k=celdaSel();
+    const tam=eje==='c'?k.w:k.h;
+    if(tam<V.MIN_CELDA*2+q.g){aviso('Este espacio es muy pequeño para partirlo.');return;}
+    St.sel.ruta=V.dividir(q,St.sel.ruta,eje);
+    dibujar();commit();pintarTab();
+  },
+  quitarEsp(){
+    const q=pSel();if(!q||!St.sel.ruta)return;
+    const r=V.quitarEspacio(q,St.sel.ruta);
+    if(r)St.sel.ruta=r;
+    validarSel();dibujar();commit();pintarTab();
+  },
+  ciclar(b){
+    const q=pSel(),k=celdaSel();if(!q||!k)return;
+    const cs=V.celdas(q),i=cs.findIndex(c=>c.ruta.join(',')===k.ruta.join(',')),n=(i+parseInt(b.dataset.v,10)+cs.length)%cs.length;
+    St.sel.ruta=cs[n].ruta;pintarTab();invalidar();
+  },
+  eje(b){
+    const q=pSel();if(!q)return;
+    if(b.dataset.v==='1'){
+      V.agregarEje(q,b.dataset.e);
+      const min=V.minPieza(q,b.dataset.e==='c'?'w':'h');
+      if(b.dataset.e==='c'&&q.w<min){q.x-=(min-q.w)/2;q.w=min;}
+      if(b.dataset.e==='f'&&q.h<min)q.h=min;
+    }else V.quitarEje(q,b.dataset.e);
+    validarSel();dibujar();commit();pintarTab();
+  },
+  montaje(b){
+    const q=pSel();if(!q)return;
+    const m=b.dataset.id;q.m=m;
+    if(m==='piso')q.y=0;
+    else if(m==='patas')q.y=clamp(q.y,8,40)||18;
+    else if(m==='mesa')q.y=75;
+    else if(q.y<10)q.y=30;
+    if(m==='patas'&&q.y>40)q.y=18;
+    dibujar({encuadrar:true});commit();pintarTab();
+  },
+  toggle(b){const q=pSel();if(!q)return;const c=b.dataset.id;q[c]=!q[c];dibujar();commit();pintarTab();},
+  grosor(b){const q=pSel();if(!q)return;q.g=parseFloat(b.dataset.id);dibujar();commit();pintarTab();},
+  ganchos(b){const q=pSel();if(!q)return;q.ganchos=clamp((q.ganchos||0)+parseInt(b.dataset.v,10),0,12);dibujar();commit();pintarTab();},
+  estilo(b){const q=pSel();if(!q)return;q.e=b.dataset.id;q.d=q.e==='listones'?2.6:1.8;dibujar();commit();pintarTab();},
+  pulgadas(b){elegirTV(parseFloat(b.dataset.id));},
+  ajustarBase(){
+    const tv=St.d.piezas.find(x=>x.t==='tv');if(!tv)return;
+    const b=baseDeTV(St.d,tv);if(!b)return;
+    const m=V.tvMedidas(tv.pulgadas),w=clamp(Math.max(m.ideal,V.minPieza(b,'w')),V.LIMITES.mueble.w[0],V.LIMITES.mueble.w[1]);
+    b.w=w;b.x=tv.x+tv.w/2-w/2;
+    dibujar({encuadrar:true});commit();pintarTab();pie();
+    aviso('La base ahora mide '+cm(w)+' cm.');
+  },
+  centrarTV(){
+    const tv=St.d.piezas.find(x=>x.t==='tv');if(!tv)return;
+    const b=baseDeTV(St.d,tv);if(!b)return;
+    tv.x=b.x+b.w/2-tv.w/2;
+    dibujar();commit();pintarTab();
+  },
+  duplicar(){
+    const q=pSel();if(!q)return;
+    const c=V.clone(q);delete c.id;V.normalizar(c);colocar(c);
+    St.d.piezas.push(c);seleccionar(c.id,null);dibujar({encuadrar:true});commit();pintarTab();pie();
+  },
+  quitarPieza(){
+    const q=pSel();if(!q)return;
+    St.d.piezas=St.d.piezas.filter(x=>x.id!==q.id);St.sel=null;validarSel();
+    dibujar({encuadrar:true});commit();pintarTab();pie();
+  },
+  madera(b){St.d.madera=b.dataset.id;dibujar();commit();pintarTab();},
+  frente(b){St.d.frente=b.dataset.id==='igual'?null:b.dataset.id;dibujar();commit();pintarTab();},
+  tirador(b){St.d.tirador=b.dataset.id;dibujar();commit();pintarTab();},
+  veta(b){St.d.veta=b.dataset.id;dibujar();commit();pintarTab();},
+  pared(b){St.d.pared=b.dataset.id;dibujar();commit();pintarTab();},
+  copiar(b){copiarResumen(b);}
+};
+function invalidar(){if(St.esc)St.esc.invalidar();}
+let tAviso=0;
+function aviso(t){const a=$('#dz-aviso');a.textContent=t;a.hidden=false;clearTimeout(tAviso);tAviso=setTimeout(()=>{a.hidden=true;},2600);}
+
+/* ─── Pestaña Acabado ─── */
+function htmlAcabado(){
+  const d=St.d,M=V.MADERAS;
+  const sw=(acc,k,act,et)=>`<button type="button" class="sw ${act?'on':''}" data-a="${acc}" data-id="${k}" aria-pressed="${!!act}"><i style="background-image:url(${V.muestraMadera(k)})"></i><span>${et}</span></button>`;
+  const tv=d.piezas.find(x=>x.t==='tv');
+  return `<div class="bloque"><h3>Madera</h3><div class="sw-grid">${Object.keys(M).map(k=>sw('madera',k,d.madera===k,M[k].n)).join('')}</div></div>
+  <div class="bloque"><h3>Frentes de puertas y cajones</h3><div class="chips"><button type="button" class="chip ${!d.frente?'on':''}" data-a="frente" data-id="igual">Igual que el cuerpo</button></div>
+    <div class="sw-grid sw-mini">${Object.keys(M).map(k=>sw('frente',k,d.frente===k,M[k].n)).join('')}</div></div>
+  <div class="bloque"><h3>Dirección de la veta</h3>${chipsOp('veta',[['h','Horizontal'],['v','Vertical']],d.veta)}</div>
+  <div class="bloque"><h3>Tirador</h3><div class="op-list">${V.TIRADORES.map(t=>`<button type="button" class="op ${d.tirador===t.id?'on':''}" data-a="tirador" data-id="${t.id}" aria-pressed="${d.tirador===t.id}"><b>${t.n}</b><small>${t.nota}</small></button>`).join('')}</div></div>
+  <div class="bloque"><h3>Ancho libre de tu pared</h3><p class="nota">Opcional. Marcamos el límite en el dibujo para ver si cabe.</p><div class="pa-c"><input id="pared-ancho" type="number" inputmode="numeric" min="0" max="1200" placeholder="Ej: 320" value="${d.paredAncho||''}" aria-label="Ancho libre de tu pared en centímetros"><span class="mono">cm</span></div></div>
+  <div class="bloque"><h3>Color de tu pared</h3><p class="nota">Para ver cómo queda en tu espacio.</p><div class="par-grid">${Object.keys(V.PAREDES).map(k=>`<button type="button" class="par ${d.pared===k?'on':''}" data-a="pared" data-id="${k}" aria-pressed="${d.pared===k}" aria-label="${V.PAREDES[k].n}"><i style="background:${V.PAREDES[k].c}"></i><span>${V.PAREDES[k].n}</span></button>`).join('')}</div></div>
+  ${tv?'':'<div class="tips"><p>¿Va debajo del televisor? En Piezas, agrega «Televisor (guía)» para verlo a escala.</p></div>'}`;
+}
+
+/* ─── Pestaña Enviar ─── */
+const PARED_OPC=[['ladrillo','Ladrillo o concreto'],['drywall','Drywall o yeso'],['nose','No lo sé']];
+const INSTALA_OPC=[['si','Sí, necesito instalación'],['no','No, yo lo instalo'],['nose','Aún no lo sé']];
+function htmlEnviar(){
+  const d=St.d,f=St.form,pedido=d.piezas.filter(q=>q.t!=='tv');
+  const foto=St.esc?`<img id="t-img" alt="Vista de tu diseño">`:`<div id="t-img-svg">${V.svgFrente(d,{conTV:true})}</div>`;
+  const filas=pedido.map((q,i)=>`<li><div><b>${i+1}. ${esc(V.nombrePieza(q))}</b><span class="mono">${V.medidasPieza(q)}</span></div><small>${esc(V.detallePieza(q))}</small></li>`).join('');
+  const desp=pedido.map(q=>V.despiece(q).map(z=>`<tr><td>${z.q}</td><td>${z.n}</td><td class="mono">${cm(z.a)} × ${cm(z.b)}</td></tr>`).join('')).join('');
+  const mad=V.MADERAS[d.madera].n+(d.frente?' con frentes en '+V.MADERAS[d.frente].n:'');
+  const tir=V.TIRADORES.find(t=>t.id===d.tirador).n;
+  const sel=(id,et,ops,val)=>`<div class="f-c"><label for="f-${id}">${et}</label><select id="f-${id}" data-f="${id}"><option value="">Elige una opción</option>${ops.map(o=>`<option value="${o[0]}" ${val===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></div>`;
+  return `<div class="ticket">
+    <div class="tk-h"><span>Orden de taller</span><b>${esc(d.nombre)}</b></div>
+    <div class="tk-foto">${foto}</div>
+    <ul class="tk-lista">${filas||'<li>Agrega al menos una pieza para enviar.</li>'}</ul>
+    <dl class="tk-dl"><div><dt>Madera</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div></dl>
+    <details class="tk-desp"><summary>Ver despiece para el taller</summary><div class="tk-tabla"><table><thead><tr><th>Cant.</th><th>Pieza</th><th>cm</th></tr></thead><tbody>${desp}</tbody></table></div><p class="nota">Medidas aproximadas. Se confirman antes de fabricar.</p></details>
+  </div>
+  <form id="f-envio" class="form" novalidate>
+    <h2 class="p-h">Tus datos</h2>
+    <p class="p-sub">Con esto te contactamos para cotizar y confirmar medidas.</p>
+    <div class="f-c"><label for="f-nombre">Tu nombre <em>*</em></label><input id="f-nombre" data-f="nombre" autocomplete="name" value="${esc(f.nombre)}"><p class="err" data-err="nombre" hidden>Escribe tu nombre.</p></div>
+    <div class="f-c"><label for="f-tel">Tu WhatsApp <em>*</em></label><input id="f-tel" data-f="tel" type="tel" inputmode="tel" autocomplete="tel" value="${esc(f.tel)}"><p class="err" data-err="tel" hidden>Escribe un número válido, con al menos 7 dígitos.</p></div>
+    <div class="f-c"><label for="f-ciudad">Ciudad o barrio <em>*</em></label><input id="f-ciudad" data-f="ciudad" autocomplete="address-level2" value="${esc(f.ciudad)}"><p class="err" data-err="ciudad" hidden>Escribe dónde va el mueble.</p></div>
+    <div class="f-c"><label for="f-correo">Correo (opcional)</label><input id="f-correo" data-f="correo" type="email" inputmode="email" autocomplete="email" value="${esc(f.correo)}"></div>
+    ${sel('pared','Material de tu pared',PARED_OPC,f.pared)}
+    ${sel('instala','¿Necesitas instalación?',INSTALA_OPC,f.instala)}
+    <div class="f-c"><label for="f-notas">Algo más que debamos saber</label><textarea id="f-notas" data-f="notas" rows="3">${esc(f.notas)}</textarea></div>
+    <a id="f-enviar" class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Enviar por WhatsApp</a>
+    <p class="nota" id="f-nota-wa">Se abre WhatsApp con tu diseño escrito. Solo revisa y toca enviar.</p>
+    <div id="f-luego" class="luego" hidden>
+      <b>¿Se abrió WhatsApp?</b>
+      <p>Toca enviar en el chat para que nos llegue. Si no se abrió, copia el resumen y pégalo en WhatsApp o en nuestro Instagram.</p>
+    </div>
+    <div class="f-sec">
+      <button type="button" class="acc" data-a="copiar" id="f-copiar">Copiar resumen</button>
+      <a class="acc acc-a" data-ig target="_blank" rel="noopener" href="${V.linkIG()}">Abrir Instagram</a>
+    </div>
+    <textarea id="f-texto" class="f-texto" readonly hidden aria-label="Resumen para copiar"></textarea>
+  </form>`;
+}
+function validar(mostrar){
+  const f=St.form,ok={nombre:f.nombre.trim().length>1,tel:f.tel.replace(/\D/g,'').length>=7,ciudad:f.ciudad.trim().length>1};
+  if(mostrar)Object.keys(ok).forEach(k=>{const e=$(`[data-err="${k}"]`);if(e)e.hidden=ok[k];const i=$('#f-'+k);if(i)i.setAttribute('aria-invalid',ok[k]?'false':'true');});
+  return ok;
+}
+function mensaje(){
+  const d=St.d,f=St.form,pedido=d.piezas.filter(q=>q.t!=='tv');
+  const nom=V.PERFILES.find(p=>p.id===d.perfil);
+  const L=[];
+  L.push('Hola'+(f.nombre?', soy '+f.nombre.trim():'')+'. Quiero cotizar este diseño:');L.push('');
+  L.push('*'+d.nombre+'*'+(nom?' ('+nom.tipo+')':''));
+  pedido.forEach((q,i)=>{L.push((i+1)+'. '+V.nombrePieza(q)+': '+V.medidasPieza(q)+(V.detallePieza(q)?' — '+V.detallePieza(q):''));});
+  L.push('');
+  L.push('Madera: '+V.MADERAS[d.madera].n+(d.frente?' · Frentes: '+V.MADERAS[d.frente].n:''));
+  L.push('Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
+  const tv=d.piezas.find(q=>q.t==='tv');
+  if(tv)L.push('Televisor: '+tv.pulgadas+' pulgadas');
+  if(d.paredAncho)L.push('Ancho libre de la pared: '+cm(d.paredAncho)+' cm');
+  L.push('');
+  if(f.ciudad)L.push('Ciudad: '+f.ciudad.trim());
+  if(f.tel)L.push('Mi WhatsApp: '+f.tel.trim());
+  if(f.correo)L.push('Correo: '+f.correo.trim());
+  const pa=PARED_OPC.find(o=>o[0]===f.pared),ins=INSTALA_OPC.find(o=>o[0]===f.instala);
+  if(pa)L.push('Pared: '+pa[1]);
+  if(ins)L.push('Instalación: '+ins[1]);
+  if(f.notas.trim()){L.push('');L.push('Notas: '+f.notas.trim());}
+  if(St.codigo&&V.NEGOCIO.urlBeta){L.push('');L.push('Mi diseño en 3D: '+V.NEGOCIO.urlBeta+'#'+St.codigo);}
+  return L.join('\n');
+}
+function actualizarEnlace(){const a=$('#f-enviar');if(a)a.href=V.linkWA(mensaje());}
+function prepararEnvio(){
+  V.cifrar(St.d).then(c=>{St.codigo=c;actualizarEnlace();});
+  actualizarEnlace();
+  const im=$('#t-img');
+  if(im&&St.esc){const pintar=()=>{im.src=St.esc.capturar('image/jpeg',.82);};setTimeout(pintar,180);}
+  const a=$('#f-enviar');
+  a.addEventListener('click',e=>{
+    const ok=validar(true),bien=ok.nombre&&ok.tel&&ok.ciudad;
+    if(!bien){
+      e.preventDefault();
+      const k=Object.keys(ok).find(x=>!ok[x]);
+      const inp=$('#f-'+k);if(inp){inp.focus();inp.scrollIntoView({block:'center'});}
+      return;
+    }
+    actualizarEnlace();
+    setTimeout(()=>{const l=$('#f-luego');if(l)l.hidden=false;},500);
+  });
+  $('#f-envio').addEventListener('submit',e=>e.preventDefault());
+}
+function copiarResumen(b){
+  const texto=mensaje(),hecho=()=>{const v=b.textContent;b.textContent='Copiado';setTimeout(()=>{b.textContent=v;},1800);};
+  const manual=()=>{const t=$('#f-texto');t.hidden=false;t.value=texto;t.focus();t.select();};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(texto).then(hecho).catch(manual);
+  else manual();
+}
+
+/* ─── Capa sobre el dibujo: medidas y tiradores ─── */
+const poolT=[],poolC=[];
+function pintarCapa(){
+  const E=St.esc;if(!E||!St.d)return;
+  const svg=$('#dz-svg');svg.setAttribute('viewBox',`0 0 ${E.w} ${E.h}`);
+  const P=(x,y,z)=>E.proyectar(x,y,z);
+  let s='',nT=0,nC=0;
+  const poly=(pts,cl)=>{s+=`<polygon class="${cl}" points="${pts.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ')}"/>`;};
+  const caraRect=(x,y,w,h,z)=>[P(x,y,z),P(x+w,y,z),P(x+w,y+h,z),P(x,y+h,z)];
+  const etiqueta=(x,y,txt,foco,cl)=>{
+    let el=poolC[nC];
+    if(!el){el=document.createElement('button');el.type='button';$('#dz-capa').appendChild(el);poolC.push(el);}
+    el.className='cota '+(cl||'');el.textContent=txt;el.dataset.foco=foco||'';el.hidden=false;
+    el.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(-50%,-50%)`;nC++;
+  };
+  const cota=(a,b,ox,oy,txt,foco)=>{
+    const a2={x:a.x+ox,y:a.y+oy},b2={x:b.x+ox,y:b.y+oy};
+    const l=(p,q,c)=>{s+=`<line class="${c}" x1="${p.x.toFixed(1)}" y1="${p.y.toFixed(1)}" x2="${q.x.toFixed(1)}" y2="${q.y.toFixed(1)}"/>`;};
+    l(a,a2,'c-e');l(b,b2,'c-e');l(a2,b2,'c-b');l(a2,b2,'c-l');
+    const lx=(a2.x+b2.x)/2,ly=(a2.y+b2.y)/2;
+    etiqueta(lx,ly,txt,foco);
+  };
+  const tir=(p,cl,h,dv)=>{
+    let el=poolT[nT];
+    if(!el){el=document.createElement('button');el.type='button';$('#dz-capa').appendChild(el);poolT.push(el);}
+    el.className='tir '+cl;el.dataset.h=h;el.hidden=false;
+    el.setAttribute('aria-label',{e:'Estirar a la derecha',w:'Estirar a la izquierda',n:'Estirar hacia arriba',s:'Estirar hacia abajo',d:'Mover división'}[h]||'Mover');
+    if(dv){el.dataset.ruta=dv.ruta.join(',');el.dataset.i=dv.i;}
+    el.style.transform=`translate(${p.x.toFixed(1)}px,${p.y.toFixed(1)}px) translate(-50%,-50%)`;nT++;
+  };
+  if(St.d.paredAncho>0){
+    const m=St.d.paredAncho/2;
+    [-m,m].forEach(px=>{const a=P(px,0,0),b=P(px,258,0);s+=`<line class="c-p" x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}"/>`;});
+    const a=P(-m,246,0),b=P(m,246,0);
+    cota(a,b,0,0,'Pared: '+cm(St.d.paredAncho)+' cm','');
+  }
+  const h=St.hover;
+  if(h&&(!St.sel||h.id!==St.sel.id||(h.ruta||[]).join()!==(St.sel.ruta||[]).join())){
+    const q=pieza(h.id);
+    if(q){
+      const zf=(q.z||0)+(q.d||2);
+      if(h.ruta&&q.t==='mueble'){const k=V.celdaPorRuta(q,h.ruta);if(k)poly(caraRect(k.x,k.y,k.w,k.h,zf),'s-h');}
+      else poly(caraRect(q.x,q.y,q.w,q.h,zf),'s-h');
+    }
+  }
+  const q=pSel();
+  if(q){
+    const z0=q.z||0,zf=z0+(q.d||2),{x,y,w,h:alto}=q;
+    poly(caraRect(x,y,w,alto,zf),'s-p');
+    const k=celdaSel();
+    if(k)poly(caraRect(k.x,k.y,k.w,k.h,zf),'s-c');
+    if(q.t==='tv'){
+      cota(P(x,y+alto,zf),P(x+w,y+alto,zf),0,-24,cm(w)+' cm','');
+      cota(P(x+w,y,zf),P(x+w,y+alto,zf),26,0,cm(alto)+' cm','');
+      if(y>0)cota(P(x,0,zf),P(x,y,zf),-26,0,cm(y)+' cm','y');
+    }
+    if(q.t!=='tv'){
+      cota(P(x,y+alto,zf),P(x+w,y+alto,zf),0,-24,cm(w)+' cm','w');
+      if(q.t!=='repisa')cota(P(x+w,y,zf),P(x+w,y+alto,zf),26,0,cm(alto)+' cm','h');
+      if(y>0&&!(q.t==='mueble'&&q.m==='mesa'))cota(P(x,0,zf),P(x,y,zf),-26,0,cm(y)+' cm','y');
+      if(q.d&&q.t!=='panel'&&Math.abs(E.az)>.14){
+        const sg=E.az<0?1:0,xd=x+(sg?w:0);
+        cota(P(xd,y,z0),P(xd,y,zf),sg?12:-12,14,cm(q.d)+' cm','d');
+      }
+      if(k&&V.celdas(q).length>1){
+        const c0=P(k.x,k.y,zf),c1=P(k.x+k.w,k.y+k.h,zf);
+        if(Math.abs(c1.x-c0.x)>118&&Math.abs(c1.y-c0.y)>40){
+          const c=P(k.x+k.w/2,k.y+k.h/2,zf);
+          etiqueta(c.x,c.y,cm(k.w)+' × '+cm(k.h),V.tieneEje(q,k.ruta,'c')?'cw':'ch','cota-c');
+        }
+      }
+      /* tiradores de la pieza */
+      const my=y+alto/2,mx=x+w/2;
+      tir(P(x+w,my,zf),'tir-v','e');tir(P(x,my,zf),'tir-v','w');
+      if(q.t!=='repisa'&&!(q.t==='mueble'&&(q.m==='piso'||q.m==='mesa'))){tir(P(mx,y+alto,zf),'tir-h','n');tir(P(mx,y,zf),'tir-h','s');}
+      else if(q.t==='mueble')tir(P(mx,y+alto,zf),'tir-h','n');
+      if(k){
+        V.divisoresDe(q,k.ruta).forEach(dv=>{
+          const c=P(dv.x+dv.w/2,dv.y+dv.h/2,zf);
+          tir(c,dv.t==='v'?'tir-d tir-v':'tir-d tir-h','d',dv);
+        });
+      }
+    }
+  }
+  if(St.guia){
+    if(St.guia.x!==null){const a=P(St.guia.x,0,0),b=P(St.guia.x,260,0);s+=`<line class="c-g" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/>`;}
+    if(St.guia.y!==null){const a=P(-500,St.guia.y,0),b=P(500,St.guia.y,0);s+=`<line class="c-g" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/>`;}
+  }
+  svg.innerHTML=s;
+  for(let i=nT;i<poolT.length;i++)poolT[i].hidden=true;
+  for(let i=nC;i<poolC.length;i++)poolC[i].hidden=true;
+}
+
+function moverPieza(q,nx,ny){
+  const d=St.d,U=3;
+  let gx=null,gy=null,mx=U+.01,my=U+.01;
+  const xs=[0],ys=[];
+  d.piezas.forEach(o=>{if(o.id===q.id)return;xs.push(o.x,o.x+o.w,o.x+o.w/2);ys.push(o.y,o.y+o.h);});
+  [[nx,0],[nx+q.w,q.w],[nx+q.w/2,q.w/2]].forEach(a=>{xs.forEach(v=>{const df=Math.abs(a[0]-v);if(df<mx){mx=df;gx=v-a[1];St._gx=v;}});});
+  [[ny,0],[ny+q.h,q.h]].forEach(a=>{ys.forEach(v=>{const df=Math.abs(a[0]-v);if(df<my){my=df;gy=v-a[1];St._gy=v;}});});
+  St.guia={x:gx!==null?St._gx:null,y:gy!==null?St._gy:null};
+  q.x=Math.round((gx!==null?gx:nx)*2)/2;
+  let yy=gy!==null?gy:ny;
+  if(q.t==='mueble'&&(q.m==='piso'||q.m==='mesa'))yy=q.y;
+  else{const l=q.t==='tv'?[0,270]:limitesY(q);yy=clamp(yy,l[0],l[1]);}
+  q.y=Math.round(yy*2)/2;
+}
+
+function iniciarInteraccion(){
+  const lz=$('#dz-lienzo'),capa=$('#dz-capa');
+  const pos=e=>{const r=lz.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};};
+  const pts=new Map();
+  const distP=()=>{const v=[...pts.values()];return Math.hypot(v[0].x-v[1].x,v[0].y-v[1].y);};
+
+  capa.addEventListener('pointerdown',e=>{
+    const t=e.target.closest('.tir');if(!t)return;
+    e.preventDefault();e.stopPropagation();
+    const q=pSel();if(!q)return;
+    try{t.setPointerCapture(e.pointerId);}catch(er){}
+    St.drag={t:'tir',h:t.dataset.h,ruta:t.dataset.ruta===''?[]:(t.dataset.ruta||'').split(',').filter(x=>x!=='').map(Number),i:parseInt(t.dataset.i||'0',10),der:q.x+q.w,arr:q.y+q.h};
+  });
+  capa.addEventListener('pointermove',e=>{
+    if(!St.drag||St.drag.t!=='tir')return;
+    e.preventDefault();
+    const q=pSel();if(!q)return;
+    const p=pos(e),zf=(q.z||0)+(q.d||2),m=St.esc.enPlanoZ(p.x,p.y,zf),L=V.LIMITES[q.t],D=St.drag;
+    if(D.h==='e'){q.w=clamp(Math.round(m.x-q.x),V.minPieza(q,'w'),L.w[1]);}
+    else if(D.h==='w'){const w=clamp(Math.round(D.der-m.x),V.minPieza(q,'w'),L.w[1]);q.w=w;q.x=D.der-w;}
+    else if(D.h==='n'){q.h=clamp(Math.round(m.y-q.y),V.minPieza(q,'h'),L.h[1]);}
+    else if(D.h==='s'){const hh=clamp(Math.round(D.arr-m.y),V.minPieza(q,'h'),L.h[1]);const ny=D.arr-hh;if(ny>=0){q.h=hh;q.y=ny;}}
+    else if(D.h==='d'){const n=V.nodo(q.raiz,D.ruta);V.moverDivisor(q,D.ruta,D.i,n.s==='c'?m.x:m.y);}
+    dibujar();syncMedidas();
+  });
+  const finTir=e=>{if(St.drag&&St.drag.t==='tir'){St.drag=null;commit();if(St.tab==='piezas')syncMedidas();invalidar();}};
+  capa.addEventListener('pointerup',finTir);capa.addEventListener('pointercancel',finTir);
+  capa.addEventListener('click',e=>{
+    const c=e.target.closest('.cota');if(!c||!c.dataset.foco)return;
+    if(St.tab!=='piezas')irTab('piezas');
+    setTimeout(()=>{const i=$('#n-'+c.dataset.foco);if(i){i.focus();i.select&&i.select();i.scrollIntoView({block:'center',behavior:'smooth'});}},30);
+  });
+
+  lz.addEventListener('pointerdown',e=>{
+    if(e.target.closest('.tir,.cota,.dz-vista,.dz-tv'))return;
+    try{lz.setPointerCapture(e.pointerId);}catch(er){}
+    pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(pts.size===2){St.drag={t:'pinch',d0:distP(),dist0:St.esc?St.esc._dist:0};return;}
+    if(pts.size>2)return;
+    const p=pos(e);
+    const hit=St.esc?St.esc.piezaEn(p.x,p.y,true):null;
+    St.drag={t:'espera',x0:e.clientX,y0:e.clientY,lx:e.clientX,ly:e.clientY,p,sobre:hit&&St.sel&&hit.q.id===St.sel.id?hit:null};
+  });
+  lz.addEventListener('pointermove',e=>{
+    const E=St.esc;if(!E)return;
+    const D=St.drag;
+    if(!D){
+      if(e.pointerType==='mouse'){
+        const p=pos(e),hit=E.piezaEn(p.x,p.y,true);
+        let nv=null;
+        if(hit&&!e.target.closest('.tir,.cota')){const k=hit.q.t==='mueble'?V.celdaEn(hit.q,hit.x,hit.y):null;nv={id:hit.q.id,ruta:k?k.ruta:null};}
+        const cl=(a)=>a?a.id+'|'+(a.ruta||[]).join():'';
+        if(cl(nv)!==cl(St.hover)){St.hover=nv;E.invalidar();}
+        lz.style.cursor=hit?(St.sel&&hit.q.id===St.sel.id?'move':'pointer'):'grab';
+      }
+      return;
+    }
+    if(D.t==='tir')return;
+    if(pts.has(e.pointerId))pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(D.t==='pinch'){
+      if(pts.size>=2){E._dist=clamp(D.dist0*D.d0/distP(),E.fitDist*.35,E.fitDist*2.4);E.invalidar();}
+      return;
+    }
+    const dx=e.clientX-D.x0,dy=e.clientY-D.y0;
+    if(D.t==='espera'){
+      if(Math.hypot(dx,dy)<6)return;
+      if(D.sobre){
+        const q=D.sobre.q,zf=(q.z||0)+(q.d||2);
+        D.t='mover';D.q=q;D.zf=zf;D.ancla=E.enPlanoZ(D.p.x,D.p.y,zf);D.qx=q.x;D.qy=q.y;
+      }else D.t='orbita';
+    }
+    if(D.t==='orbita'){
+      const mx=e.clientX-D.lx,my=e.clientY-D.ly;D.lx=e.clientX;D.ly=e.clientY;
+      E._az=clamp(E._az-mx*.0065,-1.25,1.25);E._el=clamp(E._el+my*.0048,-.05,.8);
+      E.az=E._az;E.el=E._el;E.invalidar();
+    }else if(D.t==='mover'){
+      const p=pos(e),m=E.enPlanoZ(p.x,p.y,D.zf);
+      moverPieza(D.q,D.qx+m.x-D.ancla.x,D.qy+m.y-D.ancla.y);
+      dibujar();syncMedidas();
+    }
+  });
+  const fin=e=>{
+    const D=St.drag;
+    pts.delete(e.pointerId);
+    if(!D||D.t==='tir')return;
+    if(D.t==='pinch'){if(pts.size<2)St.drag=null;return;}
+    St.drag=null;
+    if(D.t==='espera')tocar(D.p);
+    if(D.t==='mover'){St.guia=null;commit();invalidar();}
+  };
+  lz.addEventListener('pointerup',fin);lz.addEventListener('pointercancel',fin);
+  lz.addEventListener('pointerleave',()=>{if(St.hover){St.hover=null;invalidar();}});
+  lz.addEventListener('wheel',e=>{
+    const E=St.esc;if(!E)return;
+    e.preventDefault();
+    E._dist=clamp(E._dist*(1+e.deltaY*.0011),E.fitDist*.35,E.fitDist*2.4);E.invalidar();
+  },{passive:false});
+
+  function tocar(p){
+    const E=St.esc;if(!E)return;
+    const hit=E.piezaEn(p.x,p.y,true);
+    if(!hit){St.sel=null;St.hover=null;if(St.tab==='piezas')pintarTab();E.invalidar();return;}
+    const q=hit.q;let ruta=null;
+    if(q.t==='mueble'){const c=V.celdaEn(q,hit.x,hit.y);ruta=c?c.ruta:null;}
+    seleccionar(q.id,ruta);
+    if(St.tab!=='piezas'&&St.tab!=='enviar')irTab('piezas');else if(St.tab==='piezas')pintarTab();
+    E.invalidar();
+    const be=$('#b-espacio');
+    if(be&&St.tab==='piezas')be.scrollIntoView({block:'nearest',behavior:'smooth'});
+    $('#dz-ayuda').hidden=true;
+  }
+
+  $('#dz-cont').addEventListener('click',e=>{
+    const b=e.target.closest('[data-a]');if(!b)return;
+    const f=acciones[b.dataset.a];if(f)f(b);
+  });
+  $('#dz-cont').addEventListener('input',e=>{
+    const t=e.target;
+    if(t.dataset.m){
+      const v=parseFloat(t.value);
+      if(!isNaN(v)&&(t.type==='range'||t.value!==''))setMedida(t.dataset.m,v);
+    }else if(t.dataset.f){St.form[t.dataset.f]=t.value;actualizarEnlace();if(t.getAttribute('aria-invalid')==='true')validar(true);}
+    else if(t.id==='pared-ancho'){const v=parseFloat(t.value);St.d.paredAncho=isNaN(v)?0:clamp(v,0,1200);invalidar();}
+    else if(t.id==='tv-otra'){
+      const v=parseFloat(t.value);
+      if(v>=19&&v<=120){
+        const tv=ponerPulgadas(v);
+        if(!St.sel||St.sel.id!==tv.id)seleccionar(tv.id,null);
+        dibujar({encuadrar:true});syncMedidas();
+        $$('.chip[data-a="pulgadas"]').forEach(c=>c.classList.toggle('on',parseFloat(c.dataset.id)===v));
+      }
+    }
+  });
+  $('#dz-cont').addEventListener('change',e=>{
+    const t=e.target;
+    if(t.dataset.m){commit();const a=document.activeElement;if(t.type==='number'&&a===t)t.blur();syncMedidas();}
+    else if(t.id==='pared-ancho'){commit();}
+    else if(t.id==='tv-otra'){commit();pintarTab();}
+    else if(t.dataset.f){St.form[t.dataset.f]=t.value;actualizarEnlace();}
+  });
+  $$('.dz-tab').forEach(b=>b.addEventListener('click',()=>irTab(b.dataset.tab)));
+  $('#dz-sig').addEventListener('click',()=>{const i=TABS.findIndex(t=>t[0]===St.tab);if(TABS[i+1])irTab(TABS[i+1][0]);});
+  $('#dz-undo').addEventListener('click',()=>irHist(-1));
+  $('#dz-redo').addEventListener('click',()=>irHist(1));
+  $('#dz-salir').addEventListener('click',()=>{location.hash='tienda';cerrar();});
+  $$('[data-vista]').forEach(b=>b.addEventListener('click',()=>{if(St.esc)St.esc.vista(b.dataset.vista);}));
+  $('#dz-ajustar').addEventListener('click',()=>{if(St.esc)St.esc.encuadrar();});
+  $('#dz-tv-sel').addEventListener('change',e=>{
+    const v=e.target.value;
+    if(v==='otra'){
+      const tv=St.d.piezas.find(x=>x.t==='tv')||ponerPulgadas(V.tvElegida||55);
+      seleccionar(tv.id,null);dibujar({encuadrar:true});commit();pintarTV(true);
+      irTab('piezas');
+      setTimeout(()=>{const i=$('#tv-otra');if(i){i.focus();i.scrollIntoView({block:'center',behavior:'smooth'});}},40);
+      return;
+    }
+    elegirTV(parseFloat(v));
+  });
+  $('#dz-puertas').addEventListener('click',e=>{St.ab=!St.ab;e.currentTarget.classList.toggle('on',St.ab);e.currentTarget.setAttribute('aria-pressed',St.ab);e.currentTarget.textContent=St.ab?'Cerrar puertas':'Abrir puertas';if(St.esc)St.esc.setAbierto(St.ab);});
+  document.addEventListener('keydown',e=>{
+    if(!St.abierto)return;
+    const edit=e.target.matches('input,textarea,select');
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!edit){e.preventDefault();irHist(e.shiftKey?1:-1);}
+  });
+}
+
+function primeraVez(){
+  if(St.iniciado)return;
+  St.iniciado=true;
+  iniciarInteraccion();
+  if(V.webgl){
+    const cv=$('#dz-canvas');
+    St.esc=new V.Escena(cv,{pr:2,margen:.74,subirPx:20});
+    St.esc.onRender=pintarCapa;
+    St.esc._az=-.34;St.esc._el=.12;St.esc.az=-.34;St.esc.el=.12;
+    const lz=$('#dz-lienzo');
+    St.esc.tam(lz.clientWidth||600,lz.clientHeight||400);
+  }else{
+    $('#dz-canvas').hidden=true;
+    $('#dz-vista').hidden=true;
+    const p=document.createElement('div');p.id='dz-plano';p.className='dz-plano';$('#dz-lienzo').prepend(p);
+    $('#dz-ayuda').textContent='Tu equipo no muestra 3D. Ve el plano y edita desde el panel.';
+  }
+}
+function abrir(){
+  const dz=$('#dz');
+  dz.hidden=false;St.abierto=true;
+  document.documentElement.classList.add('con-dz');
+  if(V.pausarHero)V.pausarHero(true);
+}
+function cerrar(){
+  if(!St.abierto)return;
+  $('#dz').hidden=true;St.abierto=false;
+  document.documentElement.classList.remove('con-dz');
+  if(V.pausarHero)V.pausarHero(false);
+}
+/* Abre el diseñador. `id` es un perfil; `o.ajuste` modifica el diseño recién creado */
+V.abrirDisenador=function(id,o){
+  o=o||{};
+  abrir();
+  requestAnimationFrame(()=>{
+    primeraVez();
+    const hayD=!!St.d;
+    if(o.diseno){
+      St.d=o.diseno;St.compartido=true;St.sel=null;validarSel();
+      if(St.esc)St.esc.vista('angulo',true);
+      dibujar({encuadrar:true,instantaneo:true});reiniciarHist();
+    }else if(id){cargarPerfil(id,o.ajuste);}
+    else if(!hayD){
+      const b=leerBorrador();
+      if(b&&b.piezas&&b.piezas.length){St.d=b;St.sel=null;validarSel();dibujar({encuadrar:true,instantaneo:true});reiniciarHist();}
+      else cargarPerfil('horizonte');
+    }
+    else if(St.esc){St.esc.ajustar();dibujar();}
+    irTab(o.tab||(id?'piezas':(St.tab||'perfil')));
+    if(St.esc)St.esc.encuadrar(true);
+    if(location.hash!=='#disena'&&!(location.hash||'').startsWith('#d-'))location.hash='disena';
+  });
+};
+V.cerrarDisenador=cerrar;
+V.disenadorAbierto=()=>St.abierto;
+V.alActualizarMini=function(id,url){
+  $$(`[data-mini="${id}"]`).forEach(el=>{
+    if(el.tagName==='IMG'){el.src=url;return;}
+    el.innerHTML=`<img alt="" src="${url}">`;
+  });
+};
+})();
+
+/* Tienda: portada interactiva, catálogo, ficha de producto, guía de medidas y contacto */
+(function(){
+'use strict';
+const V=window.Veta,cm=V.cm,clamp=V.clamp;
+const $=(s,r)=>(r||document).querySelector(s),$$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+V.miniaturas=V.miniaturas||{};
+const reducir=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ─── Contacto ─── */
+const MSJ={
+  general:'Hola, vi su página y quiero más información sobre sus muebles de madera.',
+  distinto:'Hola, no encontré lo que busco en el catálogo y quiero cotizar algo diferente.'
+};
+function pintarContacto(){
+  const N=V.NEGOCIO;
+  $$('[data-wa]').forEach(a=>{a.href=V.linkWA(MSJ[a.dataset.wa]||MSJ.general);a.target='_blank';a.rel='noopener';});
+  $$('[data-ig]').forEach(a=>{a.href=V.linkIG();a.target='_blank';a.rel='noopener';});
+  $$('[data-ig-nombre]').forEach(e=>{e.textContent='@'+(N.instagram||'tu_instagram');});
+  $$('[data-wa-num]').forEach(e=>{e.textContent=N.whatsapp?(N.whatsappTexto||'+'+N.whatsapp):'Número pendiente';});
+  $$('[data-negocio]').forEach(e=>{e.textContent=N.nombre;});
+  $$('[data-lema]').forEach(e=>{e.textContent=N.lema;});
+  $$('.ano').forEach(e=>{e.textContent=new Date().getFullYear();});
+}
+function iniciarDistinto(){
+  const t=$('#otra-idea'),a=$('#otra-wa');
+  if(!t||!a)return;
+  const act=()=>{const v=t.value.trim();a.href=V.linkWA(v?'Hola, quiero cotizar algo diferente:\n\n'+v:MSJ.distinto);};
+  t.addEventListener('input',act);act();
+  const b=$('#copiar-ig');
+  if(b)b.addEventListener('click',()=>{
+    const u='@'+(V.NEGOCIO.instagram||'tu_instagram');
+    const ok=()=>{const v=b.textContent;b.textContent='Copiado';setTimeout(()=>{b.textContent=v;},1600);};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok).catch(()=>{});
+  });
+}
+
+/* ─── Navegación ─── */
+function iniciarNavegacion(){
+  document.addEventListener('click',e=>{
+    const irA=e.target.closest('[data-ir]');
+    if(irA){
+      e.preventDefault();
+      const s=document.getElementById(irA.dataset.ir);
+      if(s)s.scrollIntoView({behavior:reducir?'auto':'smooth',block:'start'});
+      $('#nav').classList.remove('abierto');$('#menu-btn').setAttribute('aria-expanded','false');
+      return;
+    }
+    const dis=e.target.closest('[data-disenar]');
+    if(dis){e.preventDefault();const f=$('#ficha');if(f.open)f.close();V.abrirDisenador(dis.dataset.disenar||null,dis.dataset.disenar?{}:{tab:'perfil'});return;}
+    const fi=e.target.closest('[data-ficha]');
+    if(fi){e.preventDefault();abrirFicha(fi.dataset.ficha);return;}
+  });
+  const b=$('#menu-btn');
+  b.addEventListener('click',()=>{const on=$('#nav').classList.toggle('abierto');b.setAttribute('aria-expanded',on);});
+}
+
+/* ─── Catálogo ─── */
+let cat='todo';
+function medidaPrincipal(id){
+  const d=V.crearDiseno(id),q=d.piezas.find(x=>x.t==='mueble')||d.piezas.find(x=>x.t==='repisa')||d.piezas[0];
+  return V.medidasPieza(q);
+}
+function msjModelo(p,pul){return 'Hola, me interesa el modelo '+p.nombre+' ('+p.tipo+', '+medidaPrincipal(p.id)+').'+(pul?' Mi TV es de '+pul+' pulgadas.':'')+' ¿Me pueden cotizar?';}
+function imgCat(p){
+  const u=V.miniaturas[p.id];
+  return u?`<img alt="Imagen de prueba: ${p.nombre}" src="${u}">`:`<span class="plano">${V.svgFrente(V.crearDiseno(p.id),{conTV:true})}</span>`;
+}
+function pintarFiltros(){
+  $('#cat-filtros').innerHTML=V.CATEGORIAS.map(c=>{
+    const n=c.id==='todo'?V.PERFILES.length:V.PERFILES.filter(p=>p.cat===c.id).length;
+    return `<button type="button" class="filtro ${cat===c.id?'on':''}" data-cat="${c.id}" aria-pressed="${cat===c.id}">${c.n} <small>${n}</small></button>`;
+  }).join('');
+}
+function pintarCatalogo(){
+  pintarFiltros();
+  const lista=V.PERFILES.filter(p=>cat==='todo'||p.cat===cat);
+  $('#cat-grid').innerHTML=lista.map(p=>`<article class="card">
+    <button type="button" class="card-img" data-ficha="${p.id}" aria-label="Ver ${p.nombre}"><span class="card-m" data-mini="${p.id}">${imgCat(p)}</span></button>
+    <div class="card-b">
+      <h3>${p.nombre}</h3>
+      <p class="card-t">${p.tipo}</p>
+      <p class="mono card-d">${medidaPrincipal(p.id)}</p>
+      <div class="card-acc">
+        <button type="button" class="enl" data-disenar="${p.id}">Personalizar</button>
+        <a class="enl enl-s" href="${V.linkWA(msjModelo(p))}" target="_blank" rel="noopener">Cotizar</a>
+      </div>
+    </div></article>`).join('');
+}
+function iniciarCatalogo(){
+  pintarCatalogo();
+  $('#cat-filtros').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;cat=b.dataset.cat;pintarCatalogo();});
+}
+
+/* ─── Ficha de producto ─── */
+function recoFicha(p,base){
+  const t=V.tvMedidas(p);
+  return 'Tu TV de '+p+'″ mide '+Math.round(t.w)+' cm de ancho. '+(base.w>=t.min?'Esta base de '+cm(base.w)+' cm le queda bien.':'Esta base mide '+cm(base.w)+' cm: te conviene de '+t.ideal+' cm. Puedes ajustarla al personalizar.');
+}
+function abrirFicha(id){
+  const p=V.PERFILES.find(x=>x.id===id);if(!p)return;
+  const d=V.crearDiseno(id),f=$('#ficha');
+  const piezas=d.piezas.filter(q=>q.t!=='tv'),tv=d.piezas.find(q=>q.t==='tv'),base=d.piezas.find(q=>q.t==='mueble');
+  const pAct=tv?(V.tvElegida||tv.pulgadas):0;
+  f.dataset.id=id;
+  $('#ficha-c').innerHTML=`
+    <div class="fi-img" data-mini="${p.id}">${imgCat(p)}</div>
+    <div class="fi-b">
+      <p class="eti">${p.tipo}</p>
+      <h2>${p.nombre}</h2>
+      <p>${p.texto}</p>
+      <ul class="fi-et">${p.etiquetas.map(e=>`<li>${e}</li>`).join('')}</ul>
+      <h3>Incluye</h3>
+      <ul class="fi-lista">${piezas.map(q=>`<li><b>${V.nombrePieza(q)}</b><span class="mono">${V.medidasPieza(q)}</span><small>${V.detallePieza(q)}</small></li>`).join('')}</ul>
+      ${tv&&base?`<div class="fi-tv"><h3>¿De cuántas pulgadas es tu TV?</h3><div class="chips" id="fi-pulg">${V.PULGADAS.map(x=>`<button type="button" class="chip ${x===pAct?'on':''}" data-fp="${x}" aria-pressed="${x===pAct}">${x}″</button>`).join('')}</div><p class="nota" id="fi-reco">${recoFicha(pAct,base)}</p></div>`:''}
+      <p class="nota">Madera de esta imagen: ${V.MADERAS[d.madera].n}. Puedes cambiarla, igual que las medidas y las piezas.</p>
+      <div class="fi-acc">
+        <button type="button" class="btn btn-p" data-disenar="${p.id}">Personalizar este mueble</button>
+        <a class="btn btn-wa" id="fi-wa" href="${V.linkWA(msjModelo(p,pAct))}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Cotizar por WhatsApp</a>
+      </div>
+    </div>`;
+  if(f.showModal)f.showModal();else f.setAttribute('open','');
+}
+function iniciarFicha(){
+  const f=$('#ficha');
+  $('#ficha-x').addEventListener('click',()=>f.close());
+  f.addEventListener('click',e=>{if(e.target===f)f.close();});
+  $('#ficha-c').addEventListener('click',e=>{
+    const b=e.target.closest('[data-fp]');if(!b)return;
+    const n=parseInt(b.dataset.fp,10),id=f.dataset.id,pf=V.PERFILES.find(x=>x.id===id),base=V.crearDiseno(id).piezas.find(q=>q.t==='mueble');
+    V.tvElegida=n;
+    $$('[data-fp]').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});
+    $('#fi-reco').textContent=recoFicha(n,base);
+    $('#fi-wa').href=V.linkWA(msjModelo(pf,n));
+  });
+}
+
+/* ─── Guía de medidas para TV ─── */
+const PULG=V.PULGADAS;
+let pulg=55;
+const datosTV=V.tvMedidas;
+function pintarGuia(){
+  const t=datosTV(pulg);
+  $('#g-pulg').innerHTML=PULG.map(p=>`<button type="button" class="filtro ${p===pulg?'on':''}" data-p="${p}" aria-pressed="${p===pulg}">${p}″</button>`).join('');
+  $('#g-tv').textContent=Math.round(t.w)+' cm';
+  $('#g-min').textContent=t.min+' cm';
+  $('#g-ideal').textContent=t.ideal+' cm';
+  const cx=0,top=118,sc=.8;
+  const sw=t.ideal*sc/2,tw=t.w*sc/2,th=t.h*sc;
+  $('#g-dib').innerHTML=`
+    <rect x="${cx-tw}" y="${top-14-th}" width="${tw*2}" height="${th}" class="gd-tv"/>
+    <text x="${cx}" y="${top-14-th/2+5}" class="gd-tx" text-anchor="middle">${pulg}″ · ${Math.round(t.w)} cm</text>
+    <rect x="${cx-sw}" y="${top}" width="${sw*2}" height="22" class="gd-base"/>
+    <line x1="${cx-sw}" x2="${cx+sw}" y1="${top+36}" y2="${top+36}" class="gd-l"/>
+    <line x1="${cx-sw}" x2="${cx-sw}" y1="${top+30}" y2="${top+42}" class="gd-l"/>
+    <line x1="${cx+sw}" x2="${cx+sw}" y1="${top+30}" y2="${top+42}" class="gd-l"/>
+    <rect x="${cx-34}" y="${top+26}" width="68" height="20" rx="2" class="gd-et"/>
+    <text x="${cx}" y="${top+41}" class="gd-etx" text-anchor="middle">${t.ideal} cm</text>`;
+}
+function iniciarGuia(){
+  pintarGuia();
+  $('#g-pulg').addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(!b)return;pulg=parseInt(b.dataset.p,10);V.tvElegida=pulg;pintarGuia();});
+  $('#g-empezar').addEventListener('click',()=>{
+    const t=datosTV(pulg);
+    V.tvElegida=pulg;
+    V.abrirDisenador('horizonte',{ajuste:d=>{
+      const m=d.piezas.find(q=>q.t==='mueble'),tv=d.piezas.find(q=>q.t==='tv');
+      m.w=t.ideal;m.x=-t.ideal/2;
+      tv.pulgadas=pulg;V.normalizar(tv);tv.x=-tv.w/2;
+      d.nombre='Horizonte para TV de '+pulg+'″';
+    }});
+  });
+}
+
+/* ─── Muestrario de maderas ─── */
+function iniciarMaderas(){
+  const r=$('#mad-rack'),M=V.MADERAS,cl=Object.keys(M);
+  r.innerHTML=cl.map((k,i)=>`<button type="button" class="tabla ${i===0?'on':''}" data-k="${k}" aria-pressed="${i===0}"><i class="tabla-t" data-tex="${k}" style="background-color:${M[k].base}"></i><span class="tabla-n">${M[k].n}</span><span class="tabla-d">${M[k].nota}</span></button>`).join('');
+  r.addEventListener('click',e=>{const b=e.target.closest('.tabla');if(!b)return;$$('.tabla',r).forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});});
+  /* se pintan al acercarse para no frenar la carga */
+  const pintar=()=>{
+    let i=0;
+    const uno=()=>{if(i>=cl.length)return;const k=cl[i++];const el=$(`[data-tex="${k}"]`,r);if(el)el.style.backgroundImage=`url(${V.muestraMadera(k,720,420)})`;setTimeout(uno,16);};
+    uno();
+  };
+  if('IntersectionObserver'in window){
+    const io=new IntersectionObserver(es=>{if(es.some(x=>x.isIntersecting)){io.disconnect();pintar();}},{rootMargin:'400px'});
+    io.observe(r);
+  }else pintar();
+}
+
+/* ─── Portada: el mueble que se estira con la cinta ─── */
+function iniciarPortada(){
+  const sec=$('#inicio'),cv=$('#hero-canvas'),cinta=$('#hero-cinta'),cif=$('#hero-cm'),tit=$('#hero-tit');
+  if(!V.webgl){sec.classList.add('sin-3d');return;}
+  const E=new V.Escena(cv,{noche:true,pr:1.75,decorar:true,fov:22});
+  const raiz={s:'c',k:[{c:'l'},{c:'p'},{c:'l'}],r:[1,1.4,1]};
+  const dis={perfil:'hero',nombre:'',madera:'roble',frente:null,tirador:'push',veta:'h',pared:'cacao',paredAncho:0,piezas:[
+    V.normalizar({t:'mueble',w:150,h:32,d:38,cx:0,y:30,led:true,raiz}),
+    V.normalizar({t:'tv',pulgadas:55,cx:0,y:74})
+  ]};
+  let ancho=150,pxcm=3,fontOK=false,tocado=false,rango=[120,245];
+  const m=dis.piezas[0];
+  const fv=(el,a)=>{el.style.fontVariationSettings=`"wdth" ${a.toFixed(1)},"wght" 820`;};
+  const movil=()=>window.innerWidth<720;
+  const lineas=()=>movil()?$$('.ln',tit):[$('.tod',tit)];
+  let cal=[];
+  function calibrar(){
+    if(!fontOK)return;
+    const T180=180*pxcm;
+    const todas=[$('.tod',tit),...$$('.ln',tit)];
+    todas.forEach(el=>{el.style.fontSize='';el.style.fontVariationSettings='';el.style.transform='';});
+    const ls=lineas();
+    const ref=ls.reduce((a,b)=>b.textContent.length>a.textContent.length?b:a,ls[0]);
+    ref.style.fontSize='100px';fv(ref,70);
+    const w0=ref.getBoundingClientRect().width||1;
+    ref.style.fontSize='';ref.style.fontVariationSettings='';
+    const F=clamp(T180/w0*100,30,220);
+    cal=ls.map(el=>{
+      el.style.fontSize=F+'px';
+      const tabla=[50,75,100,125,150].map(a=>{fv(el,a);return[a,el.getBoundingClientRect().width];});
+      return{el,tabla};
+    });
+    ajustarTitulo();
+  }
+  function ajustarTitulo(){
+    if(!cal.length)return;
+    const T=ancho*pxcm;
+    cal.forEach(c=>{
+      const t=c.tabla;let a,wa;
+      if(T<=t[0][1]){a=t[0][0];wa=t[0][1];}
+      else if(T>=t[4][1]){a=t[4][0];wa=t[4][1];}
+      else for(let i=0;i<4;i++){if(T<=t[i+1][1]){const k=(T-t[i][1])/(t[i+1][1]-t[i][1]);a=t[i][0]+k*(t[i+1][0]-t[i][0]);wa=T;break;}}
+      fv(c.el,a);
+      c.el.style.transform=wa!==T?`scaleX(${(T/wa).toFixed(3)})`:'';
+    });
+  }
+  function encuadre(){
+    const sr=sec.getBoundingClientRect(),er=$('#hero-esc').getBoundingClientRect();
+    const W=E.w,H=E.h;
+    rango=movil()?[130,205]:[120,245];
+    const y0=14,y1=150,alto=y1-y0;
+    pxcm=Math.min((er.width-8)/rango[1],er.height/alto);
+    const dist=H/(2*Math.tan(E.cam.fov*Math.PI/360)*pxcm);
+    const cyEsc=er.top-sr.top+er.height/2,cxEsc=er.left-sr.left+er.width/2;
+    E._t.set((W/2-cxEsc)/pxcm,(y0+y1)/2+(cyEsc-H/2)/pxcm,36);
+    E.t.copy(E._t);E._az=E.az=0;E._el=E.el=.015;E._dist=E.dist=dist;
+    calibrar();
+  }
+  function aplicar(){
+    m.w=ancho;m.x=-ancho/2;
+    E.setDiseno(dis,{decorar:true});
+    cif.textContent=Math.round(ancho)+' cm';
+    ajustarTitulo();
+  }
+  let ultimoPx=0;
+  E.onRender=()=>{
+    const zf=m.z+m.d,a=E.proyectar(-ancho/2,m.y,zf),b=E.proyectar(ancho/2,m.y,zf);
+    const off=clamp(pxcm*11,20,42);
+    cinta.style.left=a.x.toFixed(1)+'px';cinta.style.width=(b.x-a.x).toFixed(1)+'px';cinta.style.top=(a.y+off).toFixed(1)+'px';
+    cinta.style.setProperty('--px',(pxcm*10).toFixed(2)+'px');
+    if(Math.abs(b.x-ultimoPx)>1){
+      ultimoPx=b.x;
+      let html='';
+      for(let c=20;c<ancho-6;c+=20)html+=`<span style="left:${(c*pxcm).toFixed(1)}px">${c}</span>`;
+      $('#hero-nums').innerHTML=html;
+    }
+    cinta.hidden=false;
+  };
+  E.alRedimensionar=()=>{encuadre();E.invalidar();};
+  V.pausarHero=p=>{E.pausada=p;if(!p)E.invalidar();};
+  const lz=sec;
+  E.tam(lz.clientWidth||800,lz.clientHeight||600);
+  encuadre();aplicar();
+
+  const tir=$('#hero-tirador');
+  let dr=null;
+  tir.addEventListener('pointerdown',e=>{e.preventDefault();try{tir.setPointerCapture(e.pointerId);}catch(er){}dr={x:e.clientX,w:ancho};if(!tocado){tocado=true;sec.classList.add('tocado');}intro=null;});
+  tir.addEventListener('pointermove',e=>{if(!dr)return;e.preventDefault();ancho=clamp(Math.round(dr.w+2*(e.clientX-dr.x)/pxcm),rango[0],rango[1]);aplicar();});
+  const fin=()=>{dr=null;};
+  tir.addEventListener('pointerup',fin);tir.addEventListener('pointercancel',fin);
+  tir.addEventListener('keydown',e=>{
+    const p=e.key==='ArrowRight'?5:e.key==='ArrowLeft'?-5:0;if(!p)return;
+    e.preventDefault();intro=null;ancho=clamp(ancho+p,rango[0],rango[1]);aplicar();
+  });
+
+  let intro=null;
+  const arrancar=()=>{
+    fontOK=true;encuadre();
+    if(reducir){ancho=180;aplicar();return;}
+    const t0=performance.now(),dur=1500,de=ancho,a=180;
+    intro=function paso(t){
+      if(intro!==paso)return;
+      const k=clamp((t-t0)/dur,0,1),e=1-Math.pow(1-k,3);
+      ancho=Math.round(de+(a-de)*e);aplicar();
+      if(k<1)requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(intro);
+  };
+  if(document.fonts&&document.fonts.load){
+    Promise.race([document.fonts.load('820 100px Anybody','A TU MEDIDA').then(()=>document.fonts.ready),new Promise(r=>setTimeout(r,2500))]).then(arrancar);
+  }else arrancar();
+}
+
+/* ─── Imágenes de prueba: se generan con el mismo motor 3D ─── */
+function generarImagenes(){
+  if(!V.webgl)return;
+  const cv=document.createElement('canvas');
+  const E=new V.Escena(cv,{capturar:true,margen:.68,decorar:true,fov:22});
+  E.tam(800,600);
+  const lista=V.PERFILES.slice();
+  let i=0;
+  const sig=()=>{
+    if(i>=lista.length){setTimeout(()=>E.destruir(),200);return;}
+    const p=lista[i++];
+    const d=V.crearDiseno(p.id);
+    const par=i%2===0;
+    E._az=E.az=par?.36:-.42;E._el=E.el=.11;
+    E.pausada=true;
+    E.setDiseno(d,{decorar:true,encuadrar:true,instantaneo:true});
+    const url=E.capturar('image/jpeg',.84);
+    V.miniaturas[p.id]=url;
+    if(V.alActualizarMini)V.alActualizarMini(p.id,url);
+    setTimeout(sig,20);
+  };
+  setTimeout(sig,400);
+}
+
+/* ─── Rutas: tienda, diseñador o diseño compartido ─── */
+async function ruta(){
+  const h=location.hash.slice(1);
+  if(h.indexOf('d-')===0){
+    const d=await V.descifrar(h);
+    if(d){V.abrirDisenador(null,{diseno:d,tab:'piezas'});return;}
+  }
+  if(h==='disena'){if(!V.disenadorAbierto())V.abrirDisenador(null,{tab:'perfil'});return;}
+  V.cerrarDisenador();
+}
+
+function arrancar(){
+  pintarContacto();
+  iniciarNavegacion();
+  iniciarCatalogo();
+  iniciarFicha();
+  iniciarGuia();
+  iniciarMaderas();
+  iniciarDistinto();
+  try{iniciarPortada();}catch(e){$('#inicio').classList.add('sin-3d');}
+  try{generarImagenes();}catch(e){}
+  window.addEventListener('hashchange',ruta);
+  ruta();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',arrancar);else arrancar();
+})();
+</script>
+</body></html>
