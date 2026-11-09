@@ -91,20 +91,13 @@ button{cursor:pointer}
 .hero-t{text-align:center;color:var(--yeso);font-weight:820;line-height:.86;white-space:nowrap;font-size:clamp(58px,13vw,118px);font-variation-settings:"wdth" 70,"wght" 820;min-height:.9em}
 .tod{display:inline-block;transform-origin:center}
 .ln{display:inline-block;transform-origin:center}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"esc" "txt" "cta";gap:34px;margin-top:6px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"esc" "cta";gap:58px;margin-top:6px}
 .hero-esc{grid-area:esc;height:clamp(250px,72vw,400px)}
-.hero-txt{grid-area:txt;font-size:18px;line-height:1.45;max-width:36ch;margin-inline:auto;text-align:center;text-shadow:0 1px 10px rgba(26,16,10,.7)}
-.hero-txt{display:grid;gap:8px}
-.hero-guia{font-size:.92em;color:var(--cinta)}
-.hero-guia b{font-weight:700}
 .hero-cta{grid-area:cta;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 @media(min-width:720px){.hero-t{line-height:.9}}
 @media(max-width:719px){.tod{display:block}.ln{display:table;margin-inline:auto}.hero-t{min-height:1.8em}}
 @media(min-width:960px){
-  .hero-grid{grid-template-columns:minmax(170px,.62fr) minmax(0,3fr) minmax(170px,.62fr);grid-template-areas:"txt esc cta";align-items:end;gap:18px}
-  .hero-esc{height:clamp(330px,calc(100vh - 300px),520px)}
-  .hero-txt{text-align:left;margin:0;font-size:17px;padding-bottom:6px}
-  .hero-cta{flex-direction:column;align-items:stretch;padding-bottom:6px}
+  .hero-esc{height:clamp(320px,calc(100vh - 385px),520px)}
 }
 .sin-3d #hero-canvas,.sin-3d .cinta,.sin-3d .hero-velo{display:none}
 .sin-3d .hero-esc{height:24px}
@@ -495,10 +488,6 @@ button{cursor:pointer}
   <div class="hero-i">
     <h1 class="hero-t" id="hero-tit" aria-label="A tu medida"><span class="tod" aria-hidden="true"><span class="ln">A TU</span> <span class="ln">MEDIDA</span></span></h1>
     <div class="hero-grid">
-      <div class="hero-txt">
-        <p>Bases flotantes para TV, organizadores y piezas de madera hechas al centímetro para tu pared.</p>
-        <p class="hero-guia"><b>Pruébalo:</b> mueve el botón de la cinta y mira cómo cambia el tamaño del mueble.</p>
-      </div>
       <div class="hero-esc" id="hero-esc"></div>
       <div class="hero-cta">
         <button type="button" class="btn btn-p btn-gde" data-disenar="">Diseñar mi mueble</button>
@@ -1493,9 +1482,11 @@ function fijos(){
     terracota:est({color:0xB4683F,roughness:.86}),
     hoja:est({color:0x3F6B4C,roughness:.7}),
     libro:est({color:0xffffff,roughness:.88,vertexColors:true}),
-    tablero:est({color:0xC9B79C,roughness:.7})
+    tablero:est({color:0xC9B79C,roughness:.7}),
+    pantalla:new T.MeshBasicMaterial({color:0xFFDDB0,toneMapped:false}),
+    arte:est({map:texArte(),roughness:.85,envMapIntensity:.2})
   };
-  FIJOS.vidrio.userData.sinSombra=true;FIJOS.led.userData.sinSombra=true;
+  FIJOS.vidrio.userData.sinSombra=true;FIJOS.led.userData.sinSombra=true;FIJOS.pantalla.userData.sinSombra=true;
   return FIJOS;
 }
 const tex={};
@@ -1545,6 +1536,16 @@ function texTV(){
   });
   const t=new T.CanvasTexture(c);t.encoding=T.sRGBEncoding;
   return tex.tv=t;
+}
+function texArte(){
+  if(tex.arte)return tex.arte;
+  const c=canvas(512,660),g=c.getContext('2d');
+  g.fillStyle='#EDE3D2';g.fillRect(0,0,512,660);
+  g.fillStyle='#C9743F';g.beginPath();g.arc(330,250,118,0,6.2832);g.fill();
+  g.fillStyle='#8A4B2A';g.beginPath();g.moveTo(0,660);g.lineTo(0,470);g.quadraticCurveTo(170,300,300,455);g.quadraticCurveTo(410,560,512,430);g.lineTo(512,660);g.fill();
+  g.fillStyle='#E0B26A';g.beginPath();g.moveTo(0,660);g.lineTo(0,590);g.quadraticCurveTo(220,470,512,610);g.lineTo(512,660);g.fill();
+  const t=new T.CanvasTexture(c);t.encoding=T.sRGBEncoding;
+  return tex.arte=t;
 }
 function texPiso(){
   if(tex.piso)return tex.piso;
@@ -1684,6 +1685,7 @@ function construirMueble(q,d,ctx){
     L.de('tablero').caja(x0+5,0,pr*.15,x0+8,y-3,pr*.85,'y',O());
     L.de('tablero').caja(x1-8,0,pr*.15,x1-5,y-3,pr*.85,'y',O());
   }
+  if(q.luzInterior)V.celdas(q).forEach(c=>{if(c.n.c==='a')plano(ctx.g,c.x,c.y,c.x+c.w,c.y+c.h,z0+.75,ctx.opc._mBrillo(.5),2);});
   if(q.led&&q.m!=='piso')ponerLuzBajo(ctx,x,x+w,y,z0,prof);
   if(q.m==='flotante')plano(ctx.g,x-16,y-20,x+w+16,y+h+12,z0+.05,ctx.opc._mSombra,1);
 }
@@ -1793,6 +1795,33 @@ function decorar(q,ctx){
   }
 }
 
+/* Objetos del hogar que acompañan la escena de la portada */
+const ESFERA=new T.SphereGeometry(1,12,10);
+function ponerObjeto(a,ctx){
+  const L=ctx.L,g=ctx.g,mats=ctx.mats,r=ctx.rnd,opc=ctx.opc,x=a.x,z=a.z||26;
+  if(a.t==='lampara'){
+    const alto=a.h||146;
+    L.de('negro').cilindro('y',x,z,0,2,15,15,28);
+    L.de('negro').cilindro('y',x,z,2,alto,.8,.8,12);
+    L.de('pantalla').cilindro('y',x,z,alto-3,alto+24,19,14,30);
+    plano(g,x-105,alto-105,x+105,alto+115,.09,opc._mHalo(opc.noche?.42:.18),2);
+  }else if(a.t==='sansevieria'){
+    L.de('terracota').cilindro('y',x,z,0,30,13,17,26);
+    for(let i=0;i<13;i++){
+      const an=i/13*6.283+r()*.4,rad=2+r()*7.5,al=25+r()*20,ancho=2.6+r()*1.6;
+      const m=new T.Mesh(ESFERA,mats.hoja);
+      m.scale.set(ancho,al,.55);
+      m.position.set(x+Math.cos(an)*rad,26+al*.96,z+Math.sin(an)*rad);
+      m.rotation.set(Math.sin(an)*.13,-an,-Math.cos(an)*.13);
+      m.castShadow=true;g.add(m);
+    }
+  }else if(a.t==='cuadro'){
+    const x0=x-a.w/2,x1=x+a.w/2,y0=a.y,y1=a.y+a.h;
+    plano(g,x0-9,y0-11,x1+9,y1+7,.05,opc._mSombra,1);
+    L.de('cuerpo').caja(x0-1.5,y0-1.5,0,x1+1.5,y1+1.5,2.2,'y',{u:40,v:10});
+    plano(g,x0,y0,x1,y1,2.25,mats.arte,1);
+  }
+}
 V.construirDiseno=function(d,opc){
   if(!V.MADERAS[d.madera])d.madera='roble';
   if(d.frente&&!V.MADERAS[d.frente])d.frente=null;
@@ -1810,6 +1839,11 @@ V.construirDiseno=function(d,opc){
     if(opc.decorar&&q.t!=='tv'&&q.t!=='panel')decorar(q,ctx);
     ctx.L.mallas(mats).forEach(m=>grupo.add(m));
   });
+  if(d.ambiente){
+    const ctx={g:grupo,mats,L:new Lotes(),rnd:rng(2027),opc};
+    d.ambiente.forEach(a=>ponerObjeto(a,ctx));
+    ctx.L.mallas(mats).forEach(m=>grupo.add(m));
+  }
   return{grupo,anim};
 };
 
@@ -1830,7 +1864,7 @@ class Escena{
     const pared=new T.Mesh(new T.PlaneGeometry(3200,1200),mPared);pared.position.set(0,600,0);pared.receiveShadow=true;S.add(pared);
     const piso=new T.Mesh(new T.PlaneGeometry(3200,1800),new T.MeshStandardMaterial({map:texPiso(),roughness:.62,envMapIntensity:.5}));
     piso.rotation.x=-Math.PI/2;piso.position.set(0,0,900);piso.receiveShadow=true;S.add(piso);
-    const zocalo=new T.Mesh(new T.BoxGeometry(3200,9,1.4),new T.MeshStandardMaterial({color:'#EFEDE6',roughness:.7}));zocalo.position.set(0,4.5,.7);zocalo.receiveShadow=true;S.add(zocalo);
+    const zocalo=new T.Mesh(new T.BoxGeometry(3200,9,1.4),new T.MeshStandardMaterial({color:o.noche?'#5B4536':'#EFEDE6',roughness:.7}));zocalo.position.set(0,4.5,.7);zocalo.receiveShadow=true;S.add(zocalo);
     this.zocalo=zocalo;
     const hemi=this.hemi=new T.HemisphereLight(0xffffff,0xb7a58d,o.noche?.17:.46);S.add(hemi);
     const key=this.key=new T.DirectionalLight(o.noche?0xffe0c0:0xfff1df,o.noche?.22:.92);
@@ -3069,8 +3103,9 @@ function iniciarPortada(){
   const raiz={s:'c',k:[{c:'l'},{c:'p'},{c:'l'}],r:[1,1.4,1]};
   const dis={perfil:'hero',nombre:'',madera:'roble',frente:null,tirador:'push',veta:'h',pared:'cacao',paredAncho:0,piezas:[
     V.normalizar({t:'mueble',w:150,h:32,d:38,cx:0,y:30,led:true,raiz}),
-    V.normalizar({t:'tv',pulgadas:55,cx:0,y:74})
-  ]};
+    V.normalizar({t:'tv',pulgadas:55,cx:0,y:74}),
+    V.normalizar({t:'mueble',w:52,h:186,d:30,x:-194,y:0,m:'piso',luzInterior:true,raiz:{s:'f',k:[{c:'a'},{c:'a'},{c:'a'},{s:'c',k:[{c:'p'},{c:'p'}],r:[1,1]}],r:[1,1,1,1.1]}})
+  ],ambiente:[{t:'lampara',x:147},{t:'sansevieria',x:180},{t:'cuadro',x:183,y:134,w:30,h:40}]};
   let ancho=150,pxcm=3,fontOK=false,tocado=false,rango=[120,245];
   const m=dis.piezas[0];
   const fv=(el,a)=>{el.style.fontVariationSettings=`"wdth" ${a.toFixed(1)},"wght" 820`;};
