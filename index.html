@@ -2143,8 +2143,6 @@ function elegirTV(p){
   seleccionar(tv.id,null);
   dibujar({encuadrar:true});commit();pintarTab();pie();
   $('#dz-ayuda').hidden=true;
-  const m=V.tvMedidas(p),b=baseDeTV(St.d,tv);
-  aviso('Tu TV de '+p+'″ mide '+Math.round(m.w)+' cm de ancho.'+(b?(b.w>=m.min?' Tu base le queda bien.':' Te conviene una base de '+m.ideal+' cm.'):''));
 }
 function infoTV(q){return 'Mide '+cm(q.w)+' × '+cm(q.h)+' cm. Es una guía para medir y no se incluye en la cotización.';}
 function centroTV(q){return 'El centro de la pantalla queda a '+cm(q.y+q.h/2)+' cm del piso. Si ves TV sentado, lo cómodo es cerca de 105 cm.';}
@@ -2422,7 +2420,6 @@ const acciones={
     const m=V.tvMedidas(tv.pulgadas),w=clamp(Math.max(m.ideal,V.minPieza(b,'w')),V.LIMITES.mueble.w[0],V.LIMITES.mueble.w[1]);
     b.w=w;b.x=tv.x+tv.w/2-w/2;
     dibujar({encuadrar:true});commit();pintarTab();pie();
-    aviso('La base ahora mide '+cm(w)+' cm.');
   },
   centrarTV(){
     const tv=St.d.piezas.find(x=>x.t==='tv');if(!tv)return;
