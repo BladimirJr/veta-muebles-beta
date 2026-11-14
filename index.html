@@ -56,9 +56,6 @@ button{cursor:pointer}
 .btn-gde{min-height:54px;font-size:17px;padding-inline:26px}
 .btn-peq{min-height:38px;padding:6px 12px;font-size:14px}
 
-.beta{background:var(--cinta);color:var(--tinta);font-family:var(--mono);font-size:12.5px;line-height:1.35;padding-block:6px;padding-left:var(--gutter-i);padding-right:var(--gutter-d)}
-.beta-i{max-width:1240px;margin-inline:auto;display:flex;flex-wrap:wrap;gap:2px 12px;justify-content:center;text-align:center}
-.beta b{font-weight:500;text-transform:uppercase;letter-spacing:.08em}
 
 .cab{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--muro-hondo);color:var(--yeso);padding-left:var(--gutter-i);padding-right:var(--gutter-d)}
 .cab-i{max-width:1240px;margin-inline:auto;display:flex;align-items:center;gap:18px;min-height:62px;flex-wrap:wrap}
@@ -462,7 +459,6 @@ button{cursor:pointer}
   <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M7.5 2.9h9a4.6 4.6 0 0 1 4.6 4.6v9a4.6 4.6 0 0 1-4.6 4.6h-9a4.6 4.6 0 0 1-4.6-4.6v-9a4.6 4.6 0 0 1 4.6-4.6Z"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></symbol>
 </svg>
 
-<div class="beta"><div class="beta-i"><b>Beta</b><span>Imágenes, nombres, precios y acabados de prueba. Esta página todavía está en construcción.</span></div></div>
 
 <header class="cab" id="cab">
   <div class="cab-i">
@@ -511,7 +507,7 @@ button{cursor:pointer}
     </div>
     <div class="filtros" id="cat-filtros" role="group" aria-label="Filtrar por tipo de mueble"></div>
     <div class="cat-grid" id="cat-grid"></div>
-    <p class="nota nota-c">Las imágenes y los precios son de prueba. Aquí irán las fotos y los precios reales. Si personalizas un mueble, el precio se cotiza según tu diseño.</p>
+    <p class="nota nota-c">Las imágenes son ilustrativas. Si personalizas un mueble, el precio se cotiza según tu diseño.</p>
   </div>
 </section>
 
@@ -545,7 +541,7 @@ button{cursor:pointer}
       </ul>
       <button type="button" class="btn btn-p btn-gde" data-disenar="">Abrir el diseñador</button>
     </div>
-    <figure class="dis-fig"><img data-mini="muro" alt="Imagen de prueba de un centro de TV diseñado con la herramienta" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="></figure>
+    <figure class="dis-fig"><img data-mini="muro" alt="Centro de TV diseñado con la herramienta" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="></figure>
   </div>
 </section>
 
@@ -584,7 +580,7 @@ button{cursor:pointer}
   <div class="sec-i">
     <div class="sec-h">
       <h2>Maderas y acabados</h2>
-      <p>Toca una tabla para verla de cerca. Acabados de muestra para esta beta.</p>
+      <p>Toca una tabla para verla de cerca. Los colores en pantalla pueden variar un poco del acabado real.</p>
     </div>
     <div class="mad-rack" id="mad-rack"></div>
   </div>
@@ -634,7 +630,7 @@ button{cursor:pointer}
 
 <footer class="pie">
   <div class="sec-i pie-i">
-    <div><span class="marca-n" data-negocio>Taller El Arte</span><p>Beta para revisión. Imágenes, nombres, modelos, precios y acabados de prueba.</p></div>
+    <div><span class="marca-n" data-negocio>Taller El Arte</span><p>Muebles de madera hechos a tu medida.</p></div>
     <p class="pie-c">© <span class="ano"></span> <span data-negocio>Taller El Arte</span></p>
   </div>
 </footer>
@@ -704,7 +700,7 @@ V.NEGOCIO={
 };
 
 /* ─────────  PRECIOS DE CATÁLOGO (pesos colombianos)  ─────────
-   Son de prueba. Cambia cada valor por el precio real de ese modelo. */
+   Precio de cada modelo en el catálogo. */
 V.PRECIOS={
   horizonte:1350000,
   liston:1590000,
@@ -2966,7 +2962,7 @@ function medidaPrincipal(id){
 function msjModelo(p,pul){return 'Hola, me interesa el modelo '+p.nombre+' ('+p.tipo+', '+medidaPrincipal(p.id)+').'+(pul?' Mi TV es de '+pul+' pulgadas.':'')+' ¿Me pueden cotizar?';}
 function imgCat(p){
   const u=V.miniaturas[p.id];
-  return u?`<img alt="Imagen de prueba: ${p.nombre}" src="${u}">`:`<span class="plano">${V.svgFrente(V.crearDiseno(p.id),{conTV:true})}</span>`;
+  return u?`<img alt="${p.nombre}" src="${u}">`:`<span class="plano">${V.svgFrente(V.crearDiseno(p.id),{conTV:true})}</span>`;
 }
 function pintarFiltros(){
   $('#cat-filtros').innerHTML=V.CATEGORIAS.map(c=>{
