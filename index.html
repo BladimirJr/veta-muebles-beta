@@ -62,7 +62,15 @@ button{cursor:pointer}
 .marca{display:flex;align-items:baseline;gap:9px;color:inherit;text-decoration:none}
 .marca-n{font-family:var(--display);font-size:30px;font-weight:850;font-variation-settings:"wdth" 130,"wght" 850;letter-spacing:.01em;line-height:1}
 .marca small{font-family:var(--mono);font-size:11.5px;opacity:.72;display:none}
-@media(max-width:719px){.cab .marca-n{font-size:23px}}
+@media(max-width:719px){
+  .cab-i{gap:6px 8px}
+  .cab .marca-n{font-size:21px;white-space:nowrap}
+  .cab-acc{gap:6px}
+  .cab-acc .ic{width:38px;height:38px}
+  .cab-acc .btn-wa{width:38px;min-width:0;padding:0;border-radius:50%}
+  .cab-acc .btn-wa span{display:none}
+  .menu-btn{padding:4px 10px}
+}
 .nav{display:none;flex-basis:100%;order:3;flex-direction:column;padding-bottom:12px}
 .nav.abierto{display:flex}
 .nav a{color:inherit;text-decoration:none;padding:11px 0;border-top:1px solid var(--linea-c);font-weight:550}
