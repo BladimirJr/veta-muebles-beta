@@ -4452,6 +4452,13 @@ function iniciarFicha(){
 const PULG=V.PULGADAS;
 let pulg=55;
 const datosTV=V.tvMedidas;
+/* Texto dentro del TV: pulgadas y ancho en dos líneas, con la letra ajustada al ancho de la pantalla
+   para que quepa también en los TV pequeños (32″, 40″) */
+function txtTV(cx,cy,ancho,p,cm){
+  const ch=.62;                                   // ancho aproximado de cada letra (DM Mono) por px de letra
+  const fs=Math.max(8,Math.min(13,(ancho-8)/(5*ch)));
+  return `<text x="${cx}" y="${cy-1}" class="gd-tx" text-anchor="middle" style="font-size:${fs.toFixed(1)}px;font-weight:500">${p}″</text><text x="${cx}" y="${cy+fs-1}" class="gd-tx" text-anchor="middle" style="font-size:${(fs*.9).toFixed(1)}px;opacity:.85">${cm} cm</text>`;
+}
 function pintarGuia(){
   const t=datosTV(pulg);
   $('#g-pulg').innerHTML=PULG.map(p=>`<button type="button" class="filtro ${p===pulg?'on':''}" data-p="${p}" aria-pressed="${p===pulg}">${p}″</button>`).join('');
@@ -4462,7 +4469,7 @@ function pintarGuia(){
   const sw=t.ideal*sc/2,tw=t.w*sc/2,th=t.h*sc;
   $('#g-dib').innerHTML=`
     <rect x="${cx-tw}" y="${top-14-th}" width="${tw*2}" height="${th}" class="gd-tv"/>
-    <text x="${cx}" y="${top-14-th/2+5}" class="gd-tx" text-anchor="middle">${pulg}″ · ${Math.round(t.w)} cm</text>
+    ${txtTV(cx,top-14-th/2,tw*2,pulg,Math.round(t.w))}
     <rect x="${cx-sw}" y="${top}" width="${sw*2}" height="22" class="gd-base"/>
     <line x1="${cx-sw}" x2="${cx+sw}" y1="${top+36}" y2="${top+36}" class="gd-l"/>
     <line x1="${cx-sw}" x2="${cx-sw}" y1="${top+30}" y2="${top+42}" class="gd-l"/>
