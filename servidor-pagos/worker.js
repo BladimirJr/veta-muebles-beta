@@ -1,0 +1,107 @@
+/* Servidor de firma de pagos para Taller El Arte (Cloudflare Worker).
+
+   Wompi exige que cada cobro lleve una firma de integridad que se calcula con tu SECRETO DE INTEGRIDAD.
+   Ese secreto no puede estar en la página (cualquiera lo leería), así que la firma se hace aquí.
+
+   Lo que hace, en orden:
+   1. Solo responde a las páginas de ORIGENES (tallerelarte.com).
+   2. Revisa que la referencia, la moneda y las cantidades tengan sentido.
+   3. Lee los precios de catálogo de la propia página (V.PRECIOS) y calcula cuánto valen los muebles pedidos.
+   4. Solo firma si el monto está entre ese valor y ese valor + un tope de envío. Así nadie puede pagar
+      $1.000 por un mueble de $1.350.000 cambiando el código de la página en su navegador.
+   5. Devuelve { signature }, que la página le entrega al widget de Wompi.
+
+   No guarda nada: no hay base de datos ni datos de clientes aquí. */
+
+const REFERENCIA = /^TEA-[A-Z0-9]{1,12}-[A-Z0-9]{6,24}$/;
+const MAX_LINEAS = 20;
+
+let memoria = { t: 0, precios: null };
+
+function json(obj, estado, cabeceras) {
+  return new Response(JSON.stringify(obj), {
+    status: estado || 200,
+    headers: Object.assign({ 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }, cabeceras || {})
+  });
+}
+
+async function sha256hex(texto) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/* Precios en pesos por id de modelo. Salen de la página publicada; si no se pueden leer, no se firma nada. */
+export function extraerPrecios(html) {
+  const m = /V\.PRECIOS\s*=\s*\{([^}]*)\}/.exec(html || '');
+  if (!m) return null;
+  const precios = {};
+  for (const x of m[1].matchAll(/([A-Za-z0-9_]+)\s*:\s*(\d+)/g)) precios[x[1]] = parseInt(x[2], 10);
+  return Object.keys(precios).length ? precios : null;
+}
+
+async function cargarPrecios(env) {
+  if (env.PRECIOS) {
+    try { return JSON.parse(env.PRECIOS); } catch (e) { return null; }
+  }
+  if (memoria.precios && Date.now() - memoria.t < 60000) return memoria.precios;
+  try {
+    const r = await fetch(env.URL_SITIO || 'https://tallerelarte.com/', { cf: { cacheTtl: 60 } });
+    if (!r.ok) return null;
+    const precios = extraerPrecios(await r.text());
+    if (precios) memoria = { t: Date.now(), precios };
+    return precios;
+  } catch (e) {
+    return null;
+  }
+}
+
+export default {
+  async fetch(req, env) {
+    const url = new URL(req.url);
+    const origenes = String(env.ORIGENES || 'https://tallerelarte.com,https://www.tallerelarte.com').split(',').map(x => x.trim()).filter(Boolean);
+    const origen = req.headers.get('Origin') || '';
+    const permitido = origenes.includes(origen);
+    const cors = { Vary: 'Origin' };
+    if (permitido) Object.assign(cors, {
+      'Access-Control-Allow-Origin': origen,
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '86400'
+    });
+
+    if (req.method === 'OPTIONS') return new Response(null, { status: permitido ? 204 : 403, headers: cors });
+    if (url.pathname !== '/firmar') return json({ error: 'No encontrado' }, 404, cors);
+    if (req.method !== 'POST') return json({ error: 'Método no permitido' }, 405, cors);
+    if (!permitido) return json({ error: 'Origen no permitido' }, 403, cors);
+    if (!env.WOMPI_INTEGRITY_SECRET) return json({ error: 'Servidor sin configurar' }, 500, cors);
+
+    let b;
+    try { b = await req.json(); } catch (e) { return json({ error: 'JSON inválido' }, 400, cors); }
+    if (!b || typeof b !== 'object') return json({ error: 'Datos inválidos' }, 400, cors);
+
+    const { reference, amountInCents, currency, items } = b;
+    if (currency !== 'COP') return json({ error: 'Moneda no válida' }, 400, cors);
+    if (typeof reference !== 'string' || !REFERENCIA.test(reference)) return json({ error: 'Referencia no válida' }, 400, cors);
+    if (!Number.isSafeInteger(amountInCents) || amountInCents <= 0 || amountInCents % 100 !== 0) return json({ error: 'Monto no válido' }, 400, cors);
+    if (!Array.isArray(items) || items.length < 1 || items.length > MAX_LINEAS) return json({ error: 'Pedido no válido' }, 400, cors);
+
+    const precios = await cargarPrecios(env);
+    if (!precios) return json({ error: 'No se pudieron leer los precios. Intenta de nuevo.' }, 503, cors);
+
+    const maxUnidades = parseInt(env.MAX_UNIDADES || '9', 10);
+    let subtotal = 0;
+    for (const it of items) {
+      const precio = it && typeof it.id === 'string' && Object.prototype.hasOwnProperty.call(precios, it.id) ? precios[it.id] : null;
+      if (!precio || !Number.isInteger(it.n) || it.n < 1 || it.n > maxUnidades) return json({ error: 'Pedido no válido' }, 422, cors);
+      subtotal += precio * it.n;
+    }
+
+    /* El envío lo calcula la página con las tarifas de las transportadoras; aquí solo se le pone un techo. */
+    const tope = Math.max(parseInt(env.ENVIO_MAX_COP || '600000', 10), Math.round(subtotal * 0.3));
+    const pesos = amountInCents / 100;
+    if (pesos < subtotal || pesos > subtotal + tope) return json({ error: 'El monto no coincide con el pedido' }, 422, cors);
+
+    const signature = await sha256hex(reference + amountInCents + currency + env.WOMPI_INTEGRITY_SECRET);
+    return json({ signature }, 200, cors);
+  }
+};

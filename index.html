@@ -460,6 +460,39 @@ button{cursor:pointer}
 .pago h3{margin:0;font-family:var(--display);font-size:20px}
 .pago p{margin:0}
 .pago-tot{font-family:var(--display);font-size:30px;font-weight:800;line-height:1}
+.ic-carro{position:relative;background:none;border:0;padding:0;cursor:pointer}
+.ic-carro svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ic-carro b{position:absolute;right:-2px;top:1px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--cinta);color:var(--tinta);font-size:12px;font-weight:700;line-height:19px;text-align:center}
+.carro{border:0;padding:0;width:calc(100vw - 20px);max-width:620px;max-height:calc(100dvh - 20px);background:var(--papel);color:var(--tinta);border-radius:3px;overflow:auto}
+.carro::backdrop{background:rgba(26,16,10,.66)}
+.cr-c{padding:18px 16px 22px}
+.cr-h{font-family:var(--display);font-size:26px;line-height:1.1;margin:0 46px 10px 0}
+.cr-h small{font-size:.6em;font-weight:600;color:var(--tinta-suave)}
+.cr-sub{font-family:var(--display);font-size:20px;margin:6px 0 0}
+.cr-lista{list-style:none;margin:0;padding:0}
+.cr-it{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--linea)}
+.cr-img{aspect-ratio:4/3;background:var(--yeso-hondo);overflow:hidden}
+.cr-img img{display:block;width:100%;height:100%;object-fit:cover}
+.cr-info{display:grid;gap:2px;align-content:start;min-width:0}
+.cr-info small{font-size:13px;color:var(--tinta-suave)}
+.cr-n{display:flex;align-items:center;gap:6px;margin-top:6px}
+.cr-n output{min-width:24px;text-align:center;font-weight:700}
+.cr-b{width:36px;height:36px;border:1.5px solid var(--linea-f);background:none;border-radius:2px;font-size:20px;line-height:1}
+.cr-b:disabled{opacity:.35}
+.cr-n .enl{margin-left:8px;font-size:14px}
+.cr-pt{font-family:var(--display);font-size:17px;white-space:nowrap}
+.cr-res{display:grid;gap:10px;margin-top:14px}
+.cr-res .tk-int{margin:0}
+.cr-tot{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-top:2px solid var(--tinta);padding-top:10px}
+.cr-tot span{font-weight:600}
+.cr-tot b{font-family:var(--display);font-size:28px;font-weight:800;line-height:1;white-space:nowrap}
+.cr-vacio{display:grid;gap:12px;padding:18px 0 8px;justify-items:start}
+.cr-vacio p{margin:0}
+.cr-fin{display:grid;gap:12px}
+.cr-fin p{margin:0}
+.cr-seguir{justify-self:center;margin-top:10px}
+.cr-aviso{margin:0;padding:0 16px 14px}
+.cr-add{width:100%;margin-bottom:3px}
 .pago-prueba{padding:8px 10px;background:rgba(242,182,50,.18);border:1.5px dashed var(--cinta);font-size:13.5px;line-height:1.4}
 .form{display:grid;gap:11px;margin-top:20px}
 .form .p-sub{margin:-7px 0 2px}
@@ -496,6 +529,7 @@ button{cursor:pointer}
       <a href="#contacto" data-ir="contacto">Contacto</a>
     </nav>
     <div class="cab-acc">
+      <button type="button" class="ic ic-carro" id="cart-btn" data-carrito-abrir aria-label="Carrito vacío"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1.5 1.5 0 0 1-1.5 1.3H7.7a1.5 1.5 0 0 1-1.5-1.3L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><b id="cart-n" hidden>0</b></button>
       <a class="ic" data-ig aria-label="Instagram" href="https://www.instagram.com/"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>
       <a class="btn btn-wa btn-peq" data-wa="general" href="https://wa.me/"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg><span>WhatsApp</span></a>
       <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">Menú</button>
@@ -661,6 +695,12 @@ button{cursor:pointer}
 </footer>
 
 <a class="flota" data-wa="general" href="https://wa.me/" aria-label="Escribir por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg></a>
+
+<dialog id="carrito" class="carro" aria-label="Carrito de compras">
+  <button type="button" class="ficha-x" data-cr="cerrar" aria-label="Cerrar">×</button>
+  <div id="cr-c" class="cr-c"></div>
+  <p id="cr-aviso" class="err cr-aviso" role="alert" hidden></p>
+</dialog>
 
 <dialog id="ficha" class="ficha" aria-label="Detalle del producto">
   <button type="button" class="ficha-x" id="ficha-x" aria-label="Cerrar">×</button>
@@ -1237,10 +1277,10 @@ V.ciudadEnvio=function(t){
   if(E.zonaLocal.some(z=>s.includes(z)))return 'local';
   return Object.keys(E.ciudades).find(k=>s.includes(k))||null;
 };
-V.costoEnvio=function(d,ciudad,precio){
+V.costoEnvio=function(d,ciudad,precio,bultos){
   const E=V.ENVIO,c=V.ciudadEnvio(ciudad);
   if(!c)return null;
-  const B=V.bultosEnvio(d),decl=Math.round((precio||0)*E.declarado),kgT=B.reduce((a,b)=>a+b.kg,0)||1;
+  const B=bultos||V.bultosEnvio(d),decl=Math.round((precio||0)*E.declarado),kgT=B.reduce((a,b)=>a+b.kg,0)||1;
   if(c==='local'){const o={id:'local',n:'Entrega local',total:E.fleteLocal,dias:null};return{local:true,ciudad:c,opciones:[o],mejor:o,bultos:B,declarado:decl};}
   const ops=[];
   Object.keys(E.transportadoras).forEach(k=>{
@@ -1262,11 +1302,12 @@ V.costoEnvio=function(d,ciudad,precio){
 };
 
 /* ─────────  PAGOS (Wompi)  ─────────
-   El cliente paga el precio del mueble + el envío más barato, en un solo total.
+   El cliente paga el precio de los muebles + el envío más barato de todo el pedido, en un solo total.
    llavePublica: pub_test_… (pruebas) o pub_prod_… (real). Es pública, puede quedar aquí.
-   endpointFirma: URL de una función en un servidor que firma el pago con tu secreto de
-   integridad. Es OBLIGATORIA para cobrar de verdad: el secreto nunca debe estar en esta página.
-   En pruebas puedes dejar ambos vacíos y pegar tus llaves de prueba en el panel interno (?taller=1). */
+   endpointFirma: dirección del servidor que firma el pago con tu secreto de integridad (carpeta
+   servidor-pagos). Es OBLIGATORIA para cobrar de verdad: el secreto nunca debe estar en esta página.
+   Recibe { reference, amountInCents, currency, items:[{id,n}] } y responde { signature }.
+   En pruebas puedes dejar ambos vacíos y pegar tus llaves de prueba en el carrito con ?taller=1. */
 V.PAGOS={
   llavePublica:'',
   endpointFirma:'',
@@ -2569,9 +2610,7 @@ const acciones={
   veta(b){St.d.veta=b.dataset.id;dibujar();commit();pintarTab();},
   pared(b){St.d.pared=b.dataset.id;dibujar();commit();pintarTab();},
   copiar(b){copiarResumen(b);},
-  pagar(b){pagarWompi(b);},
-  pagoGuardar(){guardarPagoCfg();},
-  pagoReintentar(){pagoEstado=null;actualizarPago();}
+  alCarrito(){if(V.carrito&&St.d.perfil)V.carrito.agregar(St.d.perfil);}
 };
 function invalidar(){if(St.esc)St.esc.invalidar();}
 let tAviso=0;
@@ -2642,108 +2681,8 @@ function htmlInterno(){
 function actualizarEnvio(){
   const a=$('#tk-env');if(a)a.textContent=envioTexto().t;
   const b=$('#tk-int');if(b)b.innerHTML=htmlInterno();
-  actualizarPago();
 }
-/* ─── Pago con Wompi ─── */
-const PAGO_LS='taller-el-arte-wompi';
-let pagoEstado=null;
-function pagoCfg(){
-  let l={};try{l=JSON.parse(localStorage.getItem(PAGO_LS)||'{}');}catch(e){}
-  const P=V.PAGOS,llave=String(P.llavePublica||l.llave||'').trim(),secreto=String(l.secreto||'').trim(),endpoint=String(P.endpointFirma||'').trim();
-  const prueba=/^pub_test_/.test(llave);
-  return{llave,secreto,endpoint,prueba,listo:!!llave&&(endpoint?true:(prueba&&/^test_integrity_/.test(secreto)))};
-}
-async function sha256hex(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
-V.firmaPago=sha256hex;
-function totalPago(){
-  const d=St.d,pr=V.precioDe(d);
-  if(!pr||!St.form.ciudad.trim())return null;
-  const r=V.costoEnvio(d,St.form.ciudad,pr);
-  if(!r||!r.mejor)return null;
-  return{precio:pr,envio:r.mejor.total,total:pr+r.mejor.total};
-}
-function referenciaPago(){
-  return 'TEA-'+(limpiarVendedor(St.form.vendedor)||'SV')+'-'+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,5).toUpperCase();
-}
-function cargarWompi(){
-  return new Promise((ok,mal)=>{
-    if(window.WidgetCheckout)return ok();
-    const s=document.createElement('script');
-    s.src=V.PAGOS.checkoutJs;
-    s.onload=()=>window.WidgetCheckout?ok():mal(new Error('wompi'));
-    s.onerror=()=>mal(new Error('wompi'));
-    document.head.appendChild(s);
-  });
-}
-const PAGO_EST={APPROVED:'Pago aprobado',DECLINED:'Pago rechazado',ERROR:'Error en el pago',VOIDED:'Pago anulado',PENDING:'Pago en proceso'};
-function htmlPagoCfg(){
-  const c=pagoCfg();
-  return `<details class="tk-int pago-cfg"><summary><b>Pagos de prueba (Wompi)</b></summary>
-    <p class="nota">Pega las llaves de PRUEBA de tu cuenta Wompi (Desarrolladores). Se guardan solo en este navegador, no en la página.</p>
-    <div class="f-c"><label for="pg-llave">Llave pública (pub_test_…)</label><input id="pg-llave" autocomplete="off" value="${esc(c.llave)}"></div>
-    <div class="f-c"><label for="pg-sec">Secreto de integridad de pruebas (test_integrity_…)</label><input id="pg-sec" type="password" autocomplete="off" value="${esc(c.secreto)}"></div>
-    <button type="button" class="btn btn-t" data-a="pagoGuardar">Guardar llaves</button>
-    <p class="nota" id="pg-estado"></p>
-  </details>`;
-}
-function guardarPagoCfg(){
-  const ll=($('#pg-llave').value||'').trim(),se=($('#pg-sec').value||'').trim(),e=$('#pg-estado');
-  if(ll&&!/^pub_test_/.test(ll)){e.textContent='La llave pública de pruebas empieza con pub_test_. Las llaves reales no se guardan aquí.';return;}
-  if(se&&!/^test_integrity_/.test(se)){e.textContent='El secreto de pruebas empieza con test_integrity_. Nunca pegues aquí el secreto real.';return;}
-  try{localStorage.setItem(PAGO_LS,JSON.stringify({llave:ll,secreto:se}));}catch(x){e.textContent='Este navegador no dejó guardar las llaves.';return;}
-  e.textContent=(ll&&se)?'Listo. Escribe una ciudad con tarifa (Bogotá, Medellín o Cartagena) y aparece el botón de pago.':'Guardado. Faltan datos: se necesitan las dos llaves.';
-  pagoEstado=null;actualizarPago();
-}
-/* Solo se vuelve a dibujar si cambió: si no, un toque en el botón se pierde cuando el campo anterior pierde el foco */
-function pintarPago(h){const box=$('#f-pago');if(!box)return;box.hidden=!h;if(box.dataset.h!==h){box.innerHTML=h;box.dataset.h=h;}}
-function actualizarPago(){
-  if(!$('#f-pago'))return;
-  if(pagoEstado){mostrarPago();return;}
-  const c=pagoCfg(),t=totalPago();
-  if(!c.listo||!t){pintarPago('');return;}
-  pintarPago(`<h3>Pagar ahora</h3>
-    <div class="pago-tot">${V.dinero(t.total)}</div>
-    <p class="nota">Total con envío incluido a ${esc(St.form.ciudad.trim())}.</p>
-    ${c.prueba?'<div class="pago-prueba"><b>Modo de prueba: no se cobra dinero.</b> Tarjeta aprobada 4242 4242 4242 4242 · rechazada 4111 1111 1111 1111, con cualquier fecha futura y CVC de 3 dígitos. Nequi aprobado 3991111111 · rechazado 3992222222. En PSE elige "Banco que aprueba".</div>':''}
-    <button type="button" class="btn btn-o btn-gde" data-a="pagar">Pagar con Wompi</button>
-    <p class="nota">Con tarjeta, PSE, Nequi o Bancolombia, en el sitio seguro de Wompi.</p>`);
-}
-function mostrarPago(){
-  if(!$('#f-pago')||!pagoEstado)return;
-  const{tx,ref,t,prueba}=pagoEstado,est=tx.status||'',ok=est==='APPROVED',pend=est==='PENDING';
-  const msg=mensaje()+'\n\n*Pago con Wompi'+(prueba?' (PRUEBA)':'')+'*\nTotal: '+V.dinero(t.total)+' (envío incluido)\nReferencia: '+ref+'\nTransacción: '+tx.id+'\nEstado: '+est;
-  pintarPago(`<h3>${ok?'¡Pago aprobado!':pend?'Tu pago está en proceso':'El pago no se completó'}</h3>
-    ${prueba?'<div class="pago-prueba"><b>Fue una prueba: no se cobró dinero.</b></div>':''}
-    <p>${ok?'Gracias. Avísanos por WhatsApp para empezar con tu mueble.':pend?'Algunos medios, como PSE o Nequi, tardan en confirmar. Avísanos por WhatsApp con tu referencia.':'Estado: '+esc(PAGO_EST[est]||est)+'. Puedes intentarlo de nuevo con otro medio.'}</p>
-    <p class="nota mono">Referencia ${esc(ref)}<br>Transacción ${esc(String(tx.id))}</p>
-    ${ok||pend?`<a class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="${V.linkWA(msg)}">Avisar por WhatsApp</a>`:'<button type="button" class="btn btn-o btn-gde" data-a="pagoReintentar">Intentar de nuevo</button>'}`);
-}
-async function pagarWompi(b){
-  const c=pagoCfg(),t=totalPago(),f=St.form,v=validar(true);
-  if(!c.listo||!t)return;
-  if(!(v.nombre&&v.tel&&v.ciudad)){const k=Object.keys(v).find(x=>!v[x]),i=$('#f-'+k);if(i){i.focus();i.scrollIntoView({block:'center'});}return;}
-  const txt=b.textContent;b.disabled=true;b.textContent='Abriendo Wompi…';
-  try{
-    const ref=referenciaPago(),cents=t.total*100;
-    let firma;
-    if(c.endpoint){
-      const r=await fetch(c.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reference:ref,amountInCents:cents,currency:'COP'})});
-      if(!r.ok)throw new Error('firma');
-      firma=(await r.json()).signature;
-    }else firma=await sha256hex(ref+cents+'COP'+c.secreto);
-    await cargarWompi();
-    const tel=f.tel.replace(/\D/g,'').replace(/^57(?=\d{10}$)/,''),cd={fullName:f.nombre.trim()};
-    if(/^\d{10}$/.test(tel)){cd.phoneNumber=tel;cd.phoneNumberPrefix='+57';}
-    if(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.correo.trim()))cd.email=f.correo.trim();
-    const w=new window.WidgetCheckout({currency:'COP',amountInCents:cents,reference:ref,publicKey:c.llave,signature:{integrity:firma},customerData:cd});
-    w.open(res=>{
-      const tx=res&&res.transaction;
-      if(!tx)return;
-      pagoEstado={tx,ref,t,prueba:c.prueba};mostrarPago();
-    });
-  }catch(e){console.error('Pago:',e);aviso('No se pudo abrir el pago. Revisa tu conexión e inténtalo otra vez.');}
-  finally{b.disabled=false;b.textContent=txt;}
-}
+V.esTaller=esTaller;V.leerVendedor=leerVendedor;V.limpiarVendedor=limpiarVendedor;
 function htmlEnviar(){
   if(St.form.vendedor===undefined)St.form.vendedor=leerVendedor();
   const d=St.d,f=St.form,pedido=d.piezas.filter(q=>q.t!=='tv');
@@ -2759,7 +2698,7 @@ function htmlEnviar(){
     <div class="tk-foto">${foto}</div>
     <ul class="tk-lista">${filas||'<li>Agrega al menos una pieza para enviar.</li>'}</ul>
     <dl class="tk-dl"><div><dt>Madera</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div><div><dt>Envío</dt><dd id="tk-env">${envioTexto().t}</dd></div><div class="tk-pr"><dt>Precio</dt><dd>${pr?V.dinero(pr):'Personalizado: a cotizar'}</dd></div></dl>
-    ${esTaller()?`<div class="tk-int" id="tk-int">${htmlInterno()}</div>${htmlPagoCfg()}`:''}
+    ${esTaller()?`<div class="tk-int" id="tk-int">${htmlInterno()}</div>`:''}
     <details class="tk-desp"><summary>Ver despiece para el taller</summary><div class="tk-tabla"><table><thead><tr><th>Cant.</th><th>Pieza</th><th>cm</th></tr></thead><tbody>${desp}</tbody></table></div><p class="nota">Medidas aproximadas. Se confirman antes de fabricar.</p></details>
   </div>
   <form id="f-envio" class="form" novalidate>
@@ -2773,7 +2712,7 @@ function htmlEnviar(){
     ${sel('pared','Material de tu pared',PARED_OPC,f.pared)}
     ${sel('instala','¿Necesitas instalación?',INSTALA_OPC,f.instala)}
     <div class="f-c"><label for="f-notas">Algo más que debamos saber</label><textarea id="f-notas" data-f="notas" rows="3">${esc(f.notas)}</textarea></div>
-    <div id="f-pago" class="pago" hidden></div>
+    ${pr?`<div class="pago"><h3>Comprar en línea</h3><p>Este modelo tiene precio de catálogo: <b>${V.dinero(pr)}</b>. Agrégalo al carrito, escribe tu ciudad y paga con el envío incluido.</p><button type="button" class="btn btn-p btn-gde" data-a="alCarrito">Agregar al carrito</button></div>`:''}
     <a id="f-enviar" class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Enviar por WhatsApp</a>
     <p class="nota" id="f-nota-wa">Se abre WhatsApp con tu diseño escrito. Solo revisa y toca enviar.</p>
     <div id="f-luego" class="luego" hidden>
@@ -3185,6 +3124,296 @@ V.alActualizarMini=function(id,url){
 })();
 
 /* Tienda: portada interactiva, catálogo, ficha de producto, guía de medidas y contacto */
+/* ─────────  CARRITO Y PAGO EN LÍNEA (Wompi)  ─────────
+   El carrito lleva modelos del catálogo con su precio publicado (un diseño cambiado se cotiza por WhatsApp).
+   Lo que paga el cliente es el precio + el envío más barato de todo el pedido, en un solo total.
+   El cliente ve "envío incluido"; el costo real solo se ve con ?taller=1. */
+(function(){
+'use strict';
+const V=window.Veta;
+const $=(s,r)=>(r||document).querySelector(s),$$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dinero=V.dinero,LS='taller-el-arte-carrito',PAGO_LS='taller-el-arte-wompi',MAX_N=9;
+const perfil=id=>V.PERFILES.find(p=>p.id===id);
+
+function leer(){
+  try{
+    const a=JSON.parse(localStorage.getItem(LS)||'[]');
+    return Array.isArray(a)?a.filter(x=>x&&perfil(x.id)&&V.PRECIOS[x.id]).map(x=>({id:String(x.id),n:Math.max(1,Math.min(MAX_N,x.n|0))})):[];
+  }catch(e){return [];}
+}
+let items=leer(),pago=null,tAviso=0;
+const form={nombre:'',tel:'',ciudad:'',direccion:'',correo:'',vendedor:V.leerVendedor?V.leerVendedor():'',notas:''};
+const guardar=()=>{try{localStorage.setItem(LS,JSON.stringify(items));}catch(e){}};
+const cuenta=()=>items.reduce((a,i)=>a+i.n,0);
+const subtotal=()=>items.reduce((a,i)=>a+V.PRECIOS[i.id]*i.n,0);
+
+/* Envío de todo el pedido: se juntan los bultos de cada mueble y se elige la transportadora más barata */
+const cacheB={};
+function bultos(){
+  const B=[];
+  items.forEach(i=>{
+    const b=cacheB[i.id]||(cacheB[i.id]=V.bultosEnvio(V.crearDiseno(i.id)));
+    for(let k=0;k<i.n;k++)b.forEach(x=>B.push(x));
+  });
+  return B;
+}
+function envio(){
+  if(!items.length||!form.ciudad.trim())return null;
+  return V.costoEnvio(null,form.ciudad,subtotal(),bultos());
+}
+function total(){
+  const r=envio();
+  if(!r||!r.mejor)return null;
+  const s=subtotal();
+  return{sub:s,envio:r.mejor.total,total:s+r.mejor.total,r};
+}
+
+/* ─── Pago con Wompi ─── */
+function cfgPago(){
+  let l={};try{l=JSON.parse(localStorage.getItem(PAGO_LS)||'{}');}catch(e){}
+  const P=V.PAGOS,llave=String(P.llavePublica||l.llave||'').trim(),secreto=String(l.secreto||'').trim(),endpoint=String(P.endpointFirma||'').trim();
+  const prueba=/^pub_test_/.test(llave);
+  return{llave,secreto,endpoint,prueba,listo:!!llave&&(endpoint?true:(prueba&&/^test_integrity_/.test(secreto)))};
+}
+async function sha256hex(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+V.firmaPago=sha256hex;
+function referencia(){
+  return 'TEA-'+(V.limpiarVendedor(form.vendedor)||'SV')+'-'+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,5).toUpperCase();
+}
+function cargarWompi(){
+  return new Promise((ok,mal)=>{
+    if(window.WidgetCheckout)return ok();
+    const s=document.createElement('script');
+    s.src=V.PAGOS.checkoutJs;
+    s.onload=()=>window.WidgetCheckout?ok():mal(new Error('wompi'));
+    s.onerror=()=>mal(new Error('wompi'));
+    document.head.appendChild(s);
+  });
+}
+const PAGO_EST={APPROVED:'Pago aprobado',DECLINED:'Pago rechazado',ERROR:'Error en el pago',VOIDED:'Pago anulado',PENDING:'Pago en proceso'};
+
+/* ─── Textos y piezas de pantalla ─── */
+function medida(id){const d=V.crearDiseno(id),q=d.piezas.find(x=>x.t==='mueble')||d.piezas.find(x=>x.t==='repisa')||d.piezas[0];return V.medidasPieza(q);}
+function imagen(id){const u=V.miniaturas&&V.miniaturas[id];return u?`<img alt="" src="${u}">`:`<span class="plano">${V.svgFrente(V.crearDiseno(id),{conTV:true})}</span>`;}
+function mensaje(extra){
+  const f=form,L=[];
+  L.push('Hola'+(f.nombre.trim()?', soy '+f.nombre.trim():'')+'. Quiero hacer este pedido:');L.push('');
+  items.forEach((i,k)=>{const p=perfil(i.id);L.push((k+1)+'. *'+p.nombre+'* ('+p.tipo+', '+medida(i.id)+') × '+i.n+' — '+dinero(V.PRECIOS[i.id]*i.n));});
+  L.push('');
+  const t=total();
+  L.push(t?'Total con envío incluido: '+dinero(t.total):'Subtotal: '+dinero(subtotal())+' (envío por confirmar)');
+  L.push('');
+  if(f.ciudad.trim())L.push('Ciudad: '+f.ciudad.trim());
+  if(f.direccion.trim())L.push('Dirección: '+f.direccion.trim());
+  if(f.tel.trim())L.push('Mi WhatsApp: '+f.tel.trim());
+  if(f.correo.trim())L.push('Correo: '+f.correo.trim());
+  const v=V.limpiarVendedor(f.vendedor);if(v)L.push('Código de vendedor: '+v);
+  if(f.notas.trim()){L.push('');L.push('Notas: '+f.notas.trim());}
+  if(extra){L.push('');L.push(extra);}
+  return L.join('\n');
+}
+function validar(mostrar){
+  const ok={nombre:form.nombre.trim().length>1,tel:form.tel.replace(/\D/g,'').length>=7,ciudad:form.ciudad.trim().length>1};
+  if(mostrar)Object.keys(ok).forEach(k=>{const e=$(`#cr-form [data-err="${k}"]`);if(e)e.hidden=ok[k];const i=$('#cr-'+k);if(i)i.setAttribute('aria-invalid',ok[k]?'false':'true');});
+  return ok;
+}
+function enfocar(ok){const k=Object.keys(ok).find(x=>!ok[x]),i=k&&$('#cr-'+k);if(i){i.focus();i.scrollIntoView({block:'center'});}}
+function aviso(t){const a=$('#cr-aviso');if(!a)return;a.textContent=t;a.hidden=false;clearTimeout(tAviso);tAviso=setTimeout(()=>{a.hidden=true;},7000);}
+
+function htmlItem(i){
+  const p=perfil(i.id),pr=V.PRECIOS[i.id];
+  return `<li class="cr-it"><div class="cr-img">${imagen(i.id)}</div>
+    <div class="cr-info"><b>${esc(p.nombre)}</b><small>${esc(p.tipo)} · <span class="mono">${esc(medida(i.id))}</span></small><span class="mono">${dinero(pr)} c/u</span>
+      <div class="cr-n"><button type="button" class="cr-b" data-cr="menos" data-id="${i.id}" aria-label="Quitar uno">−</button><output aria-label="Cantidad">${i.n}</output><button type="button" class="cr-b" data-cr="mas" data-id="${i.id}" aria-label="Agregar uno" ${i.n>=MAX_N?'disabled':''}>+</button><button type="button" class="enl" data-cr="quitar" data-id="${i.id}">Quitar</button></div></div>
+    <b class="cr-pt">${dinero(pr*i.n)}</b></li>`;
+}
+function htmlForm(){
+  const f=form,c=(id,et,extra,err)=>`<div class="f-c"><label for="cr-${id}">${et}</label><input id="cr-${id}" data-cf="${id}" ${extra} value="${esc(f[id])}">${err?`<p class="err" data-err="${id}" hidden>${err}</p>`:''}</div>`;
+  return `<form class="form" id="cr-form" novalidate>
+    <h3 class="cr-sub">Tus datos</h3>
+    ${c('nombre','Tu nombre <em>*</em>','autocomplete="name"','Escribe tu nombre.')}
+    ${c('tel','Tu WhatsApp <em>*</em>','type="tel" inputmode="tel" autocomplete="tel"','Escribe un número válido, con al menos 7 dígitos.')}
+    ${c('ciudad','Ciudad de entrega <em>*</em>','autocomplete="address-level2"','Escribe la ciudad donde recibes el mueble.')}
+    ${c('direccion','Dirección y barrio (opcional)','autocomplete="street-address"','')}
+    ${c('correo','Correo (opcional)','type="email" inputmode="email" autocomplete="email"','')}
+    ${c('vendedor','Código de vendedor (opcional)','autocomplete="off" autocapitalize="characters"','')}
+    <div class="f-c"><label for="cr-notas">Algo más que debamos saber</label><textarea id="cr-notas" data-cf="notas" rows="2">${esc(f.notas)}</textarea></div>
+  </form>`;
+}
+/* Lo que ve solo el taller: costo real y mejor transportadora */
+function htmlInterno(){
+  let h='<b>Interno · el cliente no ve esto</b>';
+  if(!form.ciudad.trim())return h+'<p>Escribe la ciudad para calcular el envío.</p>';
+  const r=envio();
+  if(!r)return h+'<p>Esa ciudad no tiene tarifa cargada. Cotízala a mano o agrégala en V.ENVIO.</p>';
+  const dias=n=>n?' · '+n+(n===1?' día':' días'):'';
+  h+=`<p class="tk-mejor">${esc(r.mejor.n)}: <b>${dinero(r.mejor.total)}</b>${dias(r.mejor.dias)}</p>`;
+  if(r.opciones.length>1)h+='<table><tbody>'+r.opciones.map(o=>`<tr><td>${esc(o.n)}${o.aprox?' (aprox.)':''}</td><td class="mono">${dinero(o.total)}</td><td>${o.dias?o.dias+(o.dias===1?' día':' días'):'—'}</td></tr>`).join('')+'</tbody></table>';
+  if(!r.local){
+    h+=`<p class="nota">${r.bultos.length} ${r.bultos.length===1?'bulto':'bultos'}: ${r.bultos.map(b=>V.cm(b.L)+' × '+V.cm(b.A)+' × '+V.cm(b.E)+' cm, '+V.cm(Math.round(b.kg*10)/10)+' kg').join(' · ')}<br>Valor declarado (${Math.round(V.ENVIO.declarado*100)}%): ${dinero(r.declarado)}</p>`;
+    h+=`<p class="nota">Peso estimado con ${V.ENVIO.densidad} kg/m³ de densidad: ajústalo con el peso real de tu lámina.</p>`;
+  }
+  h+=`<p>Cobrar con envío incluido: ${dinero(subtotal())} + ${dinero(r.mejor.total)} = <b>${dinero(subtotal()+r.mejor.total)}</b></p>`;
+  return h;
+}
+function modoTexto(c){return c.listo?(c.endpoint?'Pagos listos: la firma sale de tu servidor.':'Modo de prueba: la firma se hace en este navegador con tu secreto de PRUEBA. Los clientes no ven el botón de pago.'):'El pago en línea está apagado: el cliente solo ve «Pedir por WhatsApp».';}
+function htmlCfg(){
+  const c=cfgPago();
+  return `<details class="tk-int pago-cfg"><summary><b>Pagos en línea (solo el taller lo ve)</b></summary>
+    <p class="nota" id="pg-modo">${modoTexto(c)}</p>
+    <p class="nota">Para pruebas, pega las llaves de PRUEBA de tu cuenta Wompi (Desarrolladores). Se guardan solo en este navegador, no en la página. Para cobrar de verdad hace falta el servidor de la carpeta servidor-pagos y poner su dirección y tu llave pública en V.PAGOS.</p>
+    <div class="f-c"><label for="pg-llave">Llave pública (pub_test_…)</label><input id="pg-llave" autocomplete="off" value="${esc(c.llave)}"></div>
+    <div class="f-c"><label for="pg-sec">Secreto de integridad de pruebas (test_integrity_…)</label><input id="pg-sec" type="password" autocomplete="off" value="${esc(c.secreto)}"></div>
+    <button type="button" class="btn btn-t" data-cr="guardarllaves">Guardar llaves</button>
+    <p class="nota" id="pg-estado"></p>
+  </details>`;
+}
+function guardarCfg(){
+  const ll=($('#pg-llave').value||'').trim(),se=($('#pg-sec').value||'').trim(),e=$('#pg-estado');
+  if(ll&&!/^pub_test_/.test(ll)){e.textContent='La llave pública de pruebas empieza con pub_test_. Las llaves reales no se guardan aquí.';return;}
+  if(se&&!/^test_integrity_/.test(se)){e.textContent='El secreto de pruebas empieza con test_integrity_. Nunca pegues aquí el secreto real.';return;}
+  try{localStorage.setItem(PAGO_LS,JSON.stringify({llave:ll,secreto:se}));}catch(x){e.textContent='Este navegador no dejó guardar las llaves.';return;}
+  e.textContent=(ll&&se)?'Listo. Escribe una ciudad con tarifa (Bogotá, Medellín o Cartagena) y aparece el botón de pago.':'Guardado. Faltan datos: se necesitan las dos llaves.';
+  const m=$('#pg-modo');if(m)m.textContent=modoTexto(cfgPago());
+  actualizarRes();
+}
+function htmlRes(){
+  const c=cfgPago(),t=total(),ci=form.ciudad.trim(),s=subtotal();
+  let h='';
+  if(!ci)h+=`<p class="nota">Escribe tu ciudad para calcular el envío.</p><div class="cr-tot"><span>Total sin envío</span><b>${dinero(s)}</b></div>`;
+  else if(t)h+=`<div class="cr-tot"><span>Total con envío incluido a ${esc(ci)}</span><b>${dinero(t.total)}</b></div>`;
+  else h+=`<p class="nota">Todavía no tenemos el envío a ${esc(ci)} en línea: te lo confirmamos por WhatsApp.</p><div class="cr-tot"><span>Subtotal</span><b>${dinero(s)}</b></div>`;
+  if(V.esTaller())h+=`<div class="tk-int">${htmlInterno()}</div>`;
+  if(c.listo&&t){
+    if(c.prueba)h+='<div class="pago-prueba"><b>Modo de prueba: no se cobra dinero.</b> Tarjeta aprobada 4242 4242 4242 4242 · rechazada 4111 1111 1111 1111, con cualquier fecha futura y CVC de 3 dígitos. Nequi aprobado 3991111111 · rechazado 3992222222. En PSE elige "Banco que aprueba".</div>';
+    h+=`<button type="button" class="btn btn-p btn-gde" data-cr="pagar">Pagar ${dinero(t.total)} con Wompi</button><p class="nota">Con tarjeta, PSE, Nequi o Bancolombia, en el sitio seguro de Wompi.</p>`;
+  }
+  h+=`<a id="cr-wa" class="btn ${c.listo&&t?'btn-t':'btn-wa'} btn-gde" target="_blank" rel="noopener" href="${V.linkWA(mensaje())}"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Pedir por WhatsApp</a>
+    <p class="nota">${c.listo&&t?'Si prefieres, haz el pedido por WhatsApp y acordamos el pago contigo.':'Se abre WhatsApp con tu pedido escrito. Solo revisa y toca enviar; te confirmamos el pago y los tiempos.'}</p>`;
+  return h;
+}
+function htmlFin(){
+  const{tx,ref,t,prueba,msj}=pago,est=tx.status||'',ok=est==='APPROVED',pend=est==='PENDING';
+  const texto=msj+'\n\n*Pago con Wompi'+(prueba?' (PRUEBA)':'')+'*\nTotal: '+dinero(t.total)+' (envío incluido)\nReferencia: '+ref+'\nTransacción: '+tx.id+'\nEstado: '+est;
+  return `<div class="cr-fin"><h2 class="cr-h">${ok?'¡Pago aprobado!':pend?'Tu pago está en proceso':'El pago no se completó'}</h2>
+    ${prueba?'<div class="pago-prueba"><b>Fue una prueba: no se cobró dinero.</b></div>':''}
+    <p>${ok?'Gracias. Avísanos por WhatsApp para empezar con tu mueble.':pend?'Algunos medios, como PSE o Nequi, tardan en confirmar. Avísanos por WhatsApp con tu referencia.':'Estado: '+esc(PAGO_EST[est]||est)+'. Puedes intentarlo de nuevo con otro medio.'}</p>
+    <p class="nota mono">Referencia ${esc(ref)}<br>Transacción ${esc(String(tx.id))}</p>
+    ${ok||pend?`<a class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="${V.linkWA(texto)}"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Avisar por WhatsApp</a><button type="button" class="btn btn-t" data-cr="${ok?'cerrar':'volver'}">${ok?'Cerrar':'Volver al carrito'}</button>`:'<button type="button" class="btn btn-o btn-gde" data-cr="volver">Intentar de nuevo</button>'}</div>`;
+}
+
+/* ─── Pintar ─── */
+function actualizarContador(){
+  const n=cuenta(),b=$('#cart-n'),btn=$('#cart-btn');
+  if(b){b.textContent=n;b.hidden=!n;}
+  if(btn)btn.setAttribute('aria-label',n?'Carrito, '+n+(n===1?' mueble':' muebles'):'Carrito vacío');
+}
+/* Solo se vuelve a dibujar si cambió: si no, un toque en el botón se pierde cuando el campo anterior pierde el foco */
+function actualizarRes(){
+  const b=$('#cr-res');if(!b)return;
+  const h=htmlRes();
+  if(b.dataset.h!==h){b.innerHTML=h;b.dataset.h=h;}
+}
+function pintar(){
+  const c=$('#cr-c');if(!c)return;
+  if(pago){c.innerHTML=htmlFin();actualizarContador();return;}
+  if(!items.length){
+    c.innerHTML=`<div class="cr-vacio"><h2 class="cr-h">Tu carrito está vacío</h2><p>Agrega muebles del catálogo y paga con el envío incluido.</p><button type="button" class="btn btn-p btn-gde" data-cr="catalogo">Ver el catálogo</button></div>${V.esTaller()?htmlCfg():''}`;
+  }else{
+    c.innerHTML=`<h2 class="cr-h">Tu carrito <small>(${cuenta()})</small></h2>
+      <ul class="cr-lista">${items.map(htmlItem).join('')}</ul>
+      ${htmlForm()}
+      <div id="cr-res" class="cr-res"></div>
+      ${V.esTaller()?htmlCfg():''}
+      <button type="button" class="enl cr-seguir" data-cr="cerrar">Seguir viendo muebles</button>`;
+    actualizarRes();
+  }
+  actualizarContador();
+}
+function abrir(){
+  const d=$('#carrito');if(!d)return;
+  if(form.vendedor===''&&V.leerVendedor)form.vendedor=V.leerVendedor();
+  pintar();
+  if(!d.open){if(d.showModal)d.showModal();else d.setAttribute('open','');}
+}
+function cerrar(){const d=$('#carrito');if(d&&d.open)d.close();}
+function agregar(id){
+  if(!perfil(id)||!V.PRECIOS[id])return;
+  pago=null;
+  const e=items.find(i=>i.id===id);
+  if(e)e.n=Math.min(MAX_N,e.n+1);else items.push({id,n:1});
+  guardar();abrir();
+}
+function cambiar(id,d){
+  const e=items.find(i=>i.id===id);if(!e)return;
+  e.n=Math.max(0,Math.min(MAX_N,e.n+d));
+  if(!e.n)items=items.filter(i=>i!==e);
+  guardar();pintar();
+}
+async function pagar(b){
+  const c=cfgPago(),t=total();
+  if(!c.listo||!t)return;
+  const v=validar(true);
+  if(!(v.nombre&&v.tel&&v.ciudad)){enfocar(v);return;}
+  const txt=b.textContent;b.disabled=true;b.textContent='Abriendo Wompi…';
+  try{
+    const ref=referencia(),cents=t.total*100;
+    let firma;
+    if(c.endpoint){
+      const r=await fetch(c.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reference:ref,amountInCents:cents,currency:'COP',items:items.map(i=>({id:i.id,n:i.n}))})});
+      if(!r.ok)throw new Error('firma '+r.status);
+      firma=(await r.json()).signature;
+    }else firma=await sha256hex(ref+cents+'COP'+c.secreto);
+    await cargarWompi();
+    const f=form,tel=f.tel.replace(/\D/g,'').replace(/^57(?=\d{10}$)/,''),cd={fullName:f.nombre.trim()};
+    if(/^\d{10}$/.test(tel)){cd.phoneNumber=tel;cd.phoneNumberPrefix='+57';}
+    if(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.correo.trim()))cd.email=f.correo.trim();
+    const snap=mensaje();   // el pedido tal como se pagó, por si el carrito se vacía
+    const w=new window.WidgetCheckout({currency:'COP',amountInCents:cents,reference:ref,publicKey:c.llave,signature:{integrity:firma},customerData:cd});
+    w.open(res=>{
+      const tx=res&&res.transaction;
+      if(!tx)return;
+      pago={tx,ref,t:{total:t.total},prueba:c.prueba,msj:snap};
+      if(tx.status==='APPROVED'){items=[];guardar();}
+      pintar();
+    });
+  }catch(e){console.error('Pago:',e);aviso('No se pudo abrir el pago. Revisa tu conexión e inténtalo otra vez.');}
+  finally{b.disabled=false;b.textContent=txt;}
+}
+
+/* ─── Eventos ─── */
+const dlg=$('#carrito');
+if(dlg){
+  dlg.addEventListener('click',e=>{
+    if(e.target===dlg){dlg.close();return;}
+    if(e.target.closest('#cr-wa')){
+      const ok=validar(true);
+      if(!(ok.nombre&&ok.tel&&ok.ciudad)){e.preventDefault();enfocar(ok);}
+      return;
+    }
+    const b=e.target.closest('[data-cr]');if(!b)return;
+    const a=b.dataset.cr,id=b.dataset.id;
+    if(a==='mas')cambiar(id,1);
+    else if(a==='menos')cambiar(id,-1);
+    else if(a==='quitar')cambiar(id,-MAX_N);
+    else if(a==='pagar')pagar(b);
+    else if(a==='guardarllaves')guardarCfg();
+    else if(a==='volver'){pago=null;pintar();}
+    else if(a==='cerrar'){pago=null;dlg.close();}
+    else if(a==='catalogo'){dlg.close();const s=document.getElementById('catalogo');if(s)s.scrollIntoView({block:'start'});}
+  });
+  dlg.addEventListener('input',e=>{
+    const k=e.target.dataset&&e.target.dataset.cf;if(!k)return;
+    form[k]=e.target.value;actualizarRes();
+    if(e.target.getAttribute('aria-invalid')==='true')validar(true);
+  });
+  dlg.addEventListener('close',()=>{if(pago&&pago.tx.status==='APPROVED')pago=null;});
+}
+V.carrito={agregar,abrir,cerrar,cuenta};
+actualizarContador();
+})();
+
 (function(){
 'use strict';
 const V=window.Veta,cm=V.cm,clamp=V.clamp;
@@ -3231,6 +3460,9 @@ function iniciarNavegacion(){
       $('#nav').classList.remove('abierto');$('#menu-btn').setAttribute('aria-expanded','false');
       return;
     }
+    const ca=e.target.closest('[data-carrito]');
+    if(ca){e.preventDefault();const f=$('#ficha');if(f.open)f.close();V.carrito.agregar(ca.dataset.carrito);return;}
+    if(e.target.closest('[data-carrito-abrir]')){e.preventDefault();V.carrito.abrir();return;}
     const dis=e.target.closest('[data-disenar]');
     if(dis){e.preventDefault();const f=$('#ficha');if(f.open)f.close();V.abrirDisenador(dis.dataset.disenar||null,dis.dataset.disenar?{}:{tab:'perfil'});return;}
     const fi=e.target.closest('[data-ficha]');
@@ -3268,6 +3500,7 @@ function pintarCatalogo(){
       <p class="mono card-d">${medidaPrincipal(p.id)}</p>
       <p class="card-p">${V.dinero(V.PRECIOS[p.id])}</p>
       <div class="card-acc">
+        <button type="button" class="btn btn-p btn-peq cr-add" data-carrito="${p.id}">Agregar al carrito</button>
         <button type="button" class="enl" data-disenar="${p.id}">Personalizar</button>
         <a class="enl enl-s" href="${V.linkWA(msjModelo(p))}" target="_blank" rel="noopener">Cotizar</a>
       </div>
@@ -3302,7 +3535,8 @@ function abrirFicha(id){
       ${tv&&base?`<div class="fi-tv"><h3>¿De cuántas pulgadas es tu TV?</h3><div class="chips" id="fi-pulg">${V.PULGADAS.map(x=>`<button type="button" class="chip ${x===pAct?'on':''}" data-fp="${x}" aria-pressed="${x===pAct}">${x}″</button>`).join('')}</div><p class="nota" id="fi-reco">${recoFicha(pAct,base)}</p></div>`:''}
       <p class="nota">Precio de referencia con estas medidas y esta madera (${V.MADERAS[d.madera].n}). Si cambias algo, te lo cotizamos.</p>
       <div class="fi-acc">
-        <button type="button" class="btn btn-p" data-disenar="${p.id}">Personalizar este mueble</button>
+        <button type="button" class="btn btn-p btn-gde" data-carrito="${p.id}">Agregar al carrito · ${V.dinero(V.PRECIOS[p.id])}</button>
+        <button type="button" class="btn btn-t" data-disenar="${p.id}">Personalizar este mueble</button>
         <a class="btn btn-wa" id="fi-wa" href="${V.linkWA(msjModelo(p,pAct))}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Cotizar por WhatsApp</a>
       </div>
     </div>`;

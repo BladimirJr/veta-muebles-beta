@@ -1,0 +1,11 @@
+name = "taller-el-arte-pagos"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# Estos valores NO son secretos. El secreto de Wompi se sube aparte (ver README.md).
+[vars]
+ORIGENES = "https://tallerelarte.com,https://www.tallerelarte.com"
+URL_SITIO = "https://tallerelarte.com/"
+# Tope de envío que se acepta por encima del precio de los muebles (el mayor entre este valor y el 30% del pedido)
+ENVIO_MAX_COP = "600000"
+MAX_UNIDADES = "9"
