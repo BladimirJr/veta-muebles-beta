@@ -450,6 +450,12 @@ button{cursor:pointer}
 .tk-int table{width:100%;border-collapse:collapse;font-size:13.5px}
 .tk-int td{padding:2px 6px 2px 0;border-bottom:1px solid var(--linea)}
 .tk-int .nota{font-size:12.5px;color:var(--tinta-suave)}
+.pago-cfg summary{cursor:pointer}
+.pago{margin:6px 0 14px;padding:14px;border:2px solid var(--tinta);display:grid;gap:9px}
+.pago h3{margin:0;font-family:var(--display);font-size:20px}
+.pago p{margin:0}
+.pago-tot{font-family:var(--display);font-size:30px;font-weight:800;line-height:1}
+.pago-prueba{padding:8px 10px;background:rgba(242,182,50,.18);border:1.5px dashed var(--cinta);font-size:13.5px;line-height:1.4}
 .form{display:grid;gap:11px;margin-top:20px}
 .form .p-sub{margin:-7px 0 2px}
 .f-c{display:grid;gap:3px;min-width:0}
@@ -1248,6 +1254,18 @@ V.costoEnvio=function(d,ciudad,precio){
   });
   ops.sort((a,b)=>a.total-b.total);
   return ops.length?{ciudad:c,opciones:ops,mejor:ops[0],bultos:B,declarado:decl}:null;
+};
+
+/* ─────────  PAGOS (Wompi)  ─────────
+   El cliente paga el precio del mueble + el envío más barato, en un solo total.
+   llavePublica: pub_test_… (pruebas) o pub_prod_… (real). Es pública, puede quedar aquí.
+   endpointFirma: URL de una función en un servidor que firma el pago con tu secreto de
+   integridad. Es OBLIGATORIA para cobrar de verdad: el secreto nunca debe estar en esta página.
+   En pruebas puedes dejar ambos vacíos y pegar tus llaves de prueba en el panel interno (?taller=1). */
+V.PAGOS={
+  llavePublica:'',
+  endpointFirma:'',
+  checkoutJs:'https://checkout.wompi.co/widget.js'
 };
 
 V.tips=function(d,q){
@@ -2545,7 +2563,10 @@ const acciones={
   tirador(b){St.d.tirador=b.dataset.id;dibujar();commit();pintarTab();},
   veta(b){St.d.veta=b.dataset.id;dibujar();commit();pintarTab();},
   pared(b){St.d.pared=b.dataset.id;dibujar();commit();pintarTab();},
-  copiar(b){copiarResumen(b);}
+  copiar(b){copiarResumen(b);},
+  pagar(b){pagarWompi(b);},
+  pagoGuardar(){guardarPagoCfg();},
+  pagoReintentar(){pagoEstado=null;actualizarPago();}
 };
 function invalidar(){if(St.esc)St.esc.invalidar();}
 let tAviso=0;
@@ -2616,6 +2637,107 @@ function htmlInterno(){
 function actualizarEnvio(){
   const a=$('#tk-env');if(a)a.textContent=envioTexto().t;
   const b=$('#tk-int');if(b)b.innerHTML=htmlInterno();
+  actualizarPago();
+}
+/* ─── Pago con Wompi ─── */
+const PAGO_LS='taller-el-arte-wompi';
+let pagoEstado=null;
+function pagoCfg(){
+  let l={};try{l=JSON.parse(localStorage.getItem(PAGO_LS)||'{}');}catch(e){}
+  const P=V.PAGOS,llave=String(P.llavePublica||l.llave||'').trim(),secreto=String(l.secreto||'').trim(),endpoint=String(P.endpointFirma||'').trim();
+  const prueba=/^pub_test_/.test(llave);
+  return{llave,secreto,endpoint,prueba,listo:!!llave&&(endpoint?true:(prueba&&/^test_integrity_/.test(secreto)))};
+}
+async function sha256hex(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+V.firmaPago=sha256hex;
+function totalPago(){
+  const d=St.d,pr=V.precioDe(d);
+  if(!pr||!St.form.ciudad.trim())return null;
+  const r=V.costoEnvio(d,St.form.ciudad,pr);
+  if(!r||!r.mejor)return null;
+  return{precio:pr,envio:r.mejor.total,total:pr+r.mejor.total};
+}
+function referenciaPago(){
+  return 'TEA-'+(limpiarVendedor(St.form.vendedor)||'SV')+'-'+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,5).toUpperCase();
+}
+function cargarWompi(){
+  return new Promise((ok,mal)=>{
+    if(window.WidgetCheckout)return ok();
+    const s=document.createElement('script');
+    s.src=V.PAGOS.checkoutJs;
+    s.onload=()=>window.WidgetCheckout?ok():mal(new Error('wompi'));
+    s.onerror=()=>mal(new Error('wompi'));
+    document.head.appendChild(s);
+  });
+}
+const PAGO_EST={APPROVED:'Pago aprobado',DECLINED:'Pago rechazado',ERROR:'Error en el pago',VOIDED:'Pago anulado',PENDING:'Pago en proceso'};
+function htmlPagoCfg(){
+  const c=pagoCfg();
+  return `<details class="tk-int pago-cfg"><summary><b>Pagos de prueba (Wompi)</b></summary>
+    <p class="nota">Pega las llaves de PRUEBA de tu cuenta Wompi (Desarrolladores). Se guardan solo en este navegador, no en la página.</p>
+    <div class="f-c"><label for="pg-llave">Llave pública (pub_test_…)</label><input id="pg-llave" autocomplete="off" value="${esc(c.llave)}"></div>
+    <div class="f-c"><label for="pg-sec">Secreto de integridad de pruebas (test_integrity_…)</label><input id="pg-sec" type="password" autocomplete="off" value="${esc(c.secreto)}"></div>
+    <button type="button" class="btn btn-t" data-a="pagoGuardar">Guardar llaves</button>
+    <p class="nota" id="pg-estado"></p>
+  </details>`;
+}
+function guardarPagoCfg(){
+  const ll=($('#pg-llave').value||'').trim(),se=($('#pg-sec').value||'').trim(),e=$('#pg-estado');
+  if(ll&&!/^pub_test_/.test(ll)){e.textContent='La llave pública de pruebas empieza con pub_test_. Las llaves reales no se guardan aquí.';return;}
+  if(se&&!/^test_integrity_/.test(se)){e.textContent='El secreto de pruebas empieza con test_integrity_. Nunca pegues aquí el secreto real.';return;}
+  try{localStorage.setItem(PAGO_LS,JSON.stringify({llave:ll,secreto:se}));}catch(x){e.textContent='Este navegador no dejó guardar las llaves.';return;}
+  e.textContent=(ll&&se)?'Listo. Escribe una ciudad con tarifa (Bogotá, Medellín o Cartagena) y aparece el botón de pago.':'Guardado. Faltan datos: se necesitan las dos llaves.';
+  pagoEstado=null;actualizarPago();
+}
+/* Solo se vuelve a dibujar si cambió: si no, un toque en el botón se pierde cuando el campo anterior pierde el foco */
+function pintarPago(h){const box=$('#f-pago');if(!box)return;box.hidden=!h;if(box.dataset.h!==h){box.innerHTML=h;box.dataset.h=h;}}
+function actualizarPago(){
+  if(!$('#f-pago'))return;
+  if(pagoEstado){mostrarPago();return;}
+  const c=pagoCfg(),t=totalPago();
+  if(!c.listo||!t){pintarPago('');return;}
+  pintarPago(`<h3>Pagar ahora</h3>
+    <div class="pago-tot">${V.dinero(t.total)}</div>
+    <p class="nota">Total con envío incluido a ${esc(St.form.ciudad.trim())}.</p>
+    ${c.prueba?'<div class="pago-prueba"><b>Modo de prueba: no se cobra dinero.</b> Tarjeta aprobada 4242 4242 4242 4242 · rechazada 4111 1111 1111 1111, con cualquier fecha futura y CVC de 3 dígitos. Nequi aprobado 3991111111 · rechazado 3992222222. En PSE elige "Banco que aprueba".</div>':''}
+    <button type="button" class="btn btn-o btn-gde" data-a="pagar">Pagar con Wompi</button>
+    <p class="nota">Con tarjeta, PSE, Nequi o Bancolombia, en el sitio seguro de Wompi.</p>`);
+}
+function mostrarPago(){
+  if(!$('#f-pago')||!pagoEstado)return;
+  const{tx,ref,t,prueba}=pagoEstado,est=tx.status||'',ok=est==='APPROVED',pend=est==='PENDING';
+  const msg=mensaje()+'\n\n*Pago con Wompi'+(prueba?' (PRUEBA)':'')+'*\nTotal: '+V.dinero(t.total)+' (envío incluido)\nReferencia: '+ref+'\nTransacción: '+tx.id+'\nEstado: '+est;
+  pintarPago(`<h3>${ok?'¡Pago aprobado!':pend?'Tu pago está en proceso':'El pago no se completó'}</h3>
+    ${prueba?'<div class="pago-prueba"><b>Fue una prueba: no se cobró dinero.</b></div>':''}
+    <p>${ok?'Gracias. Avísanos por WhatsApp para empezar con tu mueble.':pend?'Algunos medios, como PSE o Nequi, tardan en confirmar. Avísanos por WhatsApp con tu referencia.':'Estado: '+esc(PAGO_EST[est]||est)+'. Puedes intentarlo de nuevo con otro medio.'}</p>
+    <p class="nota mono">Referencia ${esc(ref)}<br>Transacción ${esc(String(tx.id))}</p>
+    ${ok||pend?`<a class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="${V.linkWA(msg)}">Avisar por WhatsApp</a>`:'<button type="button" class="btn btn-o btn-gde" data-a="pagoReintentar">Intentar de nuevo</button>'}`);
+}
+async function pagarWompi(b){
+  const c=pagoCfg(),t=totalPago(),f=St.form,v=validar(true);
+  if(!c.listo||!t)return;
+  if(!(v.nombre&&v.tel&&v.ciudad)){const k=Object.keys(v).find(x=>!v[x]),i=$('#f-'+k);if(i){i.focus();i.scrollIntoView({block:'center'});}return;}
+  const txt=b.textContent;b.disabled=true;b.textContent='Abriendo Wompi…';
+  try{
+    const ref=referenciaPago(),cents=t.total*100;
+    let firma;
+    if(c.endpoint){
+      const r=await fetch(c.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reference:ref,amountInCents:cents,currency:'COP'})});
+      if(!r.ok)throw new Error('firma');
+      firma=(await r.json()).signature;
+    }else firma=await sha256hex(ref+cents+'COP'+c.secreto);
+    await cargarWompi();
+    const tel=f.tel.replace(/\D/g,'').replace(/^57(?=\d{10}$)/,''),cd={fullName:f.nombre.trim()};
+    if(/^\d{10}$/.test(tel)){cd.phoneNumber=tel;cd.phoneNumberPrefix='+57';}
+    if(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.correo.trim()))cd.email=f.correo.trim();
+    const w=new window.WidgetCheckout({currency:'COP',amountInCents:cents,reference:ref,publicKey:c.llave,signature:{integrity:firma},customerData:cd});
+    w.open(res=>{
+      const tx=res&&res.transaction;
+      if(!tx)return;
+      pagoEstado={tx,ref,t,prueba:c.prueba};mostrarPago();
+    });
+  }catch(e){console.error('Pago:',e);aviso('No se pudo abrir el pago. Revisa tu conexión e inténtalo otra vez.');}
+  finally{b.disabled=false;b.textContent=txt;}
 }
 function htmlEnviar(){
   if(St.form.vendedor===undefined)St.form.vendedor=leerVendedor();
@@ -2632,7 +2754,7 @@ function htmlEnviar(){
     <div class="tk-foto">${foto}</div>
     <ul class="tk-lista">${filas||'<li>Agrega al menos una pieza para enviar.</li>'}</ul>
     <dl class="tk-dl"><div><dt>Madera</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div><div><dt>Envío</dt><dd id="tk-env">${envioTexto().t}</dd></div><div class="tk-pr"><dt>Precio</dt><dd>${pr?V.dinero(pr):'Personalizado: a cotizar'}</dd></div></dl>
-    ${esTaller()?`<div class="tk-int" id="tk-int">${htmlInterno()}</div>`:''}
+    ${esTaller()?`<div class="tk-int" id="tk-int">${htmlInterno()}</div>${htmlPagoCfg()}`:''}
     <details class="tk-desp"><summary>Ver despiece para el taller</summary><div class="tk-tabla"><table><thead><tr><th>Cant.</th><th>Pieza</th><th>cm</th></tr></thead><tbody>${desp}</tbody></table></div><p class="nota">Medidas aproximadas. Se confirman antes de fabricar.</p></details>
   </div>
   <form id="f-envio" class="form" novalidate>
@@ -2646,6 +2768,7 @@ function htmlEnviar(){
     ${sel('pared','Material de tu pared',PARED_OPC,f.pared)}
     ${sel('instala','¿Necesitas instalación?',INSTALA_OPC,f.instala)}
     <div class="f-c"><label for="f-notas">Algo más que debamos saber</label><textarea id="f-notas" data-f="notas" rows="3">${esc(f.notas)}</textarea></div>
+    <div id="f-pago" class="pago" hidden></div>
     <a id="f-enviar" class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Enviar por WhatsApp</a>
     <p class="nota" id="f-nota-wa">Se abre WhatsApp con tu diseño escrito. Solo revisa y toca enviar.</p>
     <div id="f-luego" class="luego" hidden>
