@@ -560,6 +560,52 @@ html.con-ck,html.con-ck body{overflow:hidden}
 .ck-envio svg{width:26px;height:26px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .ck-envio.ok{border-style:solid;border-color:var(--tinta);background:rgba(242,182,50,.16)}
 .ck-envio p{margin:0}
+.ck-sel{position:relative}
+.ck-sel::after{content:"";position:absolute;right:15px;top:50%;width:9px;height:9px;margin-top:-7px;border-right:2px solid var(--tinta);border-bottom:2px solid var(--tinta);transform:rotate(45deg);pointer-events:none}
+.ck .f-c select{appearance:none;-webkit-appearance:none;width:100%;min-height:50px;padding:12px 40px 12px 12px;border:1.5px solid var(--linea-f);border-radius:3px;background:var(--blanco);font-size:16px;cursor:pointer}
+.ck .f-c select:focus{outline:0;border-color:var(--tinta);box-shadow:0 0 0 3px rgba(242,182,50,.55)}
+.ck .f-c select:invalid,.ck .f-c select option[value=""]{color:var(--tinta-suave)}
+.ck .f-c select[aria-invalid="true"]{border-color:#9B2C1B}
+.ck-codigo{display:grid;gap:8px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px dashed var(--linea-f)}
+.ck-codigo label small{font-weight:500;color:var(--tinta-suave)}
+.ck-codigo input{text-transform:uppercase;font-family:var(--mono);letter-spacing:.06em}
+.ck-codigo input::placeholder{text-transform:none;letter-spacing:0;font-family:var(--texto)}
+.ck-cod{display:flex;gap:8px;align-items:flex-start;margin:0;font-size:14px;line-height:1.4;color:var(--tinta-suave)}
+.ck-cod svg{width:17px;height:17px;flex:none;margin-top:1px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.ck-cod.ok{color:var(--wa-hondo);font-weight:600}
+.ck-desc{color:var(--wa-hondo);font-weight:650}
+/* Ventana del pago simulado */
+.sim{border:0;padding:0;width:min(460px,calc(100vw - 24px));max-height:calc(100dvh - 24px);background:var(--papel);color:var(--tinta);border-radius:4px;overflow:auto;box-shadow:0 30px 70px rgba(26,16,10,.45)}
+.sim[open]{animation:cr-cae .3s cubic-bezier(.2,.8,.2,1)}
+.sim::backdrop{background:rgba(26,16,10,.66)}
+.sim-cab{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 14px 14px 20px;background:var(--muro-hondo);color:var(--yeso)}
+.sim-cab small{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--cinta)}
+.sim-cab b{font-family:var(--display);font-size:22px;font-weight:800;font-variation-settings:"wdth" 86,"wght" 800}
+.sim-c{display:grid;gap:16px;padding:18px 20px 20px}
+.sim-c>.enl{justify-self:center}
+.sim-aviso{margin:0;padding:10px 12px;background:rgba(242,182,50,.18);border:1.5px dashed var(--cinta-hondo);border-radius:3px;font-size:14px;line-height:1.4}
+.sim-monto{display:grid;justify-items:center;gap:2px;padding:6px 0 2px;text-align:center}
+.sim-monto span{font-size:14px;font-weight:600;color:var(--tinta-suave)}
+.sim-monto b{font-family:var(--display);font-size:40px;font-weight:800;line-height:1.05}
+.sim-monto small{font-size:12px;color:var(--tinta-suave)}
+.sim-met{border:0;margin:0;padding:0;display:grid;gap:8px}
+.sim-met legend{padding:0;margin-bottom:8px;font-weight:700;font-size:15px}
+.sim-op{position:relative;display:grid;grid-template-columns:42px minmax(0,1fr) 22px;gap:12px;align-items:center;padding:11px 14px;border:1.5px solid var(--linea-f);border-radius:3px;background:var(--blanco);cursor:pointer;transition:border-color .15s,background .15s}
+.sim-op:hover{border-color:var(--tinta)}
+.sim-op input{position:absolute;opacity:0;pointer-events:none}
+.sim-ic{display:grid;place-items:center;width:42px;height:42px;border-radius:3px;background:var(--yeso)}
+.sim-ic svg{width:24px;height:24px;fill:none;stroke:var(--tinta);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.sim-t b{display:block;font-size:16px}
+.sim-t small{display:block;font-size:13px;color:var(--tinta-suave)}
+.sim-op i{width:22px;height:22px;border-radius:50%;border:2px solid var(--linea-f)}
+.sim-op:has(input:checked){border-color:var(--tinta);background:rgba(242,182,50,.14);box-shadow:inset 4px 0 0 var(--cinta)}
+.sim-op:has(input:checked) i{border:6px solid var(--tinta);background:var(--cinta)}
+.sim-op:has(input:focus-visible){outline:3px solid var(--cinta);outline-offset:2px}
+.sim-c .btn:disabled{opacity:.45;cursor:not-allowed}
+.sim-proc{display:grid;justify-items:center;gap:10px;padding:48px 24px 44px;text-align:center}
+.sim-proc b{font-family:var(--display);font-size:22px;font-weight:780}
+.sim-rueda{width:58px;height:58px;border-radius:50%;border:6px solid var(--yeso-hondo);border-top-color:var(--cinta);border-right-color:var(--tinta);animation:sim-gira .8s linear infinite}
+@keyframes sim-gira{to{transform:rotate(360deg)}}
 .nw{white-space:nowrap}
 .ck .cr-mas{margin-top:14px}
 .ck .cr-mas-i{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -606,6 +652,26 @@ html.con-ck,html.con-ck body{overflow:hidden}
 @media(max-width:600px){.ck-seguro span{display:none}.ck-largo{display:none}.ck-corto{display:inline}.ck-logo{font-size:18px}}
 .ck-fin{max-width:620px;margin:0 auto;text-align:center;display:grid;gap:14px;justify-items:center;padding:26px clamp(18px,4vw,36px) 30px}
 .ck-fin .btn{width:100%;max-width:380px}
+.ck-recibo{width:100%;text-align:left;margin:6px 0 4px}
+.ck-fin .ck-recibo{order:0}
+.ck-recibo .ck-tot span{white-space:nowrap}
+@media(max-width:520px){
+  .ck-card .ck-fin{padding-inline:0}
+  .ck-recibo .ck-res-c{padding-inline:14px}
+  .ck-recibo .ck-res-cab{padding-inline:14px}
+  .ck-recibo .ck-it{grid-template-columns:56px minmax(0,1fr);gap:4px 12px}
+  .ck-recibo .ck-it>.mono{grid-column:2;font-weight:600;font-size:15px}
+  .ck-recibo .ck-tot{flex-wrap:wrap;row-gap:2px}
+  .ck-recibo .ck-tot b{font-size:28px;margin-left:auto}
+  .ck-recibo .ck-perf{margin-inline:-14px}
+}
+.ck-recibo .ck-it small.mono{font-size:12px;margin-top:2px}
+.ck-recibo .ck-tot b{font-size:30px}
+.ck-entrega{display:grid;gap:6px;margin-top:16px;padding-top:14px;border-top:1px dashed var(--linea-f);font-size:14.5px}
+.ck-entrega .ck-kick{margin:0 0 2px;font-size:11.5px}
+.ck-entrega div{display:flex;justify-content:space-between;gap:14px}
+.ck-entrega span{color:var(--tinta-suave);flex:none}
+.ck-entrega b{font-weight:600;text-align:right;overflow-wrap:anywhere}
 .ck-sello{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:var(--cinta);color:var(--tinta);border:3px solid var(--tinta)}
 .ck-sello svg{width:42px;height:42px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .ck-sello.mal{background:var(--yeso-hondo)}
@@ -872,6 +938,8 @@ html.con-ck,html.con-ck body{overflow:hidden}
   <div class="ck-regla" aria-hidden="true"><i id="ck-avance"></i></div>
   <div id="ck-c" class="ck-c"></div>
 </section>
+
+<dialog id="sim" class="sim" aria-label="Pago simulado"><div id="sim-c"></div></dialog>
 
 <dialog id="ficha" class="ficha" aria-label="Detalle del producto">
   <button type="button" class="ficha-x" id="ficha-x" aria-label="Cerrar">×</button>
@@ -1486,6 +1554,12 @@ V.costoEnvio=function(d,ciudad,precio,bultos){
    servidor-pagos). Es OBLIGATORIA para cobrar de verdad: el secreto nunca debe estar en esta página.
    Recibe { reference, amountInCents, currency, items:[{id,n}] } y responde { signature }.
    En pruebas puedes dejar ambos vacíos y pegar tus llaves de prueba en el carrito con ?taller=1. */
+/* Códigos de descuento: 'CODIGO':porcentaje. Ej.: BIENVENIDO:10 da 10% en los muebles (no en el envío).
+   Cualquier otro código que escriba el cliente se guarda como código de vendedor.
+   OJO: la página es pública; quien mire el código puede leer estos códigos.
+   El servidor de pagos (servidor-pagos) lee esta misma lista para aceptar el monto con descuento. */
+V.DESCUENTOS={};
+
 V.PAGOS={
   llavePublica:'',
   endpointFirma:'',
@@ -3340,11 +3414,14 @@ function envio(){
   if(!items.length||!form.ciudad.trim())return null;
   return V.costoEnvio(null,form.ciudad,subtotal(),bultos());
 }
+const codigo=()=>V.limpiarVendedor(form.vendedor);
+function descPct(){const c=codigo(),D=V.DESCUENTOS||{},k=c&&Object.keys(D).find(x=>V.limpiarVendedor(x)===c),p=k?+D[k]:0;return p>0&&p<100?p:0;}
+const descuento=()=>Math.round(subtotal()*descPct()/100);
 function total(){
   const r=envio();
   if(!r||!r.mejor)return null;
-  const s=subtotal();
-  return{sub:s,envio:r.mejor.total,total:s+r.mejor.total,r};
+  const s=subtotal(),d=descuento();
+  return{sub:s,desc:d,envio:r.mejor.total,total:s-d+r.mejor.total,r};
 }
 
 /* ─── Pago con Wompi ─── */
@@ -3378,15 +3455,17 @@ function mensaje(extra){
   const f=form,L=[];
   L.push('Hola'+(f.nombre.trim()?', soy '+f.nombre.trim():'')+'. Quiero hacer este pedido:');L.push('');
   items.forEach((i,k)=>{const p=perfil(i.id);L.push((k+1)+'. *'+p.nombre+'* ('+p.tipo+', '+medida(i.id)+') × '+i.n+' — '+dinero(V.PRECIOS[i.id]*i.n));});
+  const dsc=descuento();
+  if(dsc)L.push('Descuento '+codigo()+' ('+descPct()+'%): −'+dinero(dsc));
   L.push('');
   const t=total();
-  L.push(t?'Total con envío incluido: '+dinero(t.total):'Subtotal: '+dinero(subtotal())+' (envío por confirmar)');
+  L.push(t?'Total con envío incluido: '+dinero(t.total):'Subtotal: '+dinero(subtotal()-dsc)+' (envío por confirmar)');
   L.push('');
   if(f.ciudad.trim())L.push('Ciudad: '+f.ciudad.trim());
   if(f.direccion.trim())L.push('Dirección: '+f.direccion.trim());
   if(f.tel.trim())L.push('Mi WhatsApp: '+f.tel.trim());
   if(f.correo.trim())L.push('Correo: '+f.correo.trim());
-  const v=V.limpiarVendedor(f.vendedor);if(v)L.push('Código de vendedor: '+v);
+  const v=codigo();if(v&&!descPct())L.push('Código de vendedor: '+v);
   if(f.notas.trim()){L.push('');L.push('Notas: '+f.notas.trim());}
   if(extra){L.push('');L.push(extra);}
   return L.join('\n');
@@ -3464,36 +3543,64 @@ function htmlInfo(){
   h+=`<a id="cr-wa" class="btn btn-t" target="_blank" rel="noopener" href="${V.linkWA(mensaje())}">${IC.wa}Prefiero pedir por WhatsApp</a>`;
   return h;
 }
+const OTRA='Otra ciudad o municipio';
 function htmlEnvio(){
   const t=total(),ci=form.ciudad.trim();
+  if(ci===OTRA)return `<div class="ck-envio">${IC.camion}<p>Llegamos a todo el país. Para tu municipio te confirmamos el envío por WhatsApp antes de cobrar.</p></div>`;
   if(t)return `<div class="ck-envio ok">${IC.camion}<p><b>Llegamos a ${esc(ci)}.</b> El envío (<span class="nw">${dinero(t.envio)}</span>) ya va sumado en tu total. Pagas una sola vez.</p></div>`;
-  if(ci.length<3)return `<div class="ck-envio">${IC.camion}<p>Escribe tu ciudad y calculamos el envío al momento.</p></div>`;
+  if(ci.length<3)return `<div class="ck-envio">${IC.camion}<p>Elige tu ciudad y calculamos el envío al momento.</p></div>`;
   return `<div class="ck-envio">${IC.camion}<p>Todavía no tenemos el envío a <b>${esc(ci)}</b> en línea. Pide por WhatsApp y te lo confirmamos antes de cobrar.</p></div>`;
 }
 function htmlLineas(){
-  const t=total(),ci=form.ciudad.trim(),s=subtotal();
+  const t=total(),ci=form.ciudad.trim(),s=subtotal(),d=descuento();
   let env;
   if(t)env=`<div><span>Envío a ${esc(ci)}</span><span class="mono">${dinero(t.envio)}</span></div>`;
-  else if(ci.length<3)env='<div><span>Envío</span><span class="nota">Falta tu ciudad</span></div>';
-  else env=`<div><span>Envío a ${esc(ci)}</span><span class="nota">Por confirmar</span></div>`;
-  return `<div class="ck-lin"><div><span>Muebles</span><span class="mono">${dinero(s)}</span></div>${env}</div><div class="ck-perf"></div><div class="ck-tot"><span>${t?'Total':'Subtotal'}</span><b>${dinero(t?t.total:s)}</b></div>`;
+  else if(ci.length<3)env='<div><span>Envío</span><span class="nota">Elige tu ciudad</span></div>';
+  else env=`<div><span>Envío${ci===OTRA?'':' a '+esc(ci)}</span><span class="nota">Por confirmar</span></div>`;
+  const dl=d?`<div class="ck-desc"><span>Descuento ${esc(codigo())} (${descPct()}%)</span><span class="mono">−${dinero(d)}</span></div>`:'';
+  return `<div class="ck-lin"><div><span>Muebles</span><span class="mono">${dinero(s)}</span></div>${dl}${env}</div><div class="ck-perf"></div><div class="ck-tot"><span>${t?'Total':'Subtotal'}</span><b>${dinero(t?t.total:s-d)}</b></div>`;
 }
 function htmlPie(){
-  const t=total(),ci=form.ciudad.trim(),s=subtotal();
+  const t=total(),ci=form.ciudad.trim(),s=subtotal()-descuento();
   let et,val,btn;
   if(t){et='Total con envío';val=dinero(t.total);btn=`<button type="button" class="btn btn-p btn-gde" data-cr="pagar">Pagar ${dinero(t.total)}</button>`;}
-  else if(ci.length<3){et='Subtotal · falta el envío';val=dinero(s);btn='<button type="button" class="btn btn-p btn-gde" data-cr="ciudad">Escribe tu ciudad para pagar</button>';}
+  else if(ci.length<3){et='Subtotal · falta el envío';val=dinero(s);btn='<button type="button" class="btn btn-p btn-gde" data-cr="ciudad">Elige tu ciudad para pagar</button>';}
   else{et='Subtotal · envío por confirmar';val=dinero(s);btn=`<a id="cr-wa-pie" class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="${V.linkWA(mensaje())}">${IC.wa}Pedir por WhatsApp</a>`;}
   return `<div class="cr-pie-t"><span>${et}</span><b>${val}</b></div><p id="cr-aviso" class="cr-aviso" role="alert" hidden></p>${btn}`;
 }
+/* Lo que se compró, guardado antes de vaciar el carrito, para mostrar el resumen al final */
+function foto(){
+  const t=total();
+  return{items:items.map(i=>({id:i.id,n:i.n})),sub:subtotal(),desc:descuento(),cod:codigo(),pct:descPct(),envio:t?t.envio:0,total:t?t.total:0,
+    f:{nombre:form.nombre.trim(),tel:form.tel.trim(),ciudad:form.ciudad.trim(),direccion:form.direccion.trim(),correo:form.correo.trim()}};
+}
+function htmlRecibo(r,sub,etTotal){
+  const filas=r.items.map(i=>{const p=perfil(i.id),pr=V.PRECIOS[i.id];return `<div class="ck-it"><div class="cr-img">${imagen(i.id)}<i>${i.n}</i></div><div><b>${esc(p.nombre)}</b><small>${esc(p.tipo)} · <span class="mono">${esc(medida(i.id))}</span></small><small class="mono">${dinero(pr)} c/u · ${i.n} ${i.n===1?'unidad':'unidades'}</small></div><span class="mono">${dinero(pr*i.n)}</span></div>`;}).join('');
+  const lin=`<div class="ck-lin"><div><span>Muebles</span><span class="mono">${dinero(r.sub)}</span></div>${r.desc?`<div class="ck-desc"><span>Descuento ${esc(r.cod)} (${r.pct}%)</span><span class="mono">−${dinero(r.desc)}</span></div>`:''}<div><span>Envío a ${esc(r.f.ciudad)}</span><span class="mono">${dinero(r.envio)}</span></div></div><div class="ck-perf"></div><div class="ck-tot"><span>${etTotal}</span><b>${dinero(r.total)}</b></div>`;
+  const dir=[r.f.direccion,r.f.ciudad].filter(Boolean).join(', ');
+  const ent=[['Recibe',r.f.nombre],['WhatsApp',r.f.tel],['Dirección',dir],['Correo',r.f.correo]].filter(x=>x[1]).map(x=>`<div><span>${x[0]}</span><b>${esc(x[1])}</b></div>`).join('');
+  const n=r.items.reduce((a,i)=>a+i.n,0);
+  return `<section class="ck-res ck-recibo" aria-label="Resumen de tu compra"><div class="ck-res-cab"><div><h2>Resumen de tu compra</h2><small>${n} ${n===1?'mueble':'muebles'} · ${sub}</small></div></div>
+    <div class="ck-res-c">${filas}${lin}<div class="ck-entrega"><p class="ck-kick">Datos de entrega</p>${ent}</div></div></section>`;
+}
 function htmlFin(){
   const{tx,ref,t,prueba,msj}=pago,est=tx.status||'',ok=est==='APPROVED',pend=est==='PENDING';
-  const texto=msj+'\n\n*Pago con Wompi'+(prueba?' (PRUEBA)':'')+'*\nTotal: '+dinero(t.total)+' (envío incluido)\nReferencia: '+ref+'\nTransacción: '+tx.id+'\nEstado: '+est;
-  const wa=`<a class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="${V.linkWA(texto)}">${IC.wa}Avisar por WhatsApp</a>`;
+  const sm=!!pago.simulado;
+  const texto=sm?msj+'\n\n*Pago simulado en la página (sin cobro)*: '+pago.metodo+'\nTotal: '+dinero(t.total)+' (envío incluido)\nReferencia: '+ref+'\n\n¿Me envían el link de pago?'
+    :msj+'\n\n*Pago con Wompi'+(prueba?' (PRUEBA)':'')+'*\nTotal: '+dinero(t.total)+' (envío incluido)\nReferencia: '+ref+'\nTransacción: '+tx.id+'\nEstado: '+est;
+  const wa=`<a class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="${V.linkWA(texto)}">${IC.wa}${sm?'Enviar mi pedido por WhatsApp':'Avisar por WhatsApp'}</a>`;
+  if(sm)return `<div class="ck-fin"><div class="ck-sello">${IC.ok}</div>
+    <p class="ck-kick">Simulación completa</p>
+    <h1 class="ck-h">¡Pedido listo!</h1>
+    <div class="pago-prueba"><b>Fue una simulación: no se cobró dinero.</b> Así se verá cuando el pago en línea esté conectado.</div>
+    ${pago.r?htmlRecibo(pago.r,'Ref. '+esc(ref)+' · '+esc(pago.metodo),'Total (simulado)'):''}
+    <p>Para hacer tu pedido de verdad, envíalo por WhatsApp y te mandamos el link de pago.</p>
+    ${wa}<button type="button" class="btn btn-t" data-cr="salir">Volver a la tienda</button></div>`;
   return `<div class="ck-fin"><div class="ck-sello ${ok||pend?'':'mal'}">${ok?IC.ok:pend?IC.reloj:IC.x}</div>
     <h1 class="ck-h">${ok?'¡Pago aprobado!':pend?'Tu pago está en proceso':'El pago no se completó'}</h1>
     ${prueba?'<div class="pago-prueba"><b>Fue una prueba: no se cobró dinero.</b></div>':''}
     <p>${ok?'Gracias. Avísanos por WhatsApp y empezamos con tu mueble.':pend?'Algunos medios, como PSE o Nequi, tardan en confirmar. Avísanos por WhatsApp con tu referencia.':'Estado: '+esc(PAGO_EST[est]||est)+'. Puedes intentarlo de nuevo con otro medio.'}</p>
+    ${pago.r&&(ok||pend)?htmlRecibo(pago.r,'Ref. '+esc(ref),ok?'Total pagado':'Total a pagar'):''}
     <p class="nota mono">Referencia ${esc(ref)}<br>Transacción ${esc(String(tx.id))}</p>
     ${ok?wa+'<button type="button" class="btn btn-t" data-cr="salir">Volver a la tienda</button>':pend?wa+'<button type="button" class="btn btn-t" data-cr="volver">Volver al pago</button>':'<button type="button" class="btn btn-o btn-gde" data-cr="volver">Intentar de nuevo</button>'}</div>`;
 }
@@ -3511,6 +3618,23 @@ function htmlCajon(){
 }
 
 /* ─── Página de pago ─── */
+/* Ciudades: primero las que tienen tarifa en V.ENVIO (se calcula el envío al momento), luego las demás */
+const OTRAS_CIUDADES=['Arauca','Armenia','Bello','Bucaramanga','Buenaventura','Cali','Chía','Cúcuta','Duitama','Envigado','Florencia','Floridablanca','Girardot','Ibagué','Inírida','Itagüí','Leticia','Manizales','Mitú','Mocoa','Montería','Neiva','Palmira','Pasto','Pereira','Popayán','Puerto Carreño','Quibdó','Riohacha','Rionegro','San Andrés','San José del Guaviare','Santa Marta','Sincelejo','Soacha','Sogamoso','Tunja','Valledupar','Villavicencio','Yopal','Zipaquirá'];
+function ciudadesEnvio(){
+  const E=V.ENVIO,tit=x=>x.replace(/(^|\s)\S/g,c=>c.toUpperCase());
+  return E.zonaLocal.map(tit).concat(Object.keys(E.ciudades).map(k=>E.ciudades[k]));
+}
+function selCiudad(){
+  const v=form.ciudad,con=ciudadesEnvio(),o=x=>`<option${x===v?' selected':''}>${esc(x)}</option>`;
+  const otras=OTRAS_CIUDADES.filter(x=>!V.ciudadEnvio(x)).sort((a,b)=>a.localeCompare(b,'es'));
+  return `<div class="f-c"><label for="cr-ciudad">Ciudad <em>*</em></label><div class="ck-sel"><select id="cr-ciudad" data-cf="ciudad" autocomplete="address-level2"><option value=""${v?'':' selected'} disabled>Elige tu ciudad</option><optgroup label="Envío calculado al momento">${con.map(o).join('')}</optgroup><optgroup label="Envío por confirmar">${otras.map(o).join('')}${o(OTRA)}</optgroup></select></div><p class="err" data-err="ciudad" hidden>Elige tu ciudad.</p></div>`;
+}
+function htmlCodigo(){
+  const c=codigo();if(!c)return '';
+  const p=descPct();
+  return p?`<p class="ck-cod ok">${IC.ok}<span>¡Descuento del ${p}% aplicado! Ahorras <b>${dinero(descuento())}</b>.</span></p>`
+    :`<p class="ck-cod">${IC.ok}<span>Código de vendedor <b>${esc(c)}</b> guardado. Si era un descuento, revisa que esté bien escrito.</span></p>`;
+}
 function campo(id,et,extra,err,cls){
   return `<div class="f-c ${cls||''}"><label for="cr-${id}">${et}</label><input id="cr-${id}" data-cf="${id}" ${extra} value="${esc(form[id])}">${err?`<p class="err" data-err="${id}" hidden>${err}</p>`:''}</div>`;
 }
@@ -3532,13 +3656,12 @@ function htmlPago(){
         ${campo('correo','Correo (para tu recibo)','type="email" inputmode="email" autocomplete="email" placeholder="tucorreo@ejemplo.com"','')}
       </div></section>
       <section class="ck-card" id="ck-s2"><h2 class="ck-st"><span>2</span>¿A dónde lo llevamos?</h2><div class="ck-campos">
-        ${campo('ciudad','Ciudad <em>*</em>','autocomplete="address-level2" placeholder="Bogotá"','Escribe la ciudad.')}
+        ${selCiudad()}
         ${campo('direccion','Dirección y barrio','autocomplete="street-address" placeholder="Calle, número y barrio"','')}
-      </div><div id="ck-envio"></div>
-        <details class="cr-mas" ${f.vendedor||f.notas?'open':''}><summary>Código de vendedor y notas</summary>
-          <div class="cr-mas-i">${campo('vendedor','Código de vendedor','autocomplete="off" autocapitalize="characters"','')}<div class="f-c"><label for="cr-notas">Notas para el taller</label><textarea id="cr-notas" data-cf="notas" rows="2" placeholder="Horario de entrega, piso, si hay ascensor…">${esc(f.notas)}</textarea></div></div>
-        </details></section>
-      <section class="ck-card" id="ck-s3"><h2 class="ck-st"><span>3</span>Pago</h2><div id="cr-pago" class="cr-pago"></div>${V.esTaller()?htmlCfg():''}</section>
+      </div><div id="ck-envio"></div></section>
+      <section class="ck-card" id="ck-s3"><h2 class="ck-st"><span>3</span>Pago</h2>
+        <div class="ck-codigo">${campo('vendedor','Código de vendedor o descuento <small>(opcional)</small>','autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ej.: ANA01"','')}<div id="ck-cod" aria-live="polite"></div></div>
+        <div id="cr-pago" class="cr-pago"></div>${V.esTaller()?htmlCfg():''}</section>
     </form><aside class="ck-res" aria-label="Resumen del pedido">${htmlResumen()}</aside></div></div>`;
 }
 function estado(){const v=validar(false);return{d1:v.nombre&&v.tel,d2:!!total()};}
@@ -3552,7 +3675,7 @@ function actualizarContador(){
 /* Solo se vuelve a dibujar si cambió: si no, un toque en el botón se pierde cuando el campo anterior pierde el foco */
 function poner(sel,h){const b=$(sel);if(!b)return;if(b.dataset.h!==h){b.innerHTML=h;b.dataset.h=h;}}
 function actualizarRes(){
-  poner('#cr-pago',htmlInfo());poner('#cr-pie',htmlPie());poner('#ck-envio',htmlEnvio());poner('#ck-lin',htmlLineas());
+  poner('#cr-pago',htmlInfo());poner('#cr-pie',htmlPie());poner('#ck-envio',htmlEnvio());poner('#ck-lin',htmlLineas());poner('#ck-cod',htmlCodigo());
   const s=estado(),hechos=[s.d1,s.d2,false],ahora=hechos.indexOf(false);
   poner('#ck-pasos',['Tus datos','Entrega','Pago'].map((t,k)=>`<li class="${hechos[k]?'hecho':k===ahora?'ahora':''}"><span>${hechos[k]?'✓':k+1}</span>${t}</li>`).join(''));
   const s1=$('#ck-s1'),s2=$('#ck-s2');if(s1)s1.classList.toggle('hecho',s.d1);if(s2)s2.classList.toggle('hecho',s.d2);
@@ -3627,34 +3750,68 @@ function ocultarPago(){
   if(pago&&pago.tx.status==='APPROVED')pago=null;
   pintar();
 }
-function irPagar(){cerrar();ocultarToast();if(location.hash==='#pagar')mostrarPago();else location.hash='pagar';}
+/* Se abre directo (no depende de que cambie la dirección) y luego se marca #pagar para que "atrás" funcione */
+function ponerHash(h){try{history.pushState(null,'',location.pathname+location.search+'#'+h);}catch(e){}}
+function cambiarHash(h){try{history.replaceState(null,'',location.pathname+location.search+'#'+h);}catch(e){}}
+function irPagar(){cerrar();ocultarToast();mostrarPago();if(location.hash!=='#pagar')ponerHash('pagar');}
 function irCatalogo(){
   cerrar();ocultarPago();
-  if(location.hash==='#pagar')history.replaceState(null,'',location.pathname+location.search+'#catalogo');
+  if(location.hash==='#pagar')cambiarHash('catalogo');
   const s=document.getElementById('catalogo');if(s)s.scrollIntoView({block:'start'});
 }
 
-function sinPasarela(){
-  if(V.esTaller()){
-    const d=$('.pago-cfg');if(d){d.open=true;d.scrollIntoView({block:'center'});}
-    aviso('Falta conectar Wompi: pega tus llaves de prueba en el panel de pagos.');
-  }else{
-    aviso('El pago en línea se activa muy pronto. Por ahora pide por WhatsApp y te enviamos el link de pago.');
-    const w=$('#cr-wa');if(w)w.scrollIntoView({block:'center'});
-  }
+/* ─── Pago simulado: mientras Wompi no esté conectado. No cobra ni pide datos de tarjeta. ─── */
+let sim=null;
+const METODOS=[
+  ['tarjeta','Tarjeta','Crédito o débito','<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/></svg>'],
+  ['pse','PSE','Desde tu banco','<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l8-5 8 5M5 10v8M19 10v8M9 10v8M15 10v8M3 19h18"/></svg>'],
+  ['nequi','Nequi','Con tu celular','<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg>'],
+  ['bancolombia','Bancolombia','Botón Bancolombia','<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4zM4 11h16"/><circle cx="12" cy="14" r="1"/></svg>']
+];
+function htmlSim(){
+  const t=total();
+  if(!sim||!t)return '';
+  if(sim.paso==='procesando')return `<div class="sim-proc"><div class="sim-rueda" aria-hidden="true"></div><b>Procesando el pago simulado…</b><p class="nota">${esc(METODOS.find(m=>m[0]===sim.metodo)[1])} · ${dinero(t.total)}</p></div>`;
+  return `<div class="sim-cab"><div><small>Pago simulado</small><b>Taller El Arte</b></div><button type="button" class="cr-x" data-sim="x" aria-label="Cancelar">×</button></div><div class="cr-regla" aria-hidden="true"></div>
+    <div class="sim-c">
+      <p class="sim-aviso"><b>Esto es una simulación.</b> El pago en línea todavía no está conectado: no se cobra dinero ni se piden datos de tu tarjeta.</p>
+      <div class="sim-monto"><span>Total a pagar</span><b>${dinero(t.total)}</b><small class="mono">Ref. ${esc(sim.ref)}</small></div>
+      <fieldset class="sim-met"><legend>Elige cómo pagar</legend>${METODOS.map(([id,n,s,ic])=>`<label class="sim-op"><input type="radio" name="sim-m" value="${id}"${sim.metodo===id?' checked':''}><span class="sim-ic">${ic}</span><span class="sim-t"><b>${n}</b><small>${s}</small></span><i aria-hidden="true"></i></label>`).join('')}</fieldset>
+      <button type="button" class="btn btn-p btn-gde" data-sim="ok" ${sim.metodo?'':'disabled'}>Simular pago de ${dinero(t.total)}</button>
+      <button type="button" class="enl" data-sim="x">Cancelar</button>
+    </div>`;
 }
+function pintarSim(){const c=$('#sim-c');if(c)c.innerHTML=htmlSim();}
+function simular(){
+  const d=$('#sim');if(!d)return;
+  sim={paso:'metodo',metodo:'',ref:referencia()};
+  pintarSim();
+  if(!d.open){if(d.showModal)d.showModal();else d.setAttribute('open','');}
+}
+function confirmarSim(){
+  const t=total();if(!sim||!sim.metodo||!t)return;
+  sim.paso='procesando';pintarSim();
+  const snap=mensaje(),r=foto(),ref=sim.ref,met=METODOS.find(m=>m[0]===sim.metodo)[1];
+  setTimeout(()=>{
+    const d=$('#sim');if(d&&d.open)d.close();
+    pago={tx:{status:'APPROVED',id:'SIM-'+Date.now().toString(36).toUpperCase()},ref,t:{total:t.total},prueba:true,simulado:true,metodo:met,msj:snap,r};
+    sim=null;items=[];guardar();pintar();
+    const cc=$('#ck-c');if(cc)cc.scrollTop=0;
+  },1600);
+}
+
 async function pagar(b){
   const c=cfgPago(),t=total();
   if(!t)return;
-  if(!c.listo){sinPasarela();return;}
   const v=validar(true);
   if(!(v.nombre&&v.tel&&v.ciudad)){enfocar(v);return;}
+  if(!c.listo){simular();return;}
   const txt=b.textContent;b.disabled=true;b.textContent='Abriendo Wompi…';
   try{
     const ref=referencia(),cents=t.total*100;
     let firma;
     if(c.endpoint){
-      const r=await fetch(c.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reference:ref,amountInCents:cents,currency:'COP',items:items.map(i=>({id:i.id,n:i.n}))})});
+      const r=await fetch(c.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reference:ref,amountInCents:cents,currency:'COP',codigo:descPct()?codigo():'',items:items.map(i=>({id:i.id,n:i.n}))})});
       if(!r.ok)throw new Error('firma '+r.status);
       firma=(await r.json()).signature;
     }else firma=await sha256hex(ref+cents+'COP'+c.secreto);
@@ -3662,12 +3819,12 @@ async function pagar(b){
     const f=form,tel=f.tel.replace(/\D/g,'').replace(/^57(?=\d{10}$)/,''),cd={fullName:f.nombre.trim()};
     if(/^\d{10}$/.test(tel)){cd.phoneNumber=tel;cd.phoneNumberPrefix='+57';}
     if(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.correo.trim()))cd.email=f.correo.trim();
-    const snap=mensaje();   // el pedido tal como se pagó, por si el carrito se vacía
+    const snap=mensaje(),r=foto();   // el pedido tal como se pagó, por si el carrito se vacía
     const w=new window.WidgetCheckout({currency:'COP',amountInCents:cents,reference:ref,publicKey:c.llave,signature:{integrity:firma},customerData:cd});
     w.open(res=>{
       const tx=res&&res.transaction;
       if(!tx)return;
-      pago={tx,ref,t:{total:t.total},prueba:c.prueba,msj:snap};
+      pago={tx,ref,t:{total:t.total},prueba:c.prueba,msj:snap,r};
       if(tx.status==='APPROVED'){items=[];guardar();}
       pintar();
       const cc=$('#ck-c');if(cc)cc.scrollTop=0;
@@ -3696,7 +3853,7 @@ function accion(e){
   else if(a==='irpagar')irPagar();
   else if(a==='editar')abrir();
   else if(a==='seguir'||a==='catalogo')irCatalogo();
-  else if(a==='salir'){pago=null;cerrar();ocultarPago();location.hash='tienda';window.scrollTo(0,0);}
+  else if(a==='salir'){pago=null;cerrar();ocultarPago();cambiarHash('tienda');window.scrollTo(0,0);}
   else if(a==='verres'){
     const r=$('#ck-res-c');if(!r)return;
     r.hidden=!r.hidden;b.setAttribute('aria-expanded',String(!r.hidden));b.textContent=r.hidden?'Ver detalle':'Ocultar';
@@ -3708,11 +3865,28 @@ const ck=$('#pagar');
 if(ck){
   ck.addEventListener('click',accion);
   ck.addEventListener('submit',e=>e.preventDefault());
-  ck.addEventListener('input',e=>{
+  const alCambiar=e=>{
     const k=e.target.dataset&&e.target.dataset.cf;if(!k)return;
+    if(form[k]===e.target.value)return;
     form[k]=e.target.value;actualizarRes();
     if(e.target.getAttribute('aria-invalid')==='true')validar(true);
+  };
+  ck.addEventListener('input',alCambiar);
+  ck.addEventListener('change',alCambiar);
+}
+const sd=$('#sim');
+if(sd){
+  sd.addEventListener('click',e=>{
+    if(e.target===sd&&sim&&sim.paso!=='procesando'){sd.close();return;}
+    const b=e.target.closest('[data-sim]');if(!b)return;
+    if(b.dataset.sim==='x')sd.close();else if(b.dataset.sim==='ok')confirmarSim();
   });
+  sd.addEventListener('change',e=>{
+    if(e.target.name!=='sim-m'||!sim)return;
+    sim.metodo=e.target.value;const b=$('[data-sim="ok"]',sd);if(b)b.disabled=false;
+  });
+  sd.addEventListener('cancel',e=>{if(sim&&sim.paso==='procesando')e.preventDefault();});
+  sd.addEventListener('close',()=>{if(sim&&sim.paso!=='procesando')sim=null;});
 }
 const tst=$('#cr-toast');
 if(tst){
