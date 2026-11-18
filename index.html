@@ -1039,6 +1039,21 @@ V.ENVIO={
   extraPeso:1.12,            // herrajes, LED y embalaje sobre el peso de las tablas
   margen:3,                  // cm de cartón/espuma por cada lado del bulto
   ciudades:{bogota:'Bogotá',medellin:'Medellín',cartagena:'Cartagena'},
+  /* Distancia aproximada por carretera desde Barranquilla (km). Las ciudades de "ciudades" tienen tarifa
+     cotizada; las demás se ESTIMAN: la tarifa por kilo de cada transportadora se calcula entre las ciudades
+     cotizadas según la distancia (y más allá de la más lejana, siguiendo la misma tendencia), y se le suma
+     margenEstimado para no quedarse corto. Cuando tengas una cotización real de una ciudad, pásala a "ciudades"
+     y a "tarifa" de cada transportadora. Sin carretera (San Andrés, Leticia, Mitú, Inírida, Puerto Carreño)
+     o difícil acceso (Quibdó) no están aquí: quedan "por confirmar". */
+  margenEstimado:1.15,
+  distancias:{
+    cartagena:120,medellin:700,bogota:1000,
+    'santa marta':105,riohacha:280,sincelejo:290,valledupar:300,monteria:350,
+    bucaramanga:590,floridablanca:600,cucuta:680,bello:690,envigado:710,itagui:710,rionegro:730,
+    duitama:820,sogamoso:850,tunja:870,manizales:895,pereira:920,zipaquira:960,armenia:970,chia:980,
+    soacha:1020,yopal:1030,arauca:1080,ibague:1080,villavicencio:1090,palmira:1100,cali:1120,girardot:1120,
+    buenaventura:1240,popayan:1260,neiva:1300,'san jose del guaviare':1380,pasto:1510,florencia:1550,mocoa:1650
+  },
   /* "liviano": bultos de hasta maxKg van por mensajería, que tiene otra tarifa. Solo está medida en Bogotá
      (3 kg, 48×24×22 cm); en otras ciudades se escala con la tarifa de carga y queda marcada "aprox." */
   transportadoras:{
@@ -1521,7 +1536,27 @@ V.ciudadEnvio=function(t){
   if(!s.trim())return null;
   const E=V.ENVIO;
   if(E.zonaLocal.some(z=>s.includes(z)))return 'local';
-  return Object.keys(E.ciudades).find(k=>s.includes(k))||null;
+  return Object.keys(E.ciudades).find(k=>s.includes(k))||Object.keys(E.distancias||{}).find(k=>!E.ciudades[k]&&s.includes(k))||null;
+};
+/* Valor de una transportadora para una ciudad (tarifa o días): el cotizado si existe; si no, estimado por distancia */
+V.valorPorDistancia=function(tabla,c,margen){
+  const E=V.ENVIO,D=E.distancias||{};
+  if(!tabla)return null;
+  if(tabla[c])return tabla[c];
+  const km=D[c];if(!km)return null;
+  const P=Object.keys(tabla).filter(x=>D[x]&&tabla[x]).map(x=>[D[x],tabla[x]]).sort((a,b)=>a[0]-b[0]);
+  if(P.length<2)return null;
+  let v;
+  const pri=P[0],ult=P[P.length-1];
+  if(km<=pri[0])v=pri[1];
+  else if(km>=ult[0]){
+    const pend=Math.max(0,(ult[1]-pri[1])/(ult[0]-pri[0]));   // tendencia general, nunca hacia abajo
+    v=Math.max(...P.map(x=>x[1]))+pend*(km-ult[0]);
+  }else{
+    const i=P.findIndex(x=>x[0]>=km),a=P[i-1],b=P[i];
+    v=a[1]+(b[1]-a[1])*(km-a[0])/(b[0]-a[0]);
+  }
+  return v*(margen||1);
 };
 V.costoEnvio=function(d,ciudad,precio,bultos){
   const E=V.ENVIO,c=V.ciudadEnvio(ciudad);
@@ -1530,9 +1565,9 @@ V.costoEnvio=function(d,ciudad,precio,bultos){
   if(c==='local'){const o={id:'local',n:'Entrega local',total:E.fleteLocal,dias:null};return{local:true,ciudad:c,opciones:[o],mejor:o,bultos:B,declarado:decl};}
   const ops=[];
   Object.keys(E.transportadoras).forEach(k=>{
-    const t=E.transportadoras[k],r=t.tarifa[c];
+    const t=E.transportadoras[k],est=!t.tarifa[c],r=V.valorPorDistancia(t.tarifa,c,E.margenEstimado);
     if(!r)return;
-    let tot=0,ap=!!t.aprox;
+    let tot=0,ap=!!t.aprox||est;
     B.forEach(b=>{
       const lv=t.liviano&&b.kg<=t.liviano.maxKg&&t.tarifa.bogota?t.liviano.bogota*r/t.tarifa.bogota:null;
       if(lv!==null){tot+=lv;if(c!=='bogota')ap=true;return;}
@@ -1541,7 +1576,8 @@ V.costoEnvio=function(d,ciudad,precio,bultos){
       const piso=t.liviano&&t.tarifa.bogota?t.liviano.bogota*r/t.tarifa.bogota:0;   // un bulto más pesado no cuesta menos que uno liviano
       tot+=Math.max(piso,(t.base||0)+r*kg+(t.seguro||0)*decl*(b.kg/kgT));
     });
-    ops.push({id:k,n:t.n,total:Math.round(tot/50)*50,dias:t.dias&&t.dias[c]||null,aprox:ap});
+    const dd=V.valorPorDistancia(t.dias,c);
+    ops.push({id:k,n:t.n,total:Math.round(tot/50)*50,dias:dd?Math.round(dd):null,aprox:ap,estimado:est});
   });
   ops.sort((a,b)=>a.total-b.total);
   return ops.length?{ciudad:c,opciones:ops,mejor:ops[0],bultos:B,declarado:decl}:null;
@@ -3687,7 +3723,8 @@ function htmlCajon(){
 const OTRAS_CIUDADES=['Arauca','Armenia','Bello','Bucaramanga','Buenaventura','Cali','Chía','Cúcuta','Duitama','Envigado','Florencia','Floridablanca','Girardot','Ibagué','Inírida','Itagüí','Leticia','Manizales','Mitú','Mocoa','Montería','Neiva','Palmira','Pasto','Pereira','Popayán','Puerto Carreño','Quibdó','Riohacha','Rionegro','San Andrés','San José del Guaviare','Santa Marta','Sincelejo','Soacha','Sogamoso','Tunja','Valledupar','Villavicencio','Yopal','Zipaquirá'];
 function ciudadesEnvio(){
   const E=V.ENVIO,tit=x=>x.replace(/(^|\s)\S/g,c=>c.toUpperCase());
-  return E.zonaLocal.map(tit).concat(Object.keys(E.ciudades).map(k=>E.ciudades[k]));
+  const est=OTRAS_CIUDADES.filter(x=>V.ciudadEnvio(x)).sort((a,b)=>a.localeCompare(b,'es'));
+  return E.zonaLocal.map(tit).concat(Object.keys(E.ciudades).map(k=>E.ciudades[k]),est);
 }
 function selCiudad(){
   const v=form.ciudad,con=ciudadesEnvio(),o=x=>`<option${x===v?' selected':''}>${esc(x)}</option>`;
