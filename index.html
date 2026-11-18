@@ -109,12 +109,17 @@ button{cursor:pointer}
 .sin-3d .hero-esc{height:24px}
 .cinta{position:absolute;height:28px;background-color:var(--cinta);color:var(--tinta);background-image:repeating-linear-gradient(90deg,var(--tinta) 0 1px,transparent 1px var(--px,30px));background-size:100% 8px;background-repeat:no-repeat;box-shadow:0 3px 12px rgba(26,16,10,.45)}
 .cinta-nums span{position:absolute;top:10px;font-family:var(--mono);font-size:11.5px;line-height:1;font-weight:500;transform:translateX(-50%);font-variant-numeric:tabular-nums}
-.cinta-t{position:absolute;right:-3px;top:-8px;height:44px;min-width:86px;padding:0 12px;background:var(--tinta);color:var(--cinta);border:2px solid var(--cinta);border-radius:3px;font-family:var(--mono);font-size:15px;font-weight:500;cursor:ew-resize;touch-action:none;animation:llamar 1.8s ease-in-out 2.2s 6}
-.cinta-t::before{content:"‹›";margin-right:6px;letter-spacing:1px}
-@keyframes llamar{50%{transform:translateX(10px)}}
-.cinta-pista{position:absolute;right:0;top:40px;font-family:var(--mono);font-size:13.5px;font-weight:500;color:var(--cinta);white-space:nowrap;text-shadow:0 1px 6px rgba(26,16,10,.8)}
-@media(max-width:719px){.cinta-pista{font-size:12.5px}}
+.cinta{cursor:ew-resize;touch-action:pan-y}
+.cinta-t{position:absolute;right:-3px;top:-9px;height:46px;min-width:112px;padding:0 12px;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--tinta);color:var(--cinta);border:2.5px solid var(--cinta);border-radius:4px;font-family:var(--mono);font-size:16px;font-weight:600;cursor:ew-resize;touch-action:none;animation:llamar 1.8s ease-in-out infinite,pulso 1.8s ease-out infinite}
+.cinta-t .fl{width:10px;height:17px;flex:none;stroke:currentColor;stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+@keyframes llamar{50%{transform:translateX(8px)}}
+@keyframes pulso{0%{box-shadow:0 0 0 0 rgba(242,182,50,.75)}70%,100%{box-shadow:0 0 0 16px rgba(242,182,50,0)}}
+.cinta-pista{position:absolute;right:2px;top:50px;padding:7px 12px;background:var(--cinta);color:var(--tinta);border-radius:4px;font-size:14.5px;font-weight:700;line-height:1.15;white-space:nowrap;box-shadow:0 3px 12px rgba(26,16,10,.5);pointer-events:none;transition:opacity .35s,visibility .35s}
+.cinta-pista::before{content:"";position:absolute;right:46px;top:-7px;border:7px solid transparent;border-top:0;border-bottom-color:var(--cinta)}
+@media(max-width:719px){.cinta-t{min-width:104px;font-size:15px}.cinta-pista{font-size:13.5px;padding:6px 10px}}
 .tocado .cinta-t{animation:none}
+.tocado .cinta-pista{opacity:0;visibility:hidden}
+@media(prefers-reduced-motion:reduce){.cinta-t{animation:none}}
 
 /* Secciones */
 .sec{padding-block:clamp(48px,8vw,96px);padding-left:var(--gutter-i);padding-right:var(--gutter-d)}
@@ -514,8 +519,8 @@ button{cursor:pointer}
   </div>
   <div class="cinta" id="hero-cinta" hidden>
     <div class="cinta-nums" id="hero-nums" aria-hidden="true"></div>
-    <button type="button" class="cinta-t" id="hero-tirador" aria-label="Estirar el mueble. Usa las flechas izquierda y derecha."><span id="hero-cm">180 cm</span></button>
-    <span class="cinta-pista">Arrastra el botón para cambiar el tamaño ↑</span>
+    <button type="button" class="cinta-t" id="hero-tirador" aria-label="Cambiar el ancho del mueble. Arrastra, o usa las flechas izquierda y derecha."><svg class="fl" viewBox="0 0 10 17" aria-hidden="true"><path d="M8 1.5 2 8.5l6 7"/></svg><span id="hero-cm">180 cm</span><svg class="fl" viewBox="0 0 10 17" aria-hidden="true"><path d="M2 1.5l6 7-6 7"/></svg></button>
+    <span class="cinta-pista" aria-hidden="true">Arrastra para cambiar el ancho</span>
   </div>
 </section>
 
@@ -3382,7 +3387,7 @@ function iniciarPortada(){
     V.normalizar({t:'tv',pulgadas:55,cx:0,y:74}),
     V.normalizar({t:'mueble',w:52,h:186,d:30,x:-194,y:0,m:'piso',luzInterior:true,raiz:{s:'f',k:[{c:'a'},{c:'a'},{c:'a'},{s:'c',k:[{c:'p'},{c:'p'}],r:[1,1]}],r:[1,1,1,1.1]}})
   ],ambiente:[{t:'lampara',x:147},{t:'sansevieria',x:180},{t:'cuadro',x:183,y:134,w:30,h:40}]};
-  let ancho=150,pxcm=3,fontOK=false,tocado=false,rango=[120,245];
+  let ancho=150,pxcm=3,fontOK=false,tocado=false,rango=[120,245],zona=null;
   const m=dis.piezas[0];
   const fv=(el,a)=>{el.style.fontVariationSettings=`"wdth" ${a.toFixed(1)},"wght" 820`;};
   const movil=()=>window.innerWidth<720;
@@ -3448,6 +3453,8 @@ function iniciarPortada(){
       for(let c=20;c<ancho-6;c+=20)html+=`<span style="left:${(c*pxcm).toFixed(1)}px">${c}</span>`;
       $('#hero-nums').innerHTML=html;
     }
+    const arr=E.proyectar(ancho/2,m.y+m.h,zf);
+    zona={x0:a.x-24,x1:b.x+24,y0:arr.y-10,y1:a.y+off+34};
     cinta.hidden=false;
   };
   E.alRedimensionar=()=>{encuadre();E.invalidar();};
@@ -3457,28 +3464,83 @@ function iniciarPortada(){
   encuadre();aplicar();
 
   const tir=$('#hero-tirador');
-  let dr=null;
-  tir.addEventListener('pointerdown',e=>{e.preventDefault();try{tir.setPointerCapture(e.pointerId);}catch(er){}dr={x:e.clientX,w:ancho};if(!tocado){tocado=true;sec.classList.add('tocado');}intro=null;});
-  tir.addEventListener('pointermove',e=>{if(!dr)return;e.preventDefault();ancho=clamp(Math.round(dr.w+2*(e.clientX-dr.x)/pxcm),rango[0],rango[1]);aplicar();});
-  const fin=()=>{dr=null;};
-  tir.addEventListener('pointerup',fin);tir.addEventListener('pointercancel',fin);
+  let dr=null,intro=null,tdemo=0,veces=0;
+  /* Anima el ancho hacia un valor; cualquier gesto del usuario la corta (intro=null). */
+  function mover(hasta,dur,sig){
+    const t0=performance.now(),de=ancho;
+    const paso=t=>{
+      if(intro!==paso)return;
+      const k=clamp((t-t0)/dur,0,1),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+      ancho=Math.round(de+(hasta-de)*e);aplicar();
+      if(k<1){requestAnimationFrame(paso);return;}
+      intro=null;if(sig)sig();
+    };
+    intro=paso;requestAnimationFrame(paso);
+  }
+  /* Demostración: estira, encoge y vuelve, para que se vea qué hace el gesto. */
+  function demo(sig){
+    if(reducir||tocado||intro)return;
+    const base=ancho,alto=Math.min(base+38,rango[1]),bajo=Math.max(base-30,rango[0]);
+    mover(alto,950,()=>mover(bajo,1250,()=>mover(base,850,sig)));
+  }
+  const enVista=()=>{const r=sec.getBoundingClientRect();return r.bottom>140&&r.top<window.innerHeight*.55&&!E.pausada&&!document.hidden;};
+  function programarDemo(espera){
+    clearTimeout(tdemo);
+    if(tocado||reducir||veces>=3)return;
+    tdemo=setTimeout(()=>{
+      if(tocado)return;
+      if(intro||!enVista()){programarDemo(2500);return;}
+      veces++;demo(()=>programarDemo(7000));
+    },espera);
+  }
+  const dentro=(x,y)=>!!zona&&x>=zona.x0&&x<=zona.x1&&y>=zona.y0&&y<=zona.y1;
+  function empezar(e,el,lado){
+    try{el.setPointerCapture(e.pointerId);}catch(er){}
+    dr={x:e.clientX,w:ancho,lado,mov:false};
+    intro=null;clearTimeout(tdemo);
+  }
+  function arrastrar(e){
+    if(!dr)return;
+    const dx=e.clientX-dr.x;
+    if(!dr.mov){if(Math.abs(dx)<4)return;dr.mov=true;if(!tocado){tocado=true;sec.classList.add('tocado');}}
+    e.preventDefault();
+    ancho=clamp(Math.round(dr.w+dr.lado*2*dx/pxcm),rango[0],rango[1]);aplicar();
+  }
+  function soltar(e){
+    const d=dr;dr=null;
+    /* Un toque sin arrastrar enseña el gesto en vez de no hacer nada. */
+    if(d&&!d.mov&&e.type==='pointerup')demo(()=>programarDemo(7000));
+    else if(d&&!d.mov)programarDemo(4000);
+  }
+  /* La regla completa (y su botón) se arrastra hacia la derecha para ensanchar. */
+  cinta.addEventListener('pointerdown',e=>{e.preventDefault();empezar(e,cinta,1);});
+  cinta.addEventListener('pointermove',arrastrar);
+  cinta.addEventListener('pointerup',soltar);cinta.addEventListener('pointercancel',soltar);
+  /* El mueble mismo también se agarra: a la derecha del centro ensancha al arrastrar hacia la derecha, a la izquierda al revés. */
+  cv.style.touchAction='pan-y';
+  cv.addEventListener('pointerdown',e=>{
+    const r=sec.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    if(!dentro(x,y))return;
+    e.preventDefault();
+    empezar(e,cv,x<(zona.x0+zona.x1)/2?-1:1);
+  });
+  cv.addEventListener('pointermove',e=>{
+    if(dr){arrastrar(e);return;}
+    const r=sec.getBoundingClientRect();
+    cv.style.cursor=dentro(e.clientX-r.left,e.clientY-r.top)?'ew-resize':'';
+  });
+  cv.addEventListener('pointerup',soltar);cv.addEventListener('pointercancel',soltar);
   tir.addEventListener('keydown',e=>{
     const p=e.key==='ArrowRight'?5:e.key==='ArrowLeft'?-5:0;if(!p)return;
-    e.preventDefault();intro=null;ancho=clamp(ancho+p,rango[0],rango[1]);aplicar();
+    e.preventDefault();intro=null;clearTimeout(tdemo);
+    if(!tocado){tocado=true;sec.classList.add('tocado');}
+    ancho=clamp(ancho+p,rango[0],rango[1]);aplicar();
   });
 
-  let intro=null;
   const arrancar=()=>{
     fontOK=true;encuadre();
     if(reducir){ancho=180;aplicar();return;}
-    const t0=performance.now(),dur=1500,de=ancho,a=180;
-    intro=function paso(t){
-      if(intro!==paso)return;
-      const k=clamp((t-t0)/dur,0,1),e=1-Math.pow(1-k,3);
-      ancho=Math.round(de+(a-de)*e);aplicar();
-      if(k<1)requestAnimationFrame(paso);
-    };
-    requestAnimationFrame(intro);
+    mover(180,1500,()=>programarDemo(1800));
   };
   if(document.fonts&&document.fonts.load){
     Promise.race([document.fonts.load('820 100px Anybody','A TU MEDIDA').then(()=>document.fonts.ready),new Promise(r=>setTimeout(r,2500))]).then(arrancar);
