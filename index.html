@@ -57,6 +57,14 @@ button{cursor:pointer}
 .btn-peq{min-height:38px;padding:6px 12px;font-size:14px}
 
 
+.anuncio{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2px 10px;padding:8px 16px 11px;background:var(--cinta);color:var(--tinta);text-decoration:none;text-align:center;font-size:14.5px;line-height:1.3;position:relative}
+.anuncio::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:repeating-linear-gradient(90deg,var(--tinta) 0 1.5px,transparent 1.5px 10px);opacity:.55}
+.anuncio b{font-family:var(--display);font-weight:800;letter-spacing:.01em}
+.anuncio b::after{content:" ·";font-weight:400}
+.anuncio:hover span{text-decoration:underline}
+@media(max-width:520px){.anuncio b::after{content:""}.anuncio{flex-direction:column;font-size:14px}}
+.ck-met{margin-bottom:14px}
+.cr-seg svg{flex:none}
 .cab{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--muro-hondo);color:var(--yeso);padding-left:var(--gutter-i);padding-right:var(--gutter-d)}
 .cab-i{max-width:1240px;margin-inline:auto;display:flex;align-items:center;gap:18px;min-height:62px;flex-wrap:wrap}
 .marca{display:flex;align-items:baseline;gap:9px;color:inherit;text-decoration:none}
@@ -778,6 +786,7 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
 </svg>
 
 
+<a class="anuncio" href="#catalogo" data-ir="catalogo"><b>Barranquilla y Soledad</b><span>Envío e instalación gratis · Paga contraentrega</span></a>
 <header class="cab" id="cab">
   <div class="cab-i">
     <a class="marca" href="#inicio" data-ir="inicio"><span class="marca-n" data-negocio>Taller El Arte</span><small data-lema>muebles a tu medida</small></a>
@@ -1064,8 +1073,13 @@ V.dinero=n=>'$ '+String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
 V.ENVIO={
   origen:'Barranquilla',
   declarado:.5,              // se declara la mitad del precio del mueble
-  fleteLocal:0,              // Barranquilla y alrededores: tu costo de entrega propia (0 = sin costo)
-  zonaLocal:['barranquilla','soledad','malambo','puerto colombia','galapa'],
+  /* Entrega del propio taller en Barranquilla y alrededores. fleteLocal: lo que se cobra de envío por pedido
+     en cada municipio (0 = gratis). En toda la zona local la instalación es gratis (instalacionLocal).
+     contraentrega: municipios donde el cliente puede pagar al recibir. */
+  zonaLocal:['barranquilla','soledad','malambo','puerto colombia','galapa','palermo','sabanagrande'],
+  fleteLocal:{barranquilla:0,soledad:0,malambo:20000,'puerto colombia':20000,galapa:20000,palermo:20000,sabanagrande:30000},
+  instalacionLocal:true,
+  contraentrega:['barranquilla','soledad'],
   laminas:{blanca:{kg:52.45,w:215,h:244},color:{kg:46,w:182,h:244}},   // RH pesadas por el taller: kg, ancho y alto en cm
   grosorLamina:1.5,          // cm. SUPUESTO (no se midió): 52,45 kg en 2,15×2,44 m son ≈10 kg/m², lo normal en RH de 15 mm. Cámbialo si es otro grosor
   densidad:0,                // kg/m³ de la lámina de color; se calcula abajo
@@ -1565,11 +1579,17 @@ V.bultosEnvio=function(d){
   });
   return B.map(b=>({L:b.L+m,A:b.A+m,E:b.E+m,kg:b.kg*E.extraPeso}));
 };
+/* Municipio de la zona local (o null). Acepta "Sabana Grande" o "Sabanagrande". */
+V.zonaDe=function(t){
+  const s=String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'');
+  if(!s)return null;
+  return V.ENVIO.zonaLocal.find(z=>s.includes(z.replace(/\s+/g,'')))||null;
+};
 V.ciudadEnvio=function(t){
   const s=String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   if(!s.trim())return null;
   const E=V.ENVIO;
-  if(E.zonaLocal.some(z=>s.includes(z)))return 'local';
+  if(V.zonaDe(s))return 'local';
   return Object.keys(E.ciudades).find(k=>s.includes(k))||Object.keys(E.distancias||{}).find(k=>!E.ciudades[k]&&s.includes(k))||null;
 };
 /* Valor de una transportadora para una ciudad (tarifa o días): el cotizado si existe; si no, estimado por distancia */
@@ -1596,7 +1616,11 @@ V.costoEnvio=function(d,ciudad,precio,bultos){
   const E=V.ENVIO,c=V.ciudadEnvio(ciudad);
   if(!c)return null;
   const B=bultos||V.bultosEnvio(d),decl=Math.round((precio||0)*E.declarado),kgT=B.reduce((a,b)=>a+b.kg,0)||1;
-  if(c==='local'){const o={id:'local',n:'Entrega local',total:E.fleteLocal,dias:null};return{local:true,ciudad:c,opciones:[o],mejor:o,bultos:B,declarado:decl};}
+  if(c==='local'){
+    const z=V.zonaDe(ciudad),F=E.fleteLocal,v=F&&typeof F==='object'?(+F[z]||0):(+F||0);
+    const o={id:'local',n:'Entrega del taller',total:v,dias:null};
+    return{local:true,zona:z,instalacion:!!E.instalacionLocal,contraentrega:(E.contraentrega||[]).includes(z),ciudad:c,opciones:[o],mejor:o,bultos:B,declarado:decl};
+  }
   const ops=[];
   Object.keys(E.transportadoras).forEach(k=>{
     const t=E.transportadoras[k],est=!t.tarifa[c],r=V.valorPorDistancia(t.tarifa,c,E.margenEstimado);
@@ -3031,6 +3055,7 @@ function envioTexto(){
   if(!pr)return{t:'Se cotiza con tu diseño',incluido:false};
   if(!ci.trim())return{t:'Se confirma con tu ciudad',incluido:false};
   const r=V.costoEnvio(d,ci,pr);
+  if(r&&r.local)return{t:(r.mejor.total?'Incluido':'Gratis')+(r.instalacion?' · instalación gratis':''),incluido:true};
   if(r&&r.mejor)return{t:'Incluido',incluido:true};
   return{t:'Te lo confirmamos por WhatsApp',incluido:false};
 }
@@ -3532,7 +3557,7 @@ function leer(){
   }catch(e){return [];}
 }
 let items=leer(),pago=null,tAviso=0;
-const form={nombre:'',tel:'',ciudad:'',direccion:'',correo:'',vendedor:V.leerVendedor?V.leerVendedor():'',notas:''};
+const form={nombre:'',tel:'',ciudad:'',direccion:'',correo:'',vendedor:V.leerVendedor?V.leerVendedor():'',notas:'',metodo:'linea'};
 const guardar=()=>{try{localStorage.setItem(LS,JSON.stringify(items));}catch(e){}};
 const cuenta=()=>items.reduce((a,i)=>a+i.n,0);
 const subtotal=()=>items.reduce((a,i)=>a+precio(i)*i.n,0);
@@ -3569,6 +3594,10 @@ function repartoEnvio(){
   return R;
 }
 const codigo=()=>V.limpiarVendedor(form.vendedor);
+/* Contraentrega: solo donde V.ENVIO.contraentrega lo permite (Barranquilla y Soledad) */
+const contraOk=()=>{const r=envio();return !!(r&&r.contraentrega);};
+const esContra=()=>form.metodo==='contra'&&contraOk();
+const valEnv=v=>v?dinero(v):'Gratis';
 function pctCodigo(){const c=codigo(),D=V.DESCUENTOS||{},k=c&&Object.keys(D).find(x=>V.limpiarVendedor(x)===c),p=k?+D[k]:0;return p>0&&p<100?p:0;}
 function esVendedor(){const c=codigo();return !!c&&!pctCodigo()&&(V.VENDEDORES||[]).some(x=>V.limpiarVendedor(x)===c);}
 function descPct(){const p=pctCodigo();if(p)return p;const v=+V.DESCUENTO_VENDEDOR||0;return esVendedor()&&v>0&&v<100?v:0;}
@@ -3625,6 +3654,8 @@ function mensaje(extra){
   L.push('');
   const t=total();
   L.push(t?'Total con envío incluido: '+dinero(t.total):'Subtotal: '+dinero(subtotal()-dsc)+' (envío por confirmar)');
+  if(t&&t.r.local)L.push('Envío: '+valEnv(t.envio)+(t.r.instalacion?' · Instalación: gratis':''));
+  if(t&&esContra())L.push('Pago: contraentrega (pago al recibir)');
   L.push('');
   if(f.ciudad.trim())L.push('Ciudad: '+f.ciudad.trim());
   if(f.direccion.trim())L.push('Dirección: '+f.direccion.trim());
@@ -3636,7 +3667,7 @@ function mensaje(extra){
   return L.join('\n');
 }
 function validar(mostrar){
-  const ok={nombre:form.nombre.trim().length>1,tel:form.tel.replace(/\D/g,'').length>=7,ciudad:form.ciudad.trim().length>1};
+  const ok={nombre:form.nombre.trim().length>1,tel:form.tel.replace(/\D/g,'').length>=7,ciudad:form.ciudad.trim().length>1,direccion:!esContra()||form.direccion.trim().length>3};
   if(mostrar)Object.keys(ok).forEach(k=>{const e=$(`#cr-form [data-err="${k}"]`);if(e)e.hidden=ok[k];const i=$('#cr-'+k);if(i)i.setAttribute('aria-invalid',ok[k]?'false':'true');});
   return ok;
 }
@@ -3699,9 +3730,20 @@ function guardarCfg(){
   const m=$('#pg-modo');if(m)m.textContent=modoTexto(cfgPago());
   actualizarRes();
 }
+const IC_TARJ='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/></svg>';
+const IC_CASA='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.5L12 4.5l8.5 7M6 10v9.5h12V10"/><path d="M10 19.5v-5h4v5"/></svg>';
+function htmlMetodo(){
+  const m=esContra()?'contra':'linea',op=(v,ic,n,sm)=>`<label class="sim-op"><input type="radio" name="ck-m" data-cf="metodo" value="${v}"${m===v?' checked':''}><span class="sim-ic">${ic}</span><span class="sim-t"><b>${n}</b><small>${sm}</small></span><i aria-hidden="true"></i></label>`;
+  return `<fieldset class="sim-met ck-met"><legend>¿Cómo quieres pagar?</legend>${op('linea',IC_TARJ,'Pagar en línea','Tarjeta, PSE, Nequi o Bancolombia')}${op('contra',IC_CASA,'Contraentrega','Pagas cuando te lo entreguemos')}</fieldset>`;
+}
 function htmlInfo(){
   const c=cfgPago(),t=total();
-  let h='<ul class="cr-met" aria-label="Medios de pago"><li>Tarjeta</li><li>PSE</li><li>Nequi</li><li>Bancolombia</li></ul>';
+  if(esContra()){
+    let h=htmlMetodo()+'<p class="cr-seg">'+IC_CASA+'<span>Te lo llevamos y lo instalamos; pagas al recibir. Confirmas el pedido enviándolo por WhatsApp.</span></p>';
+    if(V.esTaller())h+=`<div class="tk-int">${htmlInterno()}</div>`;
+    return h;
+  }
+  let h=(contraOk()?htmlMetodo():'')+'<ul class="cr-met" aria-label="Medios de pago"><li>Tarjeta</li><li>PSE</li><li>Nequi</li><li>Bancolombia</li></ul>';
   h+='<p class="cr-seg"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Pagas en el sitio seguro de Wompi. Nosotros no vemos los datos de tu tarjeta.</span></p>';
   if(c.listo&&t&&c.prueba)h+='<div class="pago-prueba"><b>Modo de prueba: no se cobra dinero.</b> Tarjeta aprobada 4242 4242 4242 4242 · rechazada 4111 1111 1111 1111, con cualquier fecha futura y CVC de 3 dígitos. Nequi aprobado 3991111111 · rechazado 3992222222. En PSE elige "Banco que aprueba".</div>';
   if(V.esTaller())h+=`<div class="tk-int">${htmlInterno()}</div>`;
@@ -3712,6 +3754,7 @@ const OTRA='Otra ciudad o municipio';
 function htmlEnvio(){
   const t=total(),ci=form.ciudad.trim();
   if(ci===OTRA)return `<div class="ck-envio">${IC.camion}<p>Llegamos a todo el país. Para tu municipio te confirmamos el envío por WhatsApp antes de cobrar.</p></div>`;
+  if(t&&t.r.local)return `<div class="ck-envio ok">${IC.camion}<p><b>Te lo lleva nuestro equipo a ${esc(ci)}.</b> ${t.envio?'Envío <span class="nw">'+dinero(t.envio)+'</span>':'Envío <b>gratis</b>'}${t.r.instalacion?' e instalación <b>gratis</b>':''}.${t.r.contraentrega?' Puedes pagar contraentrega.':''}</p></div>`;
   if(t)return `<div class="ck-envio ok">${IC.camion}<p><b>Llegamos a ${esc(ci)}.</b> El envío (<span class="nw">${dinero(t.envio)}</span>) ya va sumado en tu total. Pagas una sola vez.</p></div>`;
   if(ci.length<3)return `<div class="ck-envio">${IC.camion}<p>Elige tu ciudad y calculamos el envío al momento.</p></div>`;
   return `<div class="ck-envio">${IC.camion}<p>Todavía no tenemos el envío a <b>${esc(ci)}</b> en línea. Pide por WhatsApp y te lo confirmamos antes de cobrar.</p></div>`;
@@ -3719,7 +3762,7 @@ function htmlEnvio(){
 function htmlLineas(){
   const t=total(),ci=form.ciudad.trim(),s=subtotal(),d=descuento();
   let env;
-  if(t)env=`<div><span>Envío a ${esc(ci)}</span><span class="mono">${dinero(t.envio)}</span></div>`;
+  if(t)env=`<div><span>Envío a ${esc(ci)}</span><span class="mono">${valEnv(t.envio)}</span></div>`+(t.r.local&&t.r.instalacion?'<div><span>Instalación</span><span class="mono">Gratis</span></div>':'');
   else if(ci.length<3)env='<div><span>Envío</span><span class="nota">Elige tu ciudad</span></div>';
   else env=`<div><span>Envío${ci===OTRA?'':' a '+esc(ci)}</span><span class="nota">Por confirmar</span></div>`;
   const dl=d?`<div class="ck-desc"><span>${esc(etDesc())}</span><span class="mono">−${dinero(d)}</span></div>`:'';
@@ -3728,7 +3771,8 @@ function htmlLineas(){
 function htmlPie(){
   const t=total(),ci=form.ciudad.trim(),s=subtotal()-descuento();
   let et,val,btn;
-  if(t){et='Total con envío';val=dinero(t.total);btn=`<button type="button" class="btn btn-p btn-gde" data-cr="pagar">Pagar ${dinero(t.total)}</button>`;}
+  if(t&&esContra()){et='Total · pagas al recibir';val=dinero(t.total);btn=`<a id="cr-contra" class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="${V.linkWA(mensaje())}">${IC.wa}Confirmar pedido por WhatsApp</a>`;}
+  else if(t){et='Total con envío';val=dinero(t.total);btn=`<button type="button" class="btn btn-p btn-gde" data-cr="pagar">Pagar ${dinero(t.total)}</button>`;}
   else if(ci.length<3){et='Subtotal · falta el envío';val=dinero(s);btn='<button type="button" class="btn btn-p btn-gde" data-cr="ciudad">Elige tu ciudad para pagar</button>';}
   else{et='Subtotal · envío por confirmar';val=dinero(s);btn=`<a id="cr-wa-pie" class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="${V.linkWA(mensaje())}">${IC.wa}Pedir por WhatsApp</a>`;}
   return `<div class="cr-pie-t"><span>${et}</span><b>${val}</b></div><p id="cr-aviso" class="cr-aviso" role="alert" hidden></p>${btn}`;
@@ -3737,24 +3781,24 @@ function htmlPie(){
 function foto(){
   const t=total();
   const R=repartoEnvio()||{};
-  return{items:items.map(i=>Object.assign({env:R[i.id]},i)),sub:subtotal(),desc:descuento(),cod:codigo(),pct:descPct(),envio:t?t.envio:0,total:t?t.total:0,
+  return{local:!!(t&&t.r.local&&t.r.instalacion),items:items.map(i=>Object.assign({env:R[i.id]},i)),sub:subtotal(),desc:descuento(),cod:codigo(),pct:descPct(),envio:t?t.envio:0,total:t?t.total:0,
     f:{nombre:form.nombre.trim(),tel:form.tel.trim(),ciudad:form.ciudad.trim(),direccion:form.direccion.trim(),correo:form.correo.trim()}};
 }
-function htmlFilaDesglose(i,env,ciudad,conUnit){
+function htmlFilaDesglose(i,env,ciudad,conUnit,inst){
   const pr=precio(i),pz=pr*i.n,tieneEnv=env!=null;
   const et=ciudad&&ciudad!==OTRA?'Envío a '+esc(ciudad):'Envío';
-  const ve=tieneEnv?dinero(env):`<span class="nota">${ciudad?'Por confirmar':'Elige tu ciudad'}</span>`;
+  const ve=tieneEnv?valEnv(env):`<span class="nota">${ciudad?'Por confirmar':'Elige tu ciudad'}</span>`;
   return `<div class="ck-it ck-it-d"><div class="cr-img">${imagen(i)}<i>${i.n}</i></div>
     <div><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small><small class="cr-mat">${esc(acabado(i))}</small>${conUnit?`<small class="mono">${dinero(pr)} c/u · ${i.n} ${i.n===1?'unidad':'unidades'}</small>`:''}
-      <dl class="ck-desg"><div><dt>${i.n>1?'Muebles ('+i.n+')':'Mueble'}</dt><dd class="mono">${dinero(pz)}</dd></div><div><dt>${et}</dt><dd class="mono">${ve}</dd></div>${tieneEnv?`<div class="ck-desg-t"><dt>Total</dt><dd class="mono">${dinero(pz+env)}</dd></div>`:''}</dl></div></div>`;
+      <dl class="ck-desg"><div><dt>${i.n>1?'Muebles ('+i.n+')':'Mueble'}</dt><dd class="mono">${dinero(pz)}</dd></div><div><dt>${et}</dt><dd class="mono">${ve}</dd></div>${inst?'<div><dt>Instalación</dt><dd class="mono">Gratis</dd></div>':''}${tieneEnv?`<div class="ck-desg-t"><dt>Total</dt><dd class="mono">${dinero(pz+env)}</dd></div>`:''}</dl></div></div>`;
 }
 function htmlItemsRes(){
-  const R=repartoEnvio(),ci=form.ciudad.trim();
-  return items.map(i=>htmlFilaDesglose(i,R?R[i.id]:null,ci,false)).join('');
+  const R=repartoEnvio(),ci=form.ciudad.trim(),t=total(),inst=!!(t&&t.r.local&&t.r.instalacion);
+  return items.map(i=>htmlFilaDesglose(i,R?R[i.id]:null,ci,false,inst)).join('');
 }
 function htmlRecibo(r,sub,etTotal){
-  const filas=r.items.map(i=>htmlFilaDesglose(i,i.env!=null?i.env:null,r.f.ciudad,true)).join('');
-  const lin=`<div class="ck-lin"><div><span>Muebles</span><span class="mono">${dinero(r.sub)}</span></div>${r.desc?`<div class="ck-desc"><span>Descuento ${esc(r.cod)} (${r.pct}%)</span><span class="mono">−${dinero(r.desc)}</span></div>`:''}<div><span>Envío a ${esc(r.f.ciudad)}</span><span class="mono">${dinero(r.envio)}</span></div></div><div class="ck-perf"></div><div class="ck-tot"><span>${etTotal}</span><b>${dinero(r.total)}</b></div>`;
+  const filas=r.items.map(i=>htmlFilaDesglose(i,i.env!=null?i.env:null,r.f.ciudad,true,r.local)).join('');
+  const lin=`<div class="ck-lin"><div><span>Muebles</span><span class="mono">${dinero(r.sub)}</span></div>${r.desc?`<div class="ck-desc"><span>Descuento ${esc(r.cod)} (${r.pct}%)</span><span class="mono">−${dinero(r.desc)}</span></div>`:''}<div><span>Envío a ${esc(r.f.ciudad)}</span><span class="mono">${valEnv(r.envio)}</span></div>${r.local?'<div><span>Instalación</span><span class="mono">Gratis</span></div>':''}</div><div class="ck-perf"></div><div class="ck-tot"><span>${etTotal}</span><b>${dinero(r.total)}</b></div>`;
   const dir=[r.f.direccion,r.f.ciudad].filter(Boolean).join(', ');
   const ent=[['Recibe',r.f.nombre],['WhatsApp',r.f.tel],['Dirección',dir],['Correo',r.f.correo]].filter(x=>x[1]).map(x=>`<div><span>${x[0]}</span><b>${esc(x[1])}</b></div>`).join('');
   const n=r.items.reduce((a,i)=>a+i.n,0);
@@ -3764,6 +3808,12 @@ function htmlRecibo(r,sub,etTotal){
 function htmlFin(){
   const{tx,ref,t,prueba,msj}=pago,est=tx.status||'',ok=est==='APPROVED',pend=est==='PENDING';
   const sm=!!pago.simulado;
+  if(pago.contra)return `<div class="ck-fin"><div class="ck-sello">${IC.ok}</div>
+    <p class="ck-kick">Pago contraentrega</p>
+    <h1 class="ck-h">¡Pedido listo!</h1>
+    <p>Abrimos WhatsApp con tu pedido: <b>envíalo para confirmarlo</b>. Pagas <b class="nw">${dinero(t.total)}</b> cuando te lo entreguemos.</p>
+    ${pago.r?htmlRecibo(pago.r,'Ref. '+esc(ref)+' · Contraentrega','Pagas al recibir'):''}
+    <a class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="${V.linkWA(msj)}">${IC.wa}Enviar mi pedido por WhatsApp</a><button type="button" class="btn btn-t" data-cr="salir">Volver a la tienda</button></div>`;
   const texto=sm?msj+'\n\n*Pago simulado en la página (sin cobro)*: '+pago.metodo+'\nTotal: '+dinero(t.total)+' (envío incluido)\nReferencia: '+ref+'\n\n¿Me envían el link de pago?'
     :msj+'\n\n*Pago con Wompi'+(prueba?' (PRUEBA)':'')+'*\nTotal: '+dinero(t.total)+' (envío incluido)\nReferencia: '+ref+'\nTransacción: '+tx.id+'\nEstado: '+est;
   const wa=`<a class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="${V.linkWA(texto)}">${IC.wa}${sm?'Enviar mi pedido por WhatsApp':'Avisar por WhatsApp'}</a>`;
@@ -3859,7 +3909,7 @@ function htmlPago(){
       </div></section>
       <section class="ck-card" id="ck-s2"><h2 class="ck-st"><span>2</span>¿A dónde lo llevamos?</h2><div class="ck-campos">
         ${selCiudad()}
-        ${campo('direccion','Dirección y barrio','autocomplete="street-address" placeholder="Calle, número y barrio"','')}
+        ${campo('direccion','Dirección y barrio','autocomplete="street-address" placeholder="Calle, número y barrio"','Escribe la dirección para llevarte el pedido.')}
       </div><div id="ck-envio"></div></section>
       <section class="ck-card" id="ck-s3"><h2 class="ck-st"><span>3</span>Pago</h2>
         <div class="ck-codigo">${campo('vendedor','Código de vendedor o descuento <small>(opcional)</small>','autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ej.: ANA01"','')}<div id="ck-cod" aria-live="polite"></div></div>
@@ -3884,7 +3934,7 @@ function actualizarRes(){
   const s=estado(),hechos=[s.d1,s.d2,false],ahora=hechos.indexOf(false);
   poner('#ck-pasos',['Tus datos','Entrega','Pago'].map((t,k)=>`<li class="${hechos[k]?'hecho':k===ahora?'ahora':''}"><span>${hechos[k]?'✓':k+1}</span>${t}</li>`).join(''));
   const s1=$('#ck-s1'),s2=$('#ck-s2');if(s1)s1.classList.toggle('hecho',s.d1);if(s2)s2.classList.toggle('hecho',s.d2);
-  const a=$('#ck-avance');if(a)a.style.width=(pago&&pago.tx.status==='APPROVED'?100:!items.length?8:10+(s.d1?30:0)+(s.d2?30:0))+'%';
+  const a=$('#ck-avance');if(a)a.style.width=(pago&&(pago.tx.status==='APPROVED'||pago.contra)?100:!items.length?8:10+(s.d1?30:0)+(s.d2?30:0))+'%';
 }
 function pintarPago(){const c=$('#ck-c');if(!c)return;c.innerHTML=htmlPago();actualizarRes();}
 function pintar(){
@@ -3960,7 +4010,7 @@ function ocultarPago(){
   const s=$('#pagar');if(!s||s.hidden)return;
   s.hidden=true;document.documentElement.classList.remove('con-ck');
   if(V.pausarHero&&!(V.disenadorAbierto&&V.disenadorAbierto()))V.pausarHero(false);
-  if(pago&&pago.tx.status==='APPROVED')pago=null;
+  if(pago&&(pago.tx.status==='APPROVED'||pago.contra))pago=null;
   pintar();
 }
 /* Se abre directo (no depende de que cambie la dirección) y luego se marca #pagar para que "atrás" funcione */
@@ -4047,7 +4097,19 @@ async function pagar(b){
 }
 
 /* ─── Eventos ─── */
+function confirmarContra(e){
+  e.preventDefault();
+  const ok=validar(true);
+  if(Object.keys(ok).some(k=>!ok[k])){enfocar(ok);return;}
+  const t=total();if(!t)return;
+  const ref=referencia(),msj=mensaje('Referencia: '+ref);
+  window.open(V.linkWA(msj),'_blank','noopener');
+  pago={tx:{status:'CONTRA',id:''},ref,t:{total:t.total},contra:true,msj,r:foto()};
+  items=[];guardar();pintar();
+  const cc=$('#ck-c');if(cc)cc.scrollTop=0;
+}
 function accion(e){
+  if(e.target.closest('#cr-contra')){confirmarContra(e);return;}
   if(e.target.closest('#cr-wa,#cr-wa-pie')){
     const ok=validar(true);
     if(!(ok.nombre&&ok.tel&&ok.ciudad)){e.preventDefault();enfocar(ok);}
