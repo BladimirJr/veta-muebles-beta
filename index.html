@@ -652,6 +652,14 @@ html.con-ck,html.con-ck body{overflow:hidden}
 @media(max-width:600px){.ck-seguro span{display:none}.ck-largo{display:none}.ck-corto{display:inline}.ck-logo{font-size:18px}}
 .ck-fin{max-width:620px;margin:0 auto;text-align:center;display:grid;gap:14px;justify-items:center;padding:26px clamp(18px,4vw,36px) 30px}
 .ck-fin .btn{width:100%;max-width:380px}
+.ck-it-d{grid-template-columns:62px minmax(0,1fr);align-items:start}
+.ck-desg{display:grid;gap:3px;margin:8px 0 0;padding:8px 10px;background:var(--yeso);border-radius:3px;font-size:13.5px}
+.ck-desg div{display:flex;justify-content:space-between;gap:10px}
+.ck-desg dt{color:var(--tinta-suave)}
+.ck-desg dd{margin:0;white-space:nowrap}
+.ck-desg dd .nota{font-size:12.5px;font-family:var(--texto)}
+.ck-desg-t{margin-top:3px;padding-top:4px;border-top:1px dashed var(--linea-f);font-weight:650}
+.ck-desg-t dt{color:var(--tinta)}
 .ck-recibo{width:100%;text-align:left;margin:6px 0 4px}
 .ck-fin .ck-recibo{order:0}
 .ck-recibo .ck-tot span{white-space:nowrap}
@@ -660,7 +668,6 @@ html.con-ck,html.con-ck body{overflow:hidden}
   .ck-recibo .ck-res-c{padding-inline:14px}
   .ck-recibo .ck-res-cab{padding-inline:14px}
   .ck-recibo .ck-it{grid-template-columns:56px minmax(0,1fr);gap:4px 12px}
-  .ck-recibo .ck-it>.mono{grid-column:2;font-weight:600;font-size:15px}
   .ck-recibo .ck-tot{flex-wrap:wrap;row-gap:2px}
   .ck-recibo .ck-tot b{font-size:28px;margin-left:auto}
   .ck-recibo .ck-perf{margin-inline:-14px}
@@ -3507,6 +3514,23 @@ function envio(){
   if(!items.length||!form.ciudad.trim())return null;
   return V.costoEnvio(null,form.ciudad,subtotal(),bultos());
 }
+/* El envío se cobra por todo el pedido junto (sale más barato). Para mostrarlo por pieza se reparte
+   según lo que costaría mandar cada una sola; la suma da exactamente el envío total. */
+function repartoEnvio(){
+  const t=total();if(!t)return null;
+  const pesos=items.map(i=>{
+    const b=cacheB[i.id]||(cacheB[i.id]=V.bultosEnvio(dis(i))),B=[];
+    for(let k=0;k<i.n;k++)b.forEach(x=>B.push(x));
+    const r=V.costoEnvio(null,form.ciudad,precio(i)*i.n,B);
+    return r&&r.mejor?r.mejor.total:precio(i)*i.n;
+  });
+  const suma=pesos.reduce((a,b)=>a+b,0)||1,R={};let resto=t.envio;
+  items.forEach((i,k)=>{
+    const v=k===items.length-1?resto:Math.round(t.envio*pesos[k]/suma/50)*50;
+    R[i.id]=v;resto-=v;
+  });
+  return R;
+}
 const codigo=()=>V.limpiarVendedor(form.vendedor);
 function descPct(){const c=codigo(),D=V.DESCUENTOS||{},k=c&&Object.keys(D).find(x=>V.limpiarVendedor(x)===c),p=k?+D[k]:0;return p>0&&p<100?p:0;}
 const descuento=()=>Math.round(subtotal()*descPct()/100);
@@ -3672,11 +3696,24 @@ function htmlPie(){
 /* Lo que se compró, guardado antes de vaciar el carrito, para mostrar el resumen al final */
 function foto(){
   const t=total();
-  return{items:items.map(i=>Object.assign({},i)),sub:subtotal(),desc:descuento(),cod:codigo(),pct:descPct(),envio:t?t.envio:0,total:t?t.total:0,
+  const R=repartoEnvio()||{};
+  return{items:items.map(i=>Object.assign({env:R[i.id]},i)),sub:subtotal(),desc:descuento(),cod:codigo(),pct:descPct(),envio:t?t.envio:0,total:t?t.total:0,
     f:{nombre:form.nombre.trim(),tel:form.tel.trim(),ciudad:form.ciudad.trim(),direccion:form.direccion.trim(),correo:form.correo.trim()}};
 }
+function htmlFilaDesglose(i,env,ciudad,conUnit){
+  const pr=precio(i),pz=pr*i.n,tieneEnv=env!=null;
+  const et=ciudad&&ciudad!==OTRA?'Envío a '+esc(ciudad):'Envío';
+  const ve=tieneEnv?dinero(env):`<span class="nota">${ciudad?'Por confirmar':'Elige tu ciudad'}</span>`;
+  return `<div class="ck-it ck-it-d"><div class="cr-img">${imagen(i)}<i>${i.n}</i></div>
+    <div><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small>${conUnit?`<small class="mono">${dinero(pr)} c/u · ${i.n} ${i.n===1?'unidad':'unidades'}</small>`:''}
+      <dl class="ck-desg"><div><dt>${i.n>1?'Muebles ('+i.n+')':'Mueble'}</dt><dd class="mono">${dinero(pz)}</dd></div><div><dt>${et}</dt><dd class="mono">${ve}</dd></div>${tieneEnv?`<div class="ck-desg-t"><dt>Total</dt><dd class="mono">${dinero(pz+env)}</dd></div>`:''}</dl></div></div>`;
+}
+function htmlItemsRes(){
+  const R=repartoEnvio(),ci=form.ciudad.trim();
+  return items.map(i=>htmlFilaDesglose(i,R?R[i.id]:null,ci,false)).join('');
+}
 function htmlRecibo(r,sub,etTotal){
-  const filas=r.items.map(i=>{const pr=precio(i);return `<div class="ck-it"><div class="cr-img">${imagen(i)}<i>${i.n}</i></div><div><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small><small class="mono">${dinero(pr)} c/u · ${i.n} ${i.n===1?'unidad':'unidades'}</small></div><span class="mono">${dinero(pr*i.n)}</span></div>`;}).join('');
+  const filas=r.items.map(i=>htmlFilaDesglose(i,i.env!=null?i.env:null,r.f.ciudad,true)).join('');
   const lin=`<div class="ck-lin"><div><span>Muebles</span><span class="mono">${dinero(r.sub)}</span></div>${r.desc?`<div class="ck-desc"><span>Descuento ${esc(r.cod)} (${r.pct}%)</span><span class="mono">−${dinero(r.desc)}</span></div>`:''}<div><span>Envío a ${esc(r.f.ciudad)}</span><span class="mono">${dinero(r.envio)}</span></div></div><div class="ck-perf"></div><div class="ck-tot"><span>${etTotal}</span><b>${dinero(r.total)}</b></div>`;
   const dir=[r.f.direccion,r.f.ciudad].filter(Boolean).join(', ');
   const ent=[['Recibe',r.f.nombre],['WhatsApp',r.f.tel],['Dirección',dir],['Correo',r.f.correo]].filter(x=>x[1]).map(x=>`<div><span>${x[0]}</span><b>${esc(x[1])}</b></div>`).join('');
@@ -3743,7 +3780,7 @@ function campo(id,et,extra,err,cls){
 function htmlResumen(){
   const n=cuenta();
   return `<div class="ck-res-cab"><div><h2>Tu pedido</h2><small>${n} ${n===1?'mueble':'muebles'}</small></div><span><button type="button" class="enl ck-mini" data-cr="verres" aria-expanded="false" aria-controls="ck-res-c">Ver detalle</button> <button type="button" class="enl" data-cr="editar">Editar</button></span></div>
-    <div class="ck-res-c" id="ck-res-c" hidden>${items.map(i=>`<div class="ck-it"><div class="cr-img">${imagen(i)}<i>${i.n}</i></div><div><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small></div><span class="mono">${dinero(precio(i)*i.n)}</span></div>`).join('')}<div id="ck-lin"></div></div>
+    <div class="ck-res-c" id="ck-res-c" hidden><div id="ck-items"></div><div id="ck-lin"></div></div>
     <div id="cr-pie" class="ck-pie"></div>`;
 }
 function htmlPago(){
@@ -3777,7 +3814,7 @@ function actualizarContador(){
 /* Solo se vuelve a dibujar si cambió: si no, un toque en el botón se pierde cuando el campo anterior pierde el foco */
 function poner(sel,h){const b=$(sel);if(!b)return;if(b.dataset.h!==h){b.innerHTML=h;b.dataset.h=h;}}
 function actualizarRes(){
-  poner('#cr-pago',htmlInfo());poner('#cr-pie',htmlPie());poner('#ck-envio',htmlEnvio());poner('#ck-lin',htmlLineas());poner('#ck-cod',htmlCodigo());
+  poner('#cr-pago',htmlInfo());poner('#cr-pie',htmlPie());poner('#ck-envio',htmlEnvio());poner('#ck-lin',htmlLineas());poner('#ck-items',htmlItemsRes());poner('#ck-cod',htmlCodigo());
   const s=estado(),hechos=[s.d1,s.d2,false],ahora=hechos.indexOf(false);
   poner('#ck-pasos',['Tus datos','Entrega','Pago'].map((t,k)=>`<li class="${hechos[k]?'hecho':k===ahora?'ahora':''}"><span>${hechos[k]?'✓':k+1}</span>${t}</li>`).join(''));
   const s1=$('#ck-s1'),s2=$('#ck-s2');if(s1)s1.classList.toggle('hecho',s.d1);if(s2)s2.classList.toggle('hecho',s.d2);
