@@ -710,6 +710,16 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
 .cr-b{width:36px;height:36px;border:1.5px solid var(--linea-f);background:none;border-radius:2px;font-size:20px;line-height:1}
 .cr-b:disabled{opacity:.35}
 .cr-n .enl{margin-left:8px;font-size:14px}
+.cr-mat,.ck-it small.cr-mat{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--tinta-suave)}
+.cr-mat::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--cinta);border:1px solid var(--tinta)}
+.mat-sello{display:inline-flex;width:fit-content;justify-self:start;align-self:flex-start;align-items:stretch;margin:4px 0 12px;border:2px solid var(--tinta);border-radius:3px;overflow:hidden;font-size:14px}
+.mat-sello span{padding:5px 10px;background:var(--tinta);color:var(--cinta);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center}
+.mat-sello b{padding:5px 12px;background:var(--cinta);color:var(--tinta);font-family:var(--display);font-size:17px;font-weight:800;letter-spacing:.01em}
+.tabla-m{position:relative;z-index:1;display:none;align-self:flex-start;margin-top:4px;padding:2px 7px;border-radius:2px;background:var(--cinta);color:var(--tinta);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.tabla.on .tabla-m{display:inline-block}
+.fi-mat{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:14px 0 4px;padding:10px 12px;border:1.5px dashed var(--linea-f);border-radius:3px;font-size:14.5px}
+.fi-mat span{color:var(--tinta-suave)}
+.mat-chip{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:var(--cinta);color:var(--tinta);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.04em;vertical-align:middle}
 .cr-pt{font-family:var(--display);font-size:17px;white-space:nowrap}
 .cr-vacio{display:grid;gap:12px;padding:18px 0 22px;justify-items:start}
 .cr-vacio p{margin:0}
@@ -889,7 +899,8 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
   <div class="sec-i">
     <div class="sec-h">
       <h2>Maderas y acabados</h2>
-      <p>Toca una tabla para verla de cerca. Los colores en pantalla pueden variar un poco del acabado real.</p>
+      <p class="mat-sello"><span>Material</span><b data-material>RH Original</b></p>
+      <p>Todos nuestros muebles se fabrican en <b data-material>RH Original</b>. Elige el acabado: toca una tabla para verla de cerca. Los colores en pantalla pueden variar un poco del acabado real.</p>
     </div>
     <div class="mad-rack" id="mad-rack"></div>
   </div>
@@ -1778,6 +1789,8 @@ const V=window.Veta;
 const clamp=V.clamp,rng=V.rng;
 const T=window.THREE;
 
+/* Material con el que se fabrican todos los muebles; los "acabados" de abajo son sus colores */
+V.MATERIAL='RH Original';
 V.MADERAS={
   roble:{n:'Roble natural',nota:'Tono miel y veta marcada. Combina con casi todo.',base:'#B98A55',osc:'#7E5730',cla:'#D9B583',mod:'fina',r:.56},
   nogal:{n:'Nogal',nota:'Oscuro y cálido, con vetas onduladas.',base:'#6A4630',osc:'#3B2418',cla:'#8F6549',mod:'catedral',r:.48},
@@ -2981,7 +2994,7 @@ function htmlAcabado(){
   const d=St.d,M=V.MADERAS;
   const sw=(acc,k,act,et)=>`<button type="button" class="sw ${act?'on':''}" data-a="${acc}" data-id="${k}" aria-pressed="${!!act}"><i style="background-image:url(${V.muestraMadera(k)})"></i><span>${et}</span></button>`;
   const tv=d.piezas.find(x=>x.t==='tv');
-  return `<div class="bloque"><h3>Madera</h3><div class="sw-grid">${Object.keys(M).map(k=>sw('madera',k,d.madera===k,M[k].n)).join('')}</div></div>
+  return `<div class="bloque"><h3>Acabado <small class="mat-chip">${V.MATERIAL}</small></h3><div class="sw-grid">${Object.keys(M).map(k=>sw('madera',k,d.madera===k,M[k].n)).join('')}</div></div>
   <div class="bloque"><h3>Frentes de puertas y cajones</h3><div class="chips"><button type="button" class="chip ${!d.frente?'on':''}" data-a="frente" data-id="igual">Igual que el cuerpo</button></div>
     <div class="sw-grid sw-mini">${Object.keys(M).map(k=>sw('frente',k,d.frente===k,M[k].n)).join('')}</div></div>
   <div class="bloque"><h3>Dirección de la veta</h3>${chipsOp('veta',[['h','Horizontal'],['v','Vertical']],d.veta)}</div>
@@ -3057,7 +3070,7 @@ function htmlEnviar(){
     <div class="tk-h"><span>Orden de taller</span><b>${esc(d.nombre)}</b></div>
     <div class="tk-foto">${foto}</div>
     <ul class="tk-lista">${filas||'<li>Agrega al menos una pieza para enviar.</li>'}</ul>
-    <dl class="tk-dl"><div><dt>Madera</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div><div><dt>Envío</dt><dd id="tk-env">${envioTexto().t}</dd></div><div class="tk-pr"><dt>${pr?'Precio':'Precio estimado'}</dt><dd>${pr?V.dinero(pr):est?V.dinero(est):'Personalizado: a cotizar'}</dd></div></dl>
+    <dl class="tk-dl"><div><dt>Material</dt><dd>${V.MATERIAL}</dd></div><div><dt>Acabado</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div><div><dt>Envío</dt><dd id="tk-env">${envioTexto().t}</dd></div><div class="tk-pr"><dt>${pr?'Precio':'Precio estimado'}</dt><dd>${pr?V.dinero(pr):est?V.dinero(est):'Personalizado: a cotizar'}</dd></div></dl>
     ${esTaller()?`<div class="tk-int" id="tk-int">${htmlInterno()}</div>`:''}
     <details class="tk-desp"><summary>Ver despiece para el taller</summary><div class="tk-tabla"><table><thead><tr><th>Cant.</th><th>Pieza</th><th>cm</th></tr></thead><tbody>${desp}</tbody></table></div><p class="nota">Medidas aproximadas. Se confirman antes de fabricar.</p></details>
   </div>
@@ -3100,7 +3113,7 @@ function mensaje(){
   L.push('*'+d.nombre+'*'+(nom?' ('+nom.tipo+')':''));
   pedido.forEach((q,i)=>{L.push((i+1)+'. '+V.nombrePieza(q)+': '+V.medidasPieza(q)+(V.detallePieza(q)?' — '+V.detallePieza(q):''));});
   L.push('');
-  L.push('Madera: '+V.MADERAS[d.madera].n+(d.frente?' · Frentes: '+V.MADERAS[d.frente].n:''));
+  L.push('Material: '+V.MATERIAL+' · Acabado: '+V.MADERAS[d.madera].n+(d.frente?' · Frentes: '+V.MADERAS[d.frente].n:''));
   L.push('Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
   const pr=V.precioDe(d),est=pr?0:V.precioEstimado(d);
   L.push(pr?'Precio publicado: '+V.dinero(pr):est?'Diseño personalizado: precio estimado '+V.dinero(est):'Diseño personalizado: precio por cotizar');
@@ -3502,6 +3515,7 @@ const dzCache={};
 function dis(i){if(!i.d)return V.crearDiseno(i.id);return dzCache[i.id]||(dzCache[i.id]=V.expandir(i.d));}
 function valido(x){try{const d=V.expandir(x.d);return d.piezas.some(q=>q.t!=='tv')&&V.precioEstimado(d)>0;}catch(e){return false;}}
 function precio(i){return i.d?V.precioEstimado(dis(i)):V.PRECIOS[i.id];}
+function acabado(i){const d=dis(i);return V.MATERIAL+' '+V.MADERAS[d.madera].n;}
 function nombre(i){return i.d?(dis(i).nombre||'Mi diseño'):perfil(i.id).nombre;}
 function tipo(i){
   if(!i.d)return perfil(i.id).tipo;
@@ -3598,11 +3612,11 @@ function mensaje(extra){
   const f=form,L=[];
   L.push('Hola'+(f.nombre.trim()?', soy '+f.nombre.trim():'')+'. Quiero hacer este pedido:');L.push('');
   items.forEach((i,k)=>{
-    L.push((k+1)+'. *'+nombre(i)+'* ('+tipo(i)+', '+medida(i)+') × '+i.n+' — '+dinero(precio(i)*i.n));
+    L.push((k+1)+'. *'+nombre(i)+'* ('+tipo(i)+', '+medida(i)+', '+acabado(i)+') × '+i.n+' — '+dinero(precio(i)*i.n));
     if(i.d){
       const d=dis(i);
       d.piezas.filter(q=>q.t!=='tv').forEach(q=>L.push('   · '+V.nombrePieza(q)+': '+V.medidasPieza(q)+(V.detallePieza(q)?' — '+V.detallePieza(q):'')));
-      L.push('   · Madera: '+V.MADERAS[d.madera].n+(d.frente?' · Frentes: '+V.MADERAS[d.frente].n:'')+' · Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
+      L.push('   · Material: '+V.MATERIAL+' · Acabado: '+V.MADERAS[d.madera].n+(d.frente?' · Frentes: '+V.MADERAS[d.frente].n:'')+' · Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
       if(i.c&&V.NEGOCIO.urlBeta)L.push('   · Ver en 3D: '+V.NEGOCIO.urlBeta+'#'+i.c);
     }
   });
@@ -3644,7 +3658,7 @@ const enPago=()=>{const s=$('#pagar');return !!s&&!s.hidden;};
 function htmlItem(i){
   const pr=precio(i);
   return `<li class="cr-it"><div class="cr-img">${imagen(i)}</div>
-    <div class="cr-info"><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small><span class="mono">${dinero(pr)} c/u</span>
+    <div class="cr-info"><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small><small class="cr-mat">${esc(acabado(i))}</small><span class="mono">${dinero(pr)} c/u</span>
       <div class="cr-n"><button type="button" class="cr-b" data-cr="menos" data-id="${i.id}" aria-label="Quitar uno">−</button><output aria-label="Cantidad">${i.n}</output><button type="button" class="cr-b" data-cr="mas" data-id="${i.id}" aria-label="Agregar uno" ${i.n>=MAX_N?'disabled':''}>+</button><button type="button" class="enl" data-cr="quitar" data-id="${i.id}">Quitar</button></div></div>
     <b class="cr-pt">${dinero(pr*i.n)}</b></li>`;
 }
@@ -3731,7 +3745,7 @@ function htmlFilaDesglose(i,env,ciudad,conUnit){
   const et=ciudad&&ciudad!==OTRA?'Envío a '+esc(ciudad):'Envío';
   const ve=tieneEnv?dinero(env):`<span class="nota">${ciudad?'Por confirmar':'Elige tu ciudad'}</span>`;
   return `<div class="ck-it ck-it-d"><div class="cr-img">${imagen(i)}<i>${i.n}</i></div>
-    <div><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small>${conUnit?`<small class="mono">${dinero(pr)} c/u · ${i.n} ${i.n===1?'unidad':'unidades'}</small>`:''}
+    <div><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small><small class="cr-mat">${esc(acabado(i))}</small>${conUnit?`<small class="mono">${dinero(pr)} c/u · ${i.n} ${i.n===1?'unidad':'unidades'}</small>`:''}
       <dl class="ck-desg"><div><dt>${i.n>1?'Muebles ('+i.n+')':'Mueble'}</dt><dd class="mono">${dinero(pz)}</dd></div><div><dt>${et}</dt><dd class="mono">${ve}</dd></div>${tieneEnv?`<div class="ck-desg-t"><dt>Total</dt><dd class="mono">${dinero(pz+env)}</dd></div>`:''}</dl></div></div>`;
 }
 function htmlItemsRes(){
@@ -4224,7 +4238,8 @@ function abrirFicha(id){
       <h3>Incluye</h3>
       <ul class="fi-lista">${piezas.map(q=>`<li><b>${V.nombrePieza(q)}</b><span class="mono">${V.medidasPieza(q)}</span><small>${V.detallePieza(q)}</small></li>`).join('')}</ul>
       ${tv&&base?`<div class="fi-tv"><h3>¿De cuántas pulgadas es tu TV?</h3><div class="chips" id="fi-pulg">${V.PULGADAS.map(x=>`<button type="button" class="chip ${x===pAct?'on':''}" data-fp="${x}" aria-pressed="${x===pAct}">${x}″</button>`).join('')}</div><p class="nota" id="fi-reco">${recoFicha(pAct,base)}</p></div>`:''}
-      <p class="nota">Precio de referencia con estas medidas y esta madera (${V.MADERAS[d.madera].n}). Si cambias algo, te lo cotizamos.</p>
+      <p class="fi-mat"><span>Material</span><b>${V.MATERIAL}</b><span>Acabado</span><b>${V.MADERAS[d.madera].n}${d.frente?' · frentes '+V.MADERAS[d.frente].n:''}</b></p>
+      <p class="nota">Precio de referencia con estas medidas, en ${V.MATERIAL} acabado ${V.MADERAS[d.madera].n}. Si cambias algo, te lo cotizamos.</p>
       <div class="fi-acc">
         <button type="button" class="btn btn-p btn-gde" data-carrito="${p.id}">Agregar al carrito · ${V.dinero(V.PRECIOS[p.id])}</button>
         <button type="button" class="btn btn-t" data-disenar="${p.id}">Personalizar este mueble</button>
@@ -4287,7 +4302,7 @@ function iniciarGuia(){
 /* ─── Muestrario de maderas ─── */
 function iniciarMaderas(){
   const r=$('#mad-rack'),M=V.MADERAS,cl=Object.keys(M);
-  r.innerHTML=cl.map((k,i)=>`<button type="button" class="tabla ${i===0?'on':''}" data-k="${k}" aria-pressed="${i===0}"><i class="tabla-t" data-tex="${k}" style="background-color:${M[k].base}"></i><span class="tabla-n">${M[k].n}</span><span class="tabla-d">${M[k].nota}</span></button>`).join('');
+  r.innerHTML=cl.map((k,i)=>`<button type="button" class="tabla ${i===0?'on':''}" data-k="${k}" aria-pressed="${i===0}"><i class="tabla-t" data-tex="${k}" style="background-color:${M[k].base}"></i><span class="tabla-n">${M[k].n}</span><span class="tabla-m">${V.MATERIAL}</span><span class="tabla-d">${M[k].nota}</span></button>`).join('');
   r.addEventListener('click',e=>{const b=e.target.closest('.tabla');if(!b)return;$$('.tabla',r).forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});});
   /* se pintan al acercarse para no frenar la carga */
   const pintar=()=>{
