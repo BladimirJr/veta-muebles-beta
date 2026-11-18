@@ -747,12 +747,14 @@ V.ENVIO={
   extraPeso:1.12,            // herrajes, LED y embalaje sobre el peso de las tablas
   margen:3,                  // cm de cartón/espuma por cada lado del bulto
   ciudades:{bogota:'Bogotá',medellin:'Medellín',cartagena:'Cartagena'},
+  /* "liviano": bultos de hasta maxKg van por mensajería, que tiene otra tarifa. Solo está medida en Bogotá
+     (3 kg, 48×24×22 cm); en otras ciudades se escala con la tarifa de carga y queda marcada "aprox." */
   transportadoras:{
     /* Inter: cobra por peso REAL, con mínimo de 30 kg por bulto, + 1% del valor declarado. Tarifa $/kg. */
-    inter:{n:'Inter Rapidísimo',tipo:'peso',minKg:30,seguro:.01,
+    inter:{n:'Inter Rapidísimo',tipo:'peso',minKg:30,seguro:.01,liviano:{maxKg:6,bogota:43100},
       tarifa:{bogota:2100,medellin:1440,cartagena:750},dias:{bogota:4,medellin:4,cartagena:1}},
     /* Coordinadora: cobra por el mayor entre peso real y volumen (cm³ ÷ 2500). Base + $/kg. Aproximado. */
-    coordinadora:{n:'Coordinadora',tipo:'volumen',factor:2500,base:11215,aprox:true,
+    coordinadora:{n:'Coordinadora',tipo:'volumen',factor:2500,base:11215,aprox:true,liviano:{maxKg:5,bogota:44910},
       tarifa:{bogota:1320.3,medellin:1352.5,cartagena:739.7},dias:{bogota:2,medellin:2,cartagena:1}},
     /* Servientrega: solo hay datos de Bogotá, y es aproximado. */
     servientrega:{n:'Servientrega',tipo:'volumen',factor:2500,base:34300,aprox:true,
@@ -1233,13 +1235,16 @@ V.costoEnvio=function(d,ciudad,precio){
   Object.keys(E.transportadoras).forEach(k=>{
     const t=E.transportadoras[k],r=t.tarifa[c];
     if(!r)return;
-    let tot=0;
+    let tot=0,ap=!!t.aprox;
     B.forEach(b=>{
+      const lv=t.liviano&&b.kg<=t.liviano.maxKg&&t.tarifa.bogota?t.liviano.bogota*r/t.tarifa.bogota:null;
+      if(lv!==null){tot+=lv;if(c!=='bogota')ap=true;return;}
       const vol=b.L*b.A*b.E/(t.factor||2500);
       const kg=t.tipo==='peso'?Math.max(t.minKg||0,b.kg):Math.max(b.kg,vol);
-      tot+=(t.base||0)+r*kg+(t.seguro||0)*decl*(b.kg/kgT);
+      const piso=t.liviano&&t.tarifa.bogota?t.liviano.bogota*r/t.tarifa.bogota:0;   // un bulto más pesado no cuesta menos que uno liviano
+      tot+=Math.max(piso,(t.base||0)+r*kg+(t.seguro||0)*decl*(b.kg/kgT));
     });
-    ops.push({id:k,n:t.n,total:Math.round(tot/50)*50,dias:t.dias&&t.dias[c]||null,aprox:!!t.aprox});
+    ops.push({id:k,n:t.n,total:Math.round(tot/50)*50,dias:t.dias&&t.dias[c]||null,aprox:ap});
   });
   ops.sort((a,b)=>a.total-b.total);
   return ops.length?{ciudad:c,opciones:ops,mejor:ops[0],bultos:B,declarado:decl}:null;
