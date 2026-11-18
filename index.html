@@ -444,6 +444,12 @@ button{cursor:pointer}
 .tk-desp th{text-align:left;font-weight:600;color:var(--tinta-suave);border-bottom:1px solid var(--linea-f);padding:3px 5px 3px 0}
 .tk-desp td{padding:3px 5px 3px 0;border-bottom:1px solid var(--linea)}
 .tk-desp .nota{margin-top:6px;font-size:13px}
+.tk-int{margin:6px 11px 10px;padding:9px 11px;border:1.5px dashed var(--cinta);background:rgba(242,182,50,.12);font-size:14px;display:grid;gap:5px}
+.tk-int p{margin:0}
+.tk-int .tk-mejor{font-size:15.5px}
+.tk-int table{width:100%;border-collapse:collapse;font-size:13.5px}
+.tk-int td{padding:2px 6px 2px 0;border-bottom:1px solid var(--linea)}
+.tk-int .nota{font-size:12.5px;color:var(--tinta-suave)}
 .form{display:grid;gap:11px;margin-top:20px}
 .form .p-sub{margin:-7px 0 2px}
 .f-c{display:grid;gap:3px;min-width:0}
@@ -724,6 +730,35 @@ V.PRECIOS={
   dintel:790000
 };
 V.dinero=n=>'$ '+String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+
+/* ─────────  ENVÍO (costo real de transporte desde Barranquilla)  ─────────
+   El cliente solo ve "Envío incluido". Tú ves el costo real y la transportadora más barata
+   agregando ?taller=1 al final del link de la página (se queda guardado en ese navegador;
+   ?taller=0 lo apaga). Las tarifas salen de cotizaciones reales del 18-nov-2026: actualízalas
+   cuando cambien. Para sumar una ciudad: agrégala en "ciudades" y en "tarifa" de cada transportadora.
+   OJO: esta página es pública; quien mire el código puede leer estas tarifas. */
+V.ENVIO={
+  origen:'Barranquilla',
+  declarado:.5,              // se declara la mitad del precio del mueble
+  fleteLocal:0,              // Barranquilla y alrededores: tu costo de entrega propia (0 = sin costo)
+  zonaLocal:['barranquilla','soledad','malambo','puerto colombia','galapa'],
+  densidad:700,              // kg/m³ de la lámina. CAMBIAR con el peso real de tu lámina
+  densidadPor:{},            // opcional por madera, ej: {roble:720,pino:520}
+  extraPeso:1.12,            // herrajes, LED y embalaje sobre el peso de las tablas
+  margen:3,                  // cm de cartón/espuma por cada lado del bulto
+  ciudades:{bogota:'Bogotá',medellin:'Medellín',cartagena:'Cartagena'},
+  transportadoras:{
+    /* Inter: cobra por peso REAL, con mínimo de 30 kg por bulto, + 1% del valor declarado. Tarifa $/kg. */
+    inter:{n:'Inter Rapidísimo',tipo:'peso',minKg:30,seguro:.01,
+      tarifa:{bogota:2100,medellin:1440,cartagena:750},dias:{bogota:4,medellin:4,cartagena:1}},
+    /* Coordinadora: cobra por el mayor entre peso real y volumen (cm³ ÷ 2500). Base + $/kg. Aproximado. */
+    coordinadora:{n:'Coordinadora',tipo:'volumen',factor:2500,base:11215,aprox:true,
+      tarifa:{bogota:1320.3,medellin:1352.5,cartagena:739.7},dias:{bogota:2,medellin:2,cartagena:1}},
+    /* Servientrega: solo hay datos de Bogotá, y es aproximado. */
+    servientrega:{n:'Servientrega',tipo:'volumen',factor:2500,base:34300,aprox:true,
+      tarifa:{bogota:1906},dias:{}}
+  }
+};
 
 V.clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 V.rng=function(seed){let s=(Math.imul(seed|0,2654435761)>>>0)||88172645;return function(){s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296;};};
@@ -1150,6 +1185,64 @@ V.despiece=function(q){
     });
   }
   return lista;
+};
+
+/* ─── Envío: peso, bultos y costo ─── */
+V.pesoPieza=function(q,madera){
+  const E=V.ENVIO,rho0=(E.densidadPor&&E.densidadPor[madera])||E.densidad,g=q.g||1.8;
+  let kg=0;
+  V.despiece(q).forEach(z=>{
+    let e=g,f=1,rho=rho0;
+    if(q.t==='repisa')e=q.h;
+    else if(q.t==='panel')e=z.n==='Listón'?1.6:(q.e==='listones'?1:1.8);
+    else if(z.n==='Fondo')e=.6;
+    else if(z.n==='Puerta'){e=1.8;}
+    else if(z.n==='Puerta de listones'){e=1.8;f=.6;}
+    else if(z.n==='Puerta de vidrio'){e=.4;rho=2500;}
+    else if(z.n==='Frente de cajón'){e=4.2;}   // frente + caja del cajón
+    kg+=z.q*z.a*z.b*e*f*rho/1e6;
+  });
+  return kg;
+};
+V.bultosEnvio=function(d){
+  const E=V.ENVIO,m=E.margen*2;
+  const it=d.piezas.filter(q=>q.t!=='tv').map(q=>{
+    const t=[q.w,q.h,q.d].sort((x,y)=>y-x);
+    return{L:t[0],A:t[1],E:t[2],kg:V.pesoPieza(q,d.madera)};
+  }).sort((x,y)=>y.L*y.A*y.E-x.L*x.A*x.E);
+  const B=[];
+  it.forEach(p=>{
+    const b=B.find(x=>p.L<=x.L&&p.A<=x.A);
+    if(b){b.E+=p.E;b.kg+=p.kg;}else B.push({L:p.L,A:p.A,E:p.E,kg:p.kg});
+  });
+  return B.map(b=>({L:b.L+m,A:b.A+m,E:b.E+m,kg:b.kg*E.extraPeso}));
+};
+V.ciudadEnvio=function(t){
+  const s=String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  if(!s.trim())return null;
+  const E=V.ENVIO;
+  if(E.zonaLocal.some(z=>s.includes(z)))return 'local';
+  return Object.keys(E.ciudades).find(k=>s.includes(k))||null;
+};
+V.costoEnvio=function(d,ciudad,precio){
+  const E=V.ENVIO,c=V.ciudadEnvio(ciudad);
+  if(!c)return null;
+  const B=V.bultosEnvio(d),decl=Math.round((precio||0)*E.declarado),kgT=B.reduce((a,b)=>a+b.kg,0)||1;
+  if(c==='local'){const o={id:'local',n:'Entrega local',total:E.fleteLocal,dias:null};return{local:true,ciudad:c,opciones:[o],mejor:o,bultos:B,declarado:decl};}
+  const ops=[];
+  Object.keys(E.transportadoras).forEach(k=>{
+    const t=E.transportadoras[k],r=t.tarifa[c];
+    if(!r)return;
+    let tot=0;
+    B.forEach(b=>{
+      const vol=b.L*b.A*b.E/(t.factor||2500);
+      const kg=t.tipo==='peso'?Math.max(t.minKg||0,b.kg):Math.max(b.kg,vol);
+      tot+=(t.base||0)+r*kg+(t.seguro||0)*decl*(b.kg/kgT);
+    });
+    ops.push({id:k,n:t.n,total:Math.round(tot/50)*50,dias:t.dias&&t.dias[c]||null,aprox:!!t.aprox});
+  });
+  ops.sort((a,b)=>a.total-b.total);
+  return ops.length?{ciudad:c,opciones:ops,mejor:ops[0],bultos:B,declarado:decl}:null;
 };
 
 V.tips=function(d,q){
@@ -2471,7 +2564,56 @@ function htmlAcabado(){
 /* ─── Pestaña Enviar ─── */
 const PARED_OPC=[['ladrillo','Ladrillo o concreto'],['drywall','Drywall o yeso'],['nose','No lo sé']];
 const INSTALA_OPC=[['si','Sí, necesito instalación'],['no','No, yo lo instalo'],['nose','Aún no lo sé']];
+/* Código de vendedor: el link de cada vendedor es tallerelarte.com/?v=SUCODIGO.
+   Queda guardado en el navegador del cliente y viaja en el mensaje de WhatsApp. */
+const limpiarVendedor=x=>String(x||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12);
+function leerVendedor(){
+  try{
+    const q=limpiarVendedor(new URLSearchParams(location.search).get('v'));
+    if(q)localStorage.setItem('taller-el-arte-vendedor',q);
+    return limpiarVendedor(localStorage.getItem('taller-el-arte-vendedor'));
+  }catch(e){return '';}
+}
+function esTaller(){
+  try{
+    const q=new URLSearchParams(location.search).get('taller');
+    if(q==='1')localStorage.setItem('taller-el-arte','1');
+    if(q==='0')localStorage.removeItem('taller-el-arte');
+    return localStorage.getItem('taller-el-arte')==='1';
+  }catch(e){return false;}
+}
+/* Lo que ve el cliente sobre el envío: nunca el costo */
+function envioTexto(){
+  const d=St.d,pr=V.precioDe(d),ci=St.form.ciudad;
+  if(!pr)return{t:'Se cotiza con tu diseño',incluido:false};
+  if(!ci.trim())return{t:'Se confirma con tu ciudad',incluido:false};
+  const r=V.costoEnvio(d,ci,pr);
+  if(r&&r.mejor)return{t:'Incluido',incluido:true};
+  return{t:'Te lo confirmamos por WhatsApp',incluido:false};
+}
+/* Lo que ve solo el taller: costo real y mejor transportadora */
+function htmlInterno(){
+  const d=St.d,pr=V.precioDe(d),ci=St.form.ciudad;
+  let h='<b>Interno · el cliente no ve esto</b>';
+  if(!ci.trim())return h+'<p>Escribe la ciudad en los datos para calcular el envío.</p>';
+  const r=V.costoEnvio(d,ci,pr||0);
+  if(!r)return h+'<p>Esa ciudad no tiene tarifa cargada. Cotízala a mano o agrégala en V.ENVIO.</p>';
+  const dias=n=>n?' · '+n+(n===1?' día':' días'):'';
+  h+=`<p class="tk-mejor">${esc(r.mejor.n)}: <b>${V.dinero(r.mejor.total)}</b>${dias(r.mejor.dias)}</p>`;
+  if(r.opciones.length>1)h+='<table><tbody>'+r.opciones.map(o=>`<tr><td>${esc(o.n)}${o.aprox?' (aprox.)':''}</td><td class="mono">${V.dinero(o.total)}</td><td>${o.dias?o.dias+(o.dias===1?' día':' días'):'—'}</td></tr>`).join('')+'</tbody></table>';
+  if(!r.local){
+    h+=`<p class="nota">${r.bultos.length} ${r.bultos.length===1?'bulto':'bultos'}: ${r.bultos.map(b=>V.cm(b.L)+' × '+V.cm(b.A)+' × '+V.cm(b.E)+' cm, '+V.cm(Math.round(b.kg*10)/10)+' kg').join(' · ')}<br>Valor declarado (${Math.round(V.ENVIO.declarado*100)}%): ${V.dinero(r.declarado)}</p>`;
+    h+=`<p class="nota">Peso estimado con ${V.ENVIO.densidad} kg/m³ de densidad: ajústalo con el peso real de tu lámina.${pr?'':' Sin precio de catálogo no se incluye el seguro.'}</p>`;
+  }
+  if(pr)h+=`<p>Cobrar con envío incluido: ${V.dinero(pr)} + ${V.dinero(r.mejor.total)} = <b>${V.dinero(pr+r.mejor.total)}</b></p>`;
+  return h;
+}
+function actualizarEnvio(){
+  const a=$('#tk-env');if(a)a.textContent=envioTexto().t;
+  const b=$('#tk-int');if(b)b.innerHTML=htmlInterno();
+}
 function htmlEnviar(){
+  if(St.form.vendedor===undefined)St.form.vendedor=leerVendedor();
   const d=St.d,f=St.form,pedido=d.piezas.filter(q=>q.t!=='tv');
   const foto=St.esc?`<img id="t-img" alt="Vista de tu diseño">`:`<div id="t-img-svg">${V.svgFrente(d,{conTV:true})}</div>`;
   const filas=pedido.map((q,i)=>`<li><div><b>${i+1}. ${esc(V.nombrePieza(q))}</b><span class="mono">${V.medidasPieza(q)}</span></div><small>${esc(V.detallePieza(q))}</small></li>`).join('');
@@ -2484,7 +2626,8 @@ function htmlEnviar(){
     <div class="tk-h"><span>Orden de taller</span><b>${esc(d.nombre)}</b></div>
     <div class="tk-foto">${foto}</div>
     <ul class="tk-lista">${filas||'<li>Agrega al menos una pieza para enviar.</li>'}</ul>
-    <dl class="tk-dl"><div><dt>Madera</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div><div class="tk-pr"><dt>Precio</dt><dd>${pr?V.dinero(pr):'Personalizado: a cotizar'}</dd></div></dl>
+    <dl class="tk-dl"><div><dt>Madera</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div><div><dt>Envío</dt><dd id="tk-env">${envioTexto().t}</dd></div><div class="tk-pr"><dt>Precio</dt><dd>${pr?V.dinero(pr):'Personalizado: a cotizar'}</dd></div></dl>
+    ${esTaller()?`<div class="tk-int" id="tk-int">${htmlInterno()}</div>`:''}
     <details class="tk-desp"><summary>Ver despiece para el taller</summary><div class="tk-tabla"><table><thead><tr><th>Cant.</th><th>Pieza</th><th>cm</th></tr></thead><tbody>${desp}</tbody></table></div><p class="nota">Medidas aproximadas. Se confirman antes de fabricar.</p></details>
   </div>
   <form id="f-envio" class="form" novalidate>
@@ -2494,6 +2637,7 @@ function htmlEnviar(){
     <div class="f-c"><label for="f-tel">Tu WhatsApp <em>*</em></label><input id="f-tel" data-f="tel" type="tel" inputmode="tel" autocomplete="tel" value="${esc(f.tel)}"><p class="err" data-err="tel" hidden>Escribe un número válido, con al menos 7 dígitos.</p></div>
     <div class="f-c"><label for="f-ciudad">Ciudad o barrio <em>*</em></label><input id="f-ciudad" data-f="ciudad" autocomplete="address-level2" value="${esc(f.ciudad)}"><p class="err" data-err="ciudad" hidden>Escribe dónde va el mueble.</p></div>
     <div class="f-c"><label for="f-correo">Correo (opcional)</label><input id="f-correo" data-f="correo" type="email" inputmode="email" autocomplete="email" value="${esc(f.correo)}"></div>
+    <div class="f-c"><label for="f-vendedor">Código de vendedor (opcional)</label><input id="f-vendedor" data-f="vendedor" autocomplete="off" autocapitalize="characters" value="${esc(f.vendedor)}"></div>
     ${sel('pared','Material de tu pared',PARED_OPC,f.pared)}
     ${sel('instala','¿Necesitas instalación?',INSTALA_OPC,f.instala)}
     <div class="f-c"><label for="f-notas">Algo más que debamos saber</label><textarea id="f-notas" data-f="notas" rows="3">${esc(f.notas)}</textarea></div>
@@ -2527,6 +2671,7 @@ function mensaje(){
   L.push('Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
   const pr=V.precioDe(d);
   L.push(pr?'Precio publicado: '+V.dinero(pr):'Diseño personalizado: precio por cotizar');
+  if(envioTexto().incluido)L.push('Envío: incluido en el precio');
   const tv=d.piezas.find(q=>q.t==='tv');
   if(tv)L.push('Televisor: '+tv.pulgadas+' pulgadas');
   if(d.paredAncho)L.push('Ancho libre de la pared: '+cm(d.paredAncho)+' cm');
@@ -2534,6 +2679,7 @@ function mensaje(){
   if(f.ciudad)L.push('Ciudad: '+f.ciudad.trim());
   if(f.tel)L.push('Mi WhatsApp: '+f.tel.trim());
   if(f.correo)L.push('Correo: '+f.correo.trim());
+  if(limpiarVendedor(f.vendedor))L.push('Código de vendedor: '+limpiarVendedor(f.vendedor));
   const pa=PARED_OPC.find(o=>o[0]===f.pared),ins=INSTALA_OPC.find(o=>o[0]===f.instala);
   if(pa)L.push('Pared: '+pa[1]);
   if(ins)L.push('Instalación: '+ins[1]);
@@ -2541,7 +2687,7 @@ function mensaje(){
   if(St.codigo&&V.NEGOCIO.urlBeta){L.push('');L.push('Mi diseño en 3D: '+V.NEGOCIO.urlBeta+'#'+St.codigo);}
   return L.join('\n');
 }
-function actualizarEnlace(){const a=$('#f-enviar');if(a)a.href=V.linkWA(mensaje());}
+function actualizarEnlace(){const a=$('#f-enviar');if(a)a.href=V.linkWA(mensaje());actualizarEnvio();}
 function prepararEnvio(){
   V.cifrar(St.d).then(c=>{St.codigo=c;actualizarEnlace();});
   actualizarEnlace();
