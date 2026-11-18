@@ -7,7 +7,7 @@
    1. Solo responde a las páginas de ORIGENES (tallerelarte.com).
    2. Revisa que la referencia, la moneda y las cantidades tengan sentido.
    3. Lee los precios de catálogo de la propia página (V.PRECIOS) y calcula cuánto valen los muebles pedidos.
-   4. Si llega un código de descuento, lo busca en V.DESCUENTOS de la página y rebaja ese porcentaje.
+   4. Si llega un código, lo busca en V.DESCUENTOS (su %) o en V.VENDEDORES (V.DESCUENTO_VENDEDOR %) de la página y rebaja ese porcentaje.
       Solo firma si el monto está entre ese valor y ese valor + un tope de envío. Así nadie puede pagar
       $1.000 por un mueble de $1.350.000 cambiando el código de la página en su navegador.
    5. Devuelve { signature }, que la página le entrega al widget de Wompi.
@@ -17,7 +17,7 @@
 const REFERENCIA = /^TEA-[A-Z0-9]{1,12}-[A-Z0-9]{6,24}$/;
 const MAX_LINEAS = 20;
 
-let memoria = { t: 0, precios: null, descuentos: {} };
+let memoria = { t: 0, precios: null, descuentos: {}, vendedores: { pct: 0, lista: [] } };
 
 function json(obj, estado, cabeceras) {
   return new Response(JSON.stringify(obj), {
@@ -52,6 +52,15 @@ export function extraerDescuentos(html) {
   return d;
 }
 
+/* Códigos de vendedor: { pct, lista } desde V.DESCUENTO_VENDEDOR y V.VENDEDORES de la página. */
+export function extraerVendedores(html) {
+  const p = /V\.DESCUENTO_VENDEDOR\s*=\s*(\d+)/.exec(html || '');
+  const l = /V\.VENDEDORES\s*=\s*\[([^\]]*)\]/.exec(html || '');
+  const pct = p ? parseInt(p[1], 10) : 0;
+  const lista = l ? [...l[1].matchAll(/['"]([A-Za-z0-9]+)['"]/g)].map(x => x[1].toUpperCase()) : [];
+  return { pct: pct > 0 && pct < 100 ? pct : 0, lista };
+}
+
 async function cargarPrecios(env) {
   if (env.PRECIOS) {
     try { return JSON.parse(env.PRECIOS); } catch (e) { return null; }
@@ -62,7 +71,7 @@ async function cargarPrecios(env) {
     if (!r.ok) return null;
     const html = await r.text();
     const precios = extraerPrecios(html);
-    if (precios) memoria = { t: Date.now(), precios, descuentos: extraerDescuentos(html) };
+    if (precios) memoria = { t: Date.now(), precios, descuentos: extraerDescuentos(html), vendedores: extraerVendedores(html) };
     return precios;
   } catch (e) {
     return null;
@@ -115,7 +124,12 @@ export default {
     if (env.DESCUENTOS) { try { descuentos = JSON.parse(env.DESCUENTOS); } catch (e) { descuentos = {}; } }
     const cod = typeof codigo === 'string' ? codigo.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12) : '';
     if (cod) {
-      const pct = descuentos[cod];
+      let pct = descuentos[cod];
+      if (!(pct > 0 && pct < 100)) {
+        let v = memoria.vendedores || { pct: 0, lista: [] };
+        if (env.VENDEDORES) v = { pct: parseInt(env.DESCUENTO_VENDEDOR || '0', 10), lista: String(env.VENDEDORES).split(',').map(x => x.trim().toUpperCase()).filter(Boolean) };
+        pct = v.lista.includes(cod) ? v.pct : 0;
+      }
       if (!(pct > 0 && pct < 100)) return json({ error: 'Código de descuento no válido' }, 422, cors);
       subtotal -= Math.round(subtotal * pct / 100);
     }

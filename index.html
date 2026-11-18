@@ -573,6 +573,22 @@ html.con-ck,html.con-ck body{overflow:hidden}
 .ck-cod{display:flex;gap:8px;align-items:flex-start;margin:0;font-size:14px;line-height:1.4;color:var(--tinta-suave)}
 .ck-cod svg{width:17px;height:17px;flex:none;margin-top:1px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .ck-cod.ok{color:var(--wa-hondo);font-weight:600}
+.ck-cod.no{color:#9B2C1B}
+div.ck-cod.ok{align-items:center;gap:12px;padding:10px 12px;background:rgba(37,211,102,.09);border:1.5px dashed var(--wa-hondo);border-radius:3px;color:var(--tinta);font-weight:500}
+div.ck-cod.ok p{margin:0}
+div.ck-cod.ok p b{color:var(--wa-hondo)}
+.ck-estampa{position:relative;flex:none;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--cinta);border:3px solid var(--tinta);transform:rotate(-12deg);box-shadow:inset 0 0 0 3px var(--cinta),inset 0 0 0 5px var(--tinta)}
+.ck-estampa b{font-family:var(--display);font-size:17px;font-weight:800;color:var(--tinta);letter-spacing:-.02em}
+.ck-estampa i{position:absolute;left:50%;top:50%;width:var(--t);height:calc(var(--t)*.45);margin:calc(var(--t)*-.225) 0 0 calc(var(--t)*-.5);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#C99A63;border:1px solid #7E5730;opacity:0}
+#ck-cod.anim .ck-estampa{animation:sello-cae .55s cubic-bezier(.2,1.6,.4,1) both}
+#ck-cod.anim .ck-estampa i{animation:viruta .9s cubic-bezier(.15,.7,.3,1) .32s both}
+#ck-cod.anim div.ck-cod.ok{animation:cod-brilla 1.2s ease-out}
+@keyframes sello-cae{0%{opacity:0;transform:scale(2.6) rotate(-40deg)}60%{opacity:1;transform:scale(.88) rotate(-8deg)}100%{transform:scale(1) rotate(-12deg)}}
+@keyframes viruta{0%{opacity:1;transform:rotate(var(--a)) translateX(0) rotate(0)}100%{opacity:0;transform:rotate(var(--a)) translateX(var(--d)) rotate(220deg)}}
+@keyframes cod-brilla{0%{background:rgba(242,182,50,.45)}100%{background:rgba(37,211,102,.09)}}
+.baja{animation:tot-baja .9s ease-out}
+@keyframes tot-baja{0%{color:var(--wa-hondo);transform:scale(1.08)}100%{color:inherit;transform:none}}
+@media(prefers-reduced-motion:reduce){#ck-cod.anim .ck-estampa,#ck-cod.anim .ck-estampa i,#ck-cod.anim div.ck-cod.ok,.baja{animation:none}}
 .ck-desc{color:var(--wa-hondo);font-weight:650}
 /* Ventana del pago simulado */
 .sim{border:0;padding:0;width:min(460px,calc(100vw - 24px));max-height:calc(100dvh - 24px);background:var(--papel);color:var(--tinta);border-radius:4px;overflow:auto;box-shadow:0 30px 70px rgba(26,16,10,.45)}
@@ -1602,6 +1618,13 @@ V.costoEnvio=function(d,ciudad,precio,bultos){
    OJO: la página es pública; quien mire el código puede leer estos códigos.
    El servidor de pagos (servidor-pagos) lee esta misma lista para aceptar el monto con descuento. */
 V.DESCUENTOS={};
+
+/* Códigos de vendedor: dan DESCUENTO_VENDEDOR % en los muebles (no en el envío) y quedan en el pedido
+   para saber qué vendedor lo trajo. Solo cuentan los de la lista (mayúsculas, letras y números).
+   El link de cada vendedor es tallerelarte.com/?v=SUCODIGO y deja el código puesto solo.
+   El servidor de pagos lee esta misma lista. VIDES es un código de PRUEBA. */
+V.DESCUENTO_VENDEDOR=5;
+V.VENDEDORES=['VIDES'];
 
 V.PAGOS={
   llavePublica:'',
@@ -3532,7 +3555,10 @@ function repartoEnvio(){
   return R;
 }
 const codigo=()=>V.limpiarVendedor(form.vendedor);
-function descPct(){const c=codigo(),D=V.DESCUENTOS||{},k=c&&Object.keys(D).find(x=>V.limpiarVendedor(x)===c),p=k?+D[k]:0;return p>0&&p<100?p:0;}
+function pctCodigo(){const c=codigo(),D=V.DESCUENTOS||{},k=c&&Object.keys(D).find(x=>V.limpiarVendedor(x)===c),p=k?+D[k]:0;return p>0&&p<100?p:0;}
+function esVendedor(){const c=codigo();return !!c&&!pctCodigo()&&(V.VENDEDORES||[]).some(x=>V.limpiarVendedor(x)===c);}
+function descPct(){const p=pctCodigo();if(p)return p;const v=+V.DESCUENTO_VENDEDOR||0;return esVendedor()&&v>0&&v<100?v:0;}
+const etDesc=()=>(esVendedor()?'Descuento vendedor ':'Descuento ')+codigo()+' ('+descPct()+'%)';
 const descuento=()=>Math.round(subtotal()*descPct()/100);
 function total(){
   const r=envio();
@@ -3581,7 +3607,7 @@ function mensaje(extra){
     }
   });
   const dsc=descuento();
-  if(dsc)L.push('Descuento '+codigo()+' ('+descPct()+'%): −'+dinero(dsc));
+  if(dsc)L.push(etDesc()+': −'+dinero(dsc));
   L.push('');
   const t=total();
   L.push(t?'Total con envío incluido: '+dinero(t.total):'Subtotal: '+dinero(subtotal()-dsc)+' (envío por confirmar)');
@@ -3590,7 +3616,7 @@ function mensaje(extra){
   if(f.direccion.trim())L.push('Dirección: '+f.direccion.trim());
   if(f.tel.trim())L.push('Mi WhatsApp: '+f.tel.trim());
   if(f.correo.trim())L.push('Correo: '+f.correo.trim());
-  const v=codigo();if(v&&!descPct())L.push('Código de vendedor: '+v);
+  const v=codigo();if(v&&(esVendedor()||!descPct()))L.push('Código de vendedor: '+v);
   if(f.notas.trim()){L.push('');L.push('Notas: '+f.notas.trim());}
   if(extra){L.push('');L.push(extra);}
   return L.join('\n');
@@ -3682,7 +3708,7 @@ function htmlLineas(){
   if(t)env=`<div><span>Envío a ${esc(ci)}</span><span class="mono">${dinero(t.envio)}</span></div>`;
   else if(ci.length<3)env='<div><span>Envío</span><span class="nota">Elige tu ciudad</span></div>';
   else env=`<div><span>Envío${ci===OTRA?'':' a '+esc(ci)}</span><span class="nota">Por confirmar</span></div>`;
-  const dl=d?`<div class="ck-desc"><span>Descuento ${esc(codigo())} (${descPct()}%)</span><span class="mono">−${dinero(d)}</span></div>`:'';
+  const dl=d?`<div class="ck-desc"><span>${esc(etDesc())}</span><span class="mono">−${dinero(d)}</span></div>`:'';
   return `<div class="ck-lin"><div><span>Muebles</span><span class="mono">${dinero(s)}</span></div>${dl}${env}</div><div class="ck-perf"></div><div class="ck-tot"><span>${t?'Total':'Subtotal'}</span><b>${dinero(t?t.total:s-d)}</b></div>`;
 }
 function htmlPie(){
@@ -3768,11 +3794,34 @@ function selCiudad(){
   const otras=OTRAS_CIUDADES.filter(x=>!V.ciudadEnvio(x)).sort((a,b)=>a.localeCompare(b,'es'));
   return `<div class="f-c"><label for="cr-ciudad">Ciudad <em>*</em></label><div class="ck-sel"><select id="cr-ciudad" data-cf="ciudad" autocomplete="address-level2"><option value=""${v?'':' selected'} disabled>Elige tu ciudad</option><optgroup label="Envío calculado al momento">${con.map(o).join('')}</optgroup><optgroup label="Envío por confirmar">${otras.map(o).join('')}${o(OTRA)}</optgroup></select></div><p class="err" data-err="ciudad" hidden>Elige tu ciudad.</p></div>`;
 }
+/* Virutas de madera que salen del sello (ángulo, distancia y tamaño de cada una) */
+let codTocado=false;
+const VIRUTAS=[[-160,46,9],[-120,52,7],[-75,44,10],[-30,50,8],[20,48,9],[65,54,7],[110,46,10],[150,50,8],[195,44,7],[235,52,9]];
 function htmlCodigo(){
   const c=codigo();if(!c)return '';
   const p=descPct();
-  return p?`<p class="ck-cod ok">${IC.ok}<span>¡Descuento del ${p}% aplicado! Ahorras <b>${dinero(descuento())}</b>.</span></p>`
-    :`<p class="ck-cod">${IC.ok}<span>Código de vendedor <b>${esc(c)}</b> guardado. Si era un descuento, revisa que esté bien escrito.</span></p>`;
+  if(!p)return codTocado?`<p class="ck-cod no"><span>No encontramos el código <b>${esc(c)}</b>. Revisa que esté bien escrito.</span></p>`:'';
+  const quien=esVendedor()?`Código de vendedor <b>${esc(c)}</b>: `:'';
+  return `<div class="ck-cod ok"><span class="ck-estampa" aria-hidden="true"><b>−${p}%</b>${VIRUTAS.map(([a,d,t],k)=>`<i style="--a:${a}deg;--d:${d}px;--t:${t}px;--k:${k}"></i>`).join('')}</span>
+    <p>${quien}¡${p}% de descuento en tus muebles! Ahorras <b>${dinero(descuento())}</b>.</p></div>`;
+}
+/* Cuando un código empieza a dar descuento: el sello cae y el total baja contando */
+let pctAntes=0,totAntes=0;
+function contar(el,de,a){
+  if(!el||de===a)return;
+  const t0=performance.now(),dur=750;
+  const paso=t=>{const x=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-x,3);el.textContent=dinero(Math.round((de+(a-de)*e)/50)*50);if(x<1)requestAnimationFrame(paso);else el.textContent=dinero(a);};
+  requestAnimationFrame(paso);
+}
+function animarCodigo(antes){
+  const box=$('#ck-cod');if(!box)return;
+  box.classList.remove('anim');void box.offsetWidth;box.classList.add('anim');
+  setTimeout(()=>box.classList.remove('anim'),1400);
+  const t=total(),nuevo=t?t.total:subtotal()-descuento();
+  $$('#cr-pie .cr-pie-t b, #ck-lin .ck-tot b').forEach(el=>{
+    contar(el,antes,nuevo);
+    el.classList.remove('baja');void el.offsetWidth;el.classList.add('baja');
+  });
 }
 function campo(id,et,extra,err,cls){
   return `<div class="f-c ${cls||''}"><label for="cr-${id}">${et}</label><input id="cr-${id}" data-cf="${id}" ${extra} value="${esc(form[id])}">${err?`<p class="err" data-err="${id}" hidden>${err}</p>`:''}</div>`;
@@ -3815,6 +3864,9 @@ function actualizarContador(){
 function poner(sel,h){const b=$(sel);if(!b)return;if(b.dataset.h!==h){b.innerHTML=h;b.dataset.h=h;}}
 function actualizarRes(){
   poner('#cr-pago',htmlInfo());poner('#cr-pie',htmlPie());poner('#ck-envio',htmlEnvio());poner('#ck-lin',htmlLineas());poner('#ck-items',htmlItemsRes());poner('#ck-cod',htmlCodigo());
+  const pAhora=descPct(),tAhora=(total()||{}).total||(subtotal()-descuento());
+  if(pAhora&&!pctAntes&&$('#ck-cod'))animarCodigo(totAntes||tAhora);
+  pctAntes=pAhora;totAntes=tAhora;
   const s=estado(),hechos=[s.d1,s.d2,false],ahora=hechos.indexOf(false);
   poner('#ck-pasos',['Tus datos','Entrega','Pago'].map((t,k)=>`<li class="${hechos[k]?'hecho':k===ahora?'ahora':''}"><span>${hechos[k]?'✓':k+1}</span>${t}</li>`).join(''));
   const s1=$('#ck-s1'),s2=$('#ck-s2');if(s1)s1.classList.toggle('hecho',s.d1);if(s2)s2.classList.toggle('hecho',s.d2);
@@ -4014,6 +4066,7 @@ if(ck){
   ck.addEventListener('submit',e=>e.preventDefault());
   const alCambiar=e=>{
     const k=e.target.dataset&&e.target.dataset.cf;if(!k)return;
+    if(k==='vendedor'){const t=e.type==='change';if(t!==codTocado){codTocado=t;if(form[k]===e.target.value){actualizarRes();return;}}}
     if(form[k]===e.target.value)return;
     form[k]=e.target.value;actualizarRes();
     if(e.target.getAttribute('aria-invalid')==='true')validar(true);
