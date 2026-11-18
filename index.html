@@ -1625,6 +1625,44 @@ V.precioDe=function(d){
   if(!base)return null;
   return firmaPedido(d)===firmaPedido(V.crearDiseno(d.perfil))?base:null;
 };
+/* ─── Precio de un diseño personalizado (estimado) ───
+   Cada modelo tiene una "tarifa": su precio ÷ el material y el trabajo que lleva (según el despiece).
+   Un diseño cambiado se cobra con la tarifa del modelo del que partió: si lo agrandas cuesta más
+   y si lo achicas cuesta menos. Las piezas con más trabajo pesan más (los números de TRABAJO).
+   Un diseño hecho desde cero usa la tarifa del medio del catálogo. El taller confirma medidas antes de fabricar. */
+V.TRABAJO={
+  'Puerta':1.6,'Puerta de listones':2.2,'Puerta de vidrio':2,'Frente de cajón':3,'Listón':1.3,
+  ledCm:25,        // cada cm de luz LED cuenta como 25 cm² de tabla
+  gancho:250,      // cada gancho cuenta como 250 cm² de tabla
+  minimo:80000,    // ningún diseño cuesta menos que esto
+  redondeo:10000   // el precio se redondea a esta cifra
+};
+V.unidadesTrabajo=function(d){
+  const T=V.TRABAJO;let u=0;
+  d.piezas.forEach(q=>{
+    if(q.t==='tv')return;
+    V.despiece(q).forEach(z=>{u+=z.q*z.a*z.b*(T[z.n]||1);});
+    if(q.led)u+=q.w*T.ledCm;
+    if(q.ganchos)u+=q.ganchos*T.gancho;
+  });
+  return u;
+};
+let tarifas=null;
+function tarifa(id){
+  if(!tarifas){
+    tarifas={};
+    Object.keys(V.PRECIOS).forEach(k=>{const u=V.unidadesTrabajo(V.crearDiseno(k));if(u>0)tarifas[k]=V.PRECIOS[k]/u;});
+    const v=Object.values(tarifas).sort((a,b)=>a-b);tarifas._medio=v[Math.floor(v.length/2)]||0;
+  }
+  return tarifas[id]||tarifas._medio;
+}
+V.precioEstimado=function(d){
+  const u=V.unidadesTrabajo(d),T=V.TRABAJO;
+  if(!(u>0))return null;
+  return Math.max(T.minimo,Math.round(tarifa(d.perfil)*u/T.redondeo)*T.redondeo);
+};
+/* Lo que se cobra: el precio de catálogo si no cambió nada; si cambió, el estimado */
+V.precioPedido=function(d){return V.precioDe(d)||V.precioEstimado(d);};
 V.compactar=function(d){
   return [1,d.perfil,d.nombre,d.madera,d.frente||0,d.tirador,d.veta,d.pared,d.paredAncho,d.piezas.map(q=>[
     q.t,q.x,q.y,q.w,q.h,q.d||0,q.g||0,q.m||0,q.led?1:0,q.fondo===false?0:1,q.cables?1:0,q.ganchos||0,q.e||0,q.pulgadas||0,q.raiz?nodoC(q.raiz):0
@@ -2580,8 +2618,8 @@ function htmlTV(d,q){
 function pie(){
   const b=V.bbox(St.d,true),n=St.d.piezas.filter(q=>q.t!=='tv').length;
   $('#dz-medida').textContent=b.vacio?'Sin piezas':cm(b.w)+' × '+cm(b.h)+' cm · '+n+(n===1?' pieza':' piezas');
-  const pr=V.precioDe(St.d);
-  $('#dz-precio').textContent=pr?V.dinero(pr):'Personalizado · a cotizar';
+  const pr=V.precioDe(St.d),est=pr?0:V.precioEstimado(St.d);
+  $('#dz-precio').textContent=pr?V.dinero(pr):est?V.dinero(est)+' · personalizado':'Personalizado · a cotizar';
   const i=TABS.findIndex(t=>t[0]===St.tab),sig=TABS[i+1];
   const bt=$('#dz-sig');
   bt.hidden=!sig;
@@ -2862,7 +2900,11 @@ const acciones={
   veta(b){St.d.veta=b.dataset.id;dibujar();commit();pintarTab();},
   pared(b){St.d.pared=b.dataset.id;dibujar();commit();pintarTab();},
   copiar(b){copiarResumen(b);},
-  alCarrito(b){if(V.carrito&&St.d.perfil)V.carrito.agregar(St.d.perfil,b);}
+  alCarrito(b){
+    if(!V.carrito)return;
+    if(V.precioDe(St.d))V.carrito.agregar(St.d.perfil,b);
+    else V.carrito.agregarDiseno(St.d,b);
+  }
 };
 function invalidar(){if(St.esc)St.esc.invalidar();}
 let tAviso=0;
@@ -2943,13 +2985,13 @@ function htmlEnviar(){
   const desp=pedido.map(q=>V.despiece(q).map(z=>`<tr><td>${z.q}</td><td>${z.n}</td><td class="mono">${cm(z.a)} × ${cm(z.b)}</td></tr>`).join('')).join('');
   const mad=V.MADERAS[d.madera].n+(d.frente?' con frentes en '+V.MADERAS[d.frente].n:'');
   const tir=V.TIRADORES.find(t=>t.id===d.tirador).n;
-  const pr=V.precioDe(d);
+  const pr=V.precioDe(d),est=pr?0:V.precioEstimado(d);
   const sel=(id,et,ops,val)=>`<div class="f-c"><label for="f-${id}">${et}</label><select id="f-${id}" data-f="${id}"><option value="">Elige una opción</option>${ops.map(o=>`<option value="${o[0]}" ${val===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></div>`;
   return `<div class="ticket">
     <div class="tk-h"><span>Orden de taller</span><b>${esc(d.nombre)}</b></div>
     <div class="tk-foto">${foto}</div>
     <ul class="tk-lista">${filas||'<li>Agrega al menos una pieza para enviar.</li>'}</ul>
-    <dl class="tk-dl"><div><dt>Madera</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div><div><dt>Envío</dt><dd id="tk-env">${envioTexto().t}</dd></div><div class="tk-pr"><dt>Precio</dt><dd>${pr?V.dinero(pr):'Personalizado: a cotizar'}</dd></div></dl>
+    <dl class="tk-dl"><div><dt>Madera</dt><dd>${mad}</dd></div><div><dt>Tirador</dt><dd>${tir}</dd></div><div><dt>Envío</dt><dd id="tk-env">${envioTexto().t}</dd></div><div class="tk-pr"><dt>${pr?'Precio':'Precio estimado'}</dt><dd>${pr?V.dinero(pr):est?V.dinero(est):'Personalizado: a cotizar'}</dd></div></dl>
     ${esTaller()?`<div class="tk-int" id="tk-int">${htmlInterno()}</div>`:''}
     <details class="tk-desp"><summary>Ver despiece para el taller</summary><div class="tk-tabla"><table><thead><tr><th>Cant.</th><th>Pieza</th><th>cm</th></tr></thead><tbody>${desp}</tbody></table></div><p class="nota">Medidas aproximadas. Se confirman antes de fabricar.</p></details>
   </div>
@@ -2964,7 +3006,8 @@ function htmlEnviar(){
     ${sel('pared','Material de tu pared',PARED_OPC,f.pared)}
     ${sel('instala','¿Necesitas instalación?',INSTALA_OPC,f.instala)}
     <div class="f-c"><label for="f-notas">Algo más que debamos saber</label><textarea id="f-notas" data-f="notas" rows="3">${esc(f.notas)}</textarea></div>
-    ${pr?`<div class="pago"><h3>Comprar en línea</h3><p>Este modelo tiene precio de catálogo: <b>${V.dinero(pr)}</b>. Agrégalo al carrito, escribe tu ciudad y paga con el envío incluido.</p><button type="button" class="btn btn-p btn-gde" data-a="alCarrito">Agregar al carrito</button></div>`:''}
+    ${pr?`<div class="pago"><h3>Comprar en línea</h3><p>Este modelo tiene precio de catálogo: <b>${V.dinero(pr)}</b>. Agrégalo al carrito, escribe tu ciudad y paga con el envío incluido.</p><button type="button" class="btn btn-p btn-gde" data-a="alCarrito">Agregar al carrito</button></div>`
+      :est?`<div class="pago"><h3>Comprar tu diseño en línea</h3><p>Con tus medidas y piezas, tu diseño cuesta <b>${V.dinero(est)}</b>. Agrégalo al carrito y paga con el envío incluido. Antes de fabricar revisamos contigo cada medida.</p><button type="button" class="btn btn-p btn-gde" data-a="alCarrito">Agregar mi diseño al carrito</button></div>`:''}
     <a id="f-enviar" class="btn btn-wa btn-gde" target="_blank" rel="noopener" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Enviar por WhatsApp</a>
     <p class="nota" id="f-nota-wa">Se abre WhatsApp con tu diseño escrito. Solo revisa y toca enviar.</p>
     <div id="f-luego" class="luego" hidden>
@@ -2993,8 +3036,8 @@ function mensaje(){
   L.push('');
   L.push('Madera: '+V.MADERAS[d.madera].n+(d.frente?' · Frentes: '+V.MADERAS[d.frente].n:''));
   L.push('Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
-  const pr=V.precioDe(d);
-  L.push(pr?'Precio publicado: '+V.dinero(pr):'Diseño personalizado: precio por cotizar');
+  const pr=V.precioDe(d),est=pr?0:V.precioEstimado(d);
+  L.push(pr?'Precio publicado: '+V.dinero(pr):est?'Diseño personalizado: precio estimado '+V.dinero(est):'Diseño personalizado: precio por cotizar');
   if(envioTexto().incluido)L.push('Envío: incluido en el precio');
   const tv=d.piezas.find(q=>q.t==='tv');
   if(tv)L.push('Televisor: '+tv.pulgadas+' pulgadas');
@@ -3388,24 +3431,38 @@ const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 const dinero=V.dinero,LS='taller-el-arte-carrito',PAGO_LS='taller-el-arte-wompi',MAX_N=9;
 const perfil=id=>V.PERFILES.find(p=>p.id===id);
 
+/* Un artículo es un modelo del catálogo {id,n} o un diseño personalizado {id:'p-…',d:diseño compacto,c:código del link,n} */
+const dzCache={};
+function dis(i){if(!i.d)return V.crearDiseno(i.id);return dzCache[i.id]||(dzCache[i.id]=V.expandir(i.d));}
+function valido(x){try{const d=V.expandir(x.d);return d.piezas.some(q=>q.t!=='tv')&&V.precioEstimado(d)>0;}catch(e){return false;}}
+function precio(i){return i.d?V.precioEstimado(dis(i)):V.PRECIOS[i.id];}
+function nombre(i){return i.d?(dis(i).nombre||'Mi diseño'):perfil(i.id).nombre;}
+function tipo(i){
+  if(!i.d)return perfil(i.id).tipo;
+  const p=perfil(dis(i).perfil);
+  return 'Personalizado'+(p?' · '+p.tipo:'');
+}
+function idDiseno(c){let h=2166136261;const t=JSON.stringify(c);for(let k=0;k<t.length;k++){h^=t.charCodeAt(k);h=Math.imul(h,16777619);}return 'p-'+(h>>>0).toString(36);}
 function leer(){
   try{
     const a=JSON.parse(localStorage.getItem(LS)||'[]');
-    return Array.isArray(a)?a.filter(x=>x&&perfil(x.id)&&V.PRECIOS[x.id]).map(x=>({id:String(x.id),n:Math.max(1,Math.min(MAX_N,x.n|0))})):[];
+    if(!Array.isArray(a))return [];
+    const n=x=>Math.max(1,Math.min(MAX_N,x.n|0));
+    return a.filter(x=>x&&(x.d?valido(x):perfil(x.id)&&V.PRECIOS[x.id])).map(x=>x.d?{id:String(x.id),d:x.d,c:x.c||'',n:n(x)}:{id:String(x.id),n:n(x)});
   }catch(e){return [];}
 }
 let items=leer(),pago=null,tAviso=0;
 const form={nombre:'',tel:'',ciudad:'',direccion:'',correo:'',vendedor:V.leerVendedor?V.leerVendedor():'',notas:''};
 const guardar=()=>{try{localStorage.setItem(LS,JSON.stringify(items));}catch(e){}};
 const cuenta=()=>items.reduce((a,i)=>a+i.n,0);
-const subtotal=()=>items.reduce((a,i)=>a+V.PRECIOS[i.id]*i.n,0);
+const subtotal=()=>items.reduce((a,i)=>a+precio(i)*i.n,0);
 
 /* Envío de todo el pedido: se juntan los bultos de cada mueble y se elige la transportadora más barata */
 const cacheB={};
 function bultos(){
   const B=[];
   items.forEach(i=>{
-    const b=cacheB[i.id]||(cacheB[i.id]=V.bultosEnvio(V.crearDiseno(i.id)));
+    const b=cacheB[i.id]||(cacheB[i.id]=V.bultosEnvio(dis(i)));
     for(let k=0;k<i.n;k++)b.forEach(x=>B.push(x));
   });
   return B;
@@ -3449,12 +3506,20 @@ function cargarWompi(){
 const PAGO_EST={APPROVED:'Pago aprobado',DECLINED:'Pago rechazado',ERROR:'Error en el pago',VOIDED:'Pago anulado',PENDING:'Pago en proceso'};
 
 /* ─── Textos y piezas de pantalla ─── */
-function medida(id){const d=V.crearDiseno(id),q=d.piezas.find(x=>x.t==='mueble')||d.piezas.find(x=>x.t==='repisa')||d.piezas[0];return V.medidasPieza(q);}
-function imagen(id){const u=V.miniaturas&&V.miniaturas[id];return u?`<img alt="" src="${u}">`:`<span class="plano">${V.svgFrente(V.crearDiseno(id),{conTV:true})}</span>`;}
+function medida(i){const d=dis(i),q=d.piezas.find(x=>x.t==='mueble')||d.piezas.find(x=>x.t==='repisa')||d.piezas.find(x=>x.t!=='tv');return q?V.medidasPieza(q):'';}
+function imagen(i){const u=!i.d&&V.miniaturas&&V.miniaturas[i.id];return u?`<img alt="" src="${u}">`:`<span class="plano">${V.svgFrente(dis(i),{conTV:true})}</span>`;}
 function mensaje(extra){
   const f=form,L=[];
   L.push('Hola'+(f.nombre.trim()?', soy '+f.nombre.trim():'')+'. Quiero hacer este pedido:');L.push('');
-  items.forEach((i,k)=>{const p=perfil(i.id);L.push((k+1)+'. *'+p.nombre+'* ('+p.tipo+', '+medida(i.id)+') × '+i.n+' — '+dinero(V.PRECIOS[i.id]*i.n));});
+  items.forEach((i,k)=>{
+    L.push((k+1)+'. *'+nombre(i)+'* ('+tipo(i)+', '+medida(i)+') × '+i.n+' — '+dinero(precio(i)*i.n));
+    if(i.d){
+      const d=dis(i);
+      d.piezas.filter(q=>q.t!=='tv').forEach(q=>L.push('   · '+V.nombrePieza(q)+': '+V.medidasPieza(q)+(V.detallePieza(q)?' — '+V.detallePieza(q):'')));
+      L.push('   · Madera: '+V.MADERAS[d.madera].n+(d.frente?' · Frentes: '+V.MADERAS[d.frente].n:'')+' · Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
+      if(i.c&&V.NEGOCIO.urlBeta)L.push('   · Ver en 3D: '+V.NEGOCIO.urlBeta+'#'+i.c);
+    }
+  });
   const dsc=descuento();
   if(dsc)L.push('Descuento '+codigo()+' ('+descPct()+'%): −'+dinero(dsc));
   L.push('');
@@ -3491,9 +3556,9 @@ const SVG_VACIO='<svg viewBox="0 0 160 100" aria-hidden="true"><rect x="34" y="2
 const enPago=()=>{const s=$('#pagar');return !!s&&!s.hidden;};
 
 function htmlItem(i){
-  const p=perfil(i.id),pr=V.PRECIOS[i.id];
-  return `<li class="cr-it"><div class="cr-img">${imagen(i.id)}</div>
-    <div class="cr-info"><b>${esc(p.nombre)}</b><small>${esc(p.tipo)} · <span class="mono">${esc(medida(i.id))}</span></small><span class="mono">${dinero(pr)} c/u</span>
+  const pr=precio(i);
+  return `<li class="cr-it"><div class="cr-img">${imagen(i)}</div>
+    <div class="cr-info"><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small><span class="mono">${dinero(pr)} c/u</span>
       <div class="cr-n"><button type="button" class="cr-b" data-cr="menos" data-id="${i.id}" aria-label="Quitar uno">−</button><output aria-label="Cantidad">${i.n}</output><button type="button" class="cr-b" data-cr="mas" data-id="${i.id}" aria-label="Agregar uno" ${i.n>=MAX_N?'disabled':''}>+</button><button type="button" class="enl" data-cr="quitar" data-id="${i.id}">Quitar</button></div></div>
     <b class="cr-pt">${dinero(pr*i.n)}</b></li>`;
 }
@@ -3571,11 +3636,11 @@ function htmlPie(){
 /* Lo que se compró, guardado antes de vaciar el carrito, para mostrar el resumen al final */
 function foto(){
   const t=total();
-  return{items:items.map(i=>({id:i.id,n:i.n})),sub:subtotal(),desc:descuento(),cod:codigo(),pct:descPct(),envio:t?t.envio:0,total:t?t.total:0,
+  return{items:items.map(i=>Object.assign({},i)),sub:subtotal(),desc:descuento(),cod:codigo(),pct:descPct(),envio:t?t.envio:0,total:t?t.total:0,
     f:{nombre:form.nombre.trim(),tel:form.tel.trim(),ciudad:form.ciudad.trim(),direccion:form.direccion.trim(),correo:form.correo.trim()}};
 }
 function htmlRecibo(r,sub,etTotal){
-  const filas=r.items.map(i=>{const p=perfil(i.id),pr=V.PRECIOS[i.id];return `<div class="ck-it"><div class="cr-img">${imagen(i.id)}<i>${i.n}</i></div><div><b>${esc(p.nombre)}</b><small>${esc(p.tipo)} · <span class="mono">${esc(medida(i.id))}</span></small><small class="mono">${dinero(pr)} c/u · ${i.n} ${i.n===1?'unidad':'unidades'}</small></div><span class="mono">${dinero(pr*i.n)}</span></div>`;}).join('');
+  const filas=r.items.map(i=>{const pr=precio(i);return `<div class="ck-it"><div class="cr-img">${imagen(i)}<i>${i.n}</i></div><div><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small><small class="mono">${dinero(pr)} c/u · ${i.n} ${i.n===1?'unidad':'unidades'}</small></div><span class="mono">${dinero(pr*i.n)}</span></div>`;}).join('');
   const lin=`<div class="ck-lin"><div><span>Muebles</span><span class="mono">${dinero(r.sub)}</span></div>${r.desc?`<div class="ck-desc"><span>Descuento ${esc(r.cod)} (${r.pct}%)</span><span class="mono">−${dinero(r.desc)}</span></div>`:''}<div><span>Envío a ${esc(r.f.ciudad)}</span><span class="mono">${dinero(r.envio)}</span></div></div><div class="ck-perf"></div><div class="ck-tot"><span>${etTotal}</span><b>${dinero(r.total)}</b></div>`;
   const dir=[r.f.direccion,r.f.ciudad].filter(Boolean).join(', ');
   const ent=[['Recibe',r.f.nombre],['WhatsApp',r.f.tel],['Dirección',dir],['Correo',r.f.correo]].filter(x=>x[1]).map(x=>`<div><span>${x[0]}</span><b>${esc(x[1])}</b></div>`).join('');
@@ -3641,7 +3706,7 @@ function campo(id,et,extra,err,cls){
 function htmlResumen(){
   const n=cuenta();
   return `<div class="ck-res-cab"><div><h2>Tu pedido</h2><small>${n} ${n===1?'mueble':'muebles'}</small></div><span><button type="button" class="enl ck-mini" data-cr="verres" aria-expanded="false" aria-controls="ck-res-c">Ver detalle</button> <button type="button" class="enl" data-cr="editar">Editar</button></span></div>
-    <div class="ck-res-c" id="ck-res-c" hidden>${items.map(i=>{const p=perfil(i.id);return `<div class="ck-it"><div class="cr-img">${imagen(i.id)}<i>${i.n}</i></div><div><b>${esc(p.nombre)}</b><small>${esc(p.tipo)} · <span class="mono">${esc(medida(i.id))}</span></small></div><span class="mono">${dinero(V.PRECIOS[i.id]*i.n)}</span></div>`;}).join('')}<div id="ck-lin"></div></div>
+    <div class="ck-res-c" id="ck-res-c" hidden>${items.map(i=>`<div class="ck-it"><div class="cr-img">${imagen(i)}<i>${i.n}</i></div><div><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span class="mono">${esc(medida(i))}</span></small></div><span class="mono">${dinero(precio(i)*i.n)}</span></div>`).join('')}<div id="ck-lin"></div></div>
     <div id="cr-pie" class="ck-pie"></div>`;
 }
 function htmlPago(){
@@ -3696,10 +3761,10 @@ function cerrar(){const d=$('#carrito');if(d&&d.open)d.close();}
 
 /* ─── Aviso de "agregado": no interrumpe, se puede seguir comprando ─── */
 let tToast=0;
-function mostrarToast(id){
-  const t=$('#cr-toast');if(!t)return;
-  const p=perfil(id),n=cuenta();
-  t.innerHTML=`<div class="t-fila"><div class="cr-img">${imagen(id)}</div><div><p class="t-ok">${IC.ok}Agregado al carrito</p><b>${esc(p.nombre)}</b><small>${esc(p.tipo)} · <span>${dinero(V.PRECIOS[id])}</span></small></div><button type="button" class="t-x" data-t="x" aria-label="Cerrar aviso">×</button></div>
+function mostrarToast(i){
+  const t=$('#cr-toast');if(!t||!i)return;
+  const n=cuenta();
+  t.innerHTML=`<div class="t-fila"><div class="cr-img">${imagen(i)}</div><div><p class="t-ok">${IC.ok}Agregado al carrito</p><b>${esc(nombre(i))}</b><small>${esc(tipo(i))} · <span>${dinero(precio(i))}</span></small></div><button type="button" class="t-x" data-t="x" aria-label="Cerrar aviso">×</button></div>
     <div class="t-acc"><button type="button" class="btn btn-f" data-t="ver">Ver carrito (${n})</button><button type="button" class="btn btn-p" data-t="pagar">Ir a pagar ${IC.fl}</button></div>`;
   t.classList.remove('sale');t.hidden=false;
   t.style.animation='none';void t.offsetWidth;t.style.animation='';
@@ -3711,18 +3776,25 @@ function ocultarToast(){
   clearTimeout(tToast);t.classList.add('sale');
   tToast=setTimeout(()=>{t.hidden=true;t.classList.remove('sale');},230);
 }
-function agregar(id,el){
-  if(!perfil(id)||!V.PRECIOS[id])return;
+function agregar(id,el,nuevo){
+  if(!nuevo&&(!perfil(id)||!V.PRECIOS[id]))return;
   pago=null;
-  const e=items.find(i=>i.id===id);
-  if(e)e.n=Math.min(MAX_N,e.n+1);else items.push({id,n:1});
+  let e=items.find(i=>i.id===id);
+  if(e)e.n=Math.min(MAX_N,e.n+1);else{e=nuevo||{id,n:1};items.push(e);}
   guardar();pintar();
   const b=$('#cart-n');if(b){b.classList.remove('salta');void b.offsetWidth;b.classList.add('salta');}
   if(el&&!el.dataset.txt){
     el.dataset.txt=el.innerHTML;el.classList.add('cr-ok');el.textContent='✓ Agregado';
     setTimeout(()=>{el.innerHTML=el.dataset.txt;delete el.dataset.txt;el.classList.remove('cr-ok');},1700);
   }
-  mostrarToast(id);
+  mostrarToast(e);
+}
+/* Diseño personalizado desde el diseñador: se guarda tal cual, con su link en 3D para el taller */
+function agregarDiseno(d,el){
+  if(!d||!V.precioEstimado(d))return;
+  const c=V.compactar(d),id=idDiseno(c);
+  agregar(id,el,{id,d:c,c:'',n:1});
+  if(V.cifrar)V.cifrar(d).then(cod=>{const e=items.find(i=>i.id===id);if(e&&!e.c){e.c=cod;guardar();}}).catch(()=>{});
 }
 function cambiar(id,d){
   const e=items.find(i=>i.id===id);if(!e)return;
@@ -3736,6 +3808,7 @@ function mostrarPago(){
   const s=$('#pagar');if(!s)return;
   cerrar();ocultarToast();
   const fi=$('#ficha');if(fi&&fi.open)fi.close();
+  if(V.cerrarDisenador&&V.disenadorAbierto&&V.disenadorAbierto())V.cerrarDisenador();
   if(form.vendedor===''&&V.leerVendedor)form.vendedor=V.leerVendedor();
   const nuevo=s.hidden;
   s.hidden=false;document.documentElement.classList.add('con-ck');
@@ -3901,7 +3974,7 @@ if(tst){
   tst.addEventListener('mouseleave',()=>programarToast(3000));
   tst.addEventListener('focusin',()=>clearTimeout(tToast));
 }
-V.carrito={agregar,abrir,cerrar,cuenta,mostrarPago,ocultarPago,irPagar};
+V.carrito={agregar,agregarDiseno,abrir,cerrar,cuenta,mostrarPago,ocultarPago,irPagar};
 pintar();
 })();
 
