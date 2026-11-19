@@ -364,7 +364,20 @@ button{cursor:pointer}
 .dz-t{flex:1;min-width:0;text-align:center;display:grid;line-height:1.1}
 .dz-t small{font-family:var(--mono);font-size:11px;opacity:.7}
 .dz-t strong{font-family:var(--display);font-weight:780;font-size:20px;font-variation-settings:"wdth" 86,"wght" 780;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dz-hist{display:flex}
+.dz-hist{display:flex;align-items:center;gap:6px}
+/* Deshacer / Rehacer / Restablecer: botones con texto, claros sobre la barra oscura */
+.dz-hb{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 12px;border:1.5px solid rgba(241,234,223,.55);border-radius:999px;background:rgba(241,234,223,.08);color:var(--yeso);font-family:var(--texto);font-size:14.5px;font-weight:650;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s,opacity .15s}
+.dz-hb svg{width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dz-hb:hover:not(:disabled){background:var(--cinta);border-color:var(--cinta);color:var(--tinta)}
+.dz-hb:focus-visible{outline:3px solid var(--cinta);outline-offset:2px}
+.dz-hb:disabled{opacity:.35;cursor:default}
+.dz-hb-ic{width:38px;padding:0;justify-content:center}
+#dz-undo:not(:disabled){border-color:var(--cinta);color:var(--cinta)}
+#dz-undo:not(:disabled):hover{color:var(--tinta)}
+.dz-hb-hola{animation:hb-hola 1.1s ease-out 2}
+@keyframes hb-hola{0%{box-shadow:0 0 0 0 rgba(242,182,50,.7)}100%{box-shadow:0 0 0 12px rgba(242,182,50,0)}}
+@media(max-width:700px){.dz-hb{flex-direction:column;justify-content:center;gap:1px;height:46px;padding:2px 7px;border-radius:10px;font-size:10.5px;line-height:1}.dz-hb svg{width:18px;height:18px}.dz-hb-ic{width:34px;padding:0}.dz-hist{gap:4px}.dz-top{gap:6px}}
+@media(prefers-reduced-motion:reduce){.dz-hb-hola{animation:none}}
 .dz-cuerpo{flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,44fr) minmax(0,56fr)}
 .en-enviar .dz-cuerpo{grid-template-rows:minmax(0,22fr) minmax(0,78fr)}
 .en-enviar .dz-ayuda{display:none}
@@ -1131,8 +1144,9 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
     <button type="button" class="dz-ic dz-salir" id="dz-salir" aria-label="Volver a la tienda">‹ <span>Tienda</span></button>
     <div class="dz-t"><small>Diseñando</small><strong id="dz-nombre">Horizonte</strong></div>
     <div class="dz-hist">
-      <button type="button" class="dz-ic" id="dz-undo" aria-label="Deshacer" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5M4 12h11a5 5 0 0 1 0 10h-3" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
-      <button type="button" class="dz-ic" id="dz-redo" aria-label="Rehacer" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 7 5 5-5 5m5-5H9a5 5 0 0 0 0 10h3" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+      <button type="button" class="dz-hb" id="dz-undo" aria-label="Deshacer el último cambio" title="Deshacer el último cambio" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 4 11l5 5"/><path d="M4 11h10.5a5.5 5.5 0 0 1 0 11H11"/></svg><span>Deshacer</span></button>
+      <button type="button" class="dz-hb dz-hb-ic" id="dz-redo" aria-label="Rehacer" title="Rehacer" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6 5 5-5 5"/><path d="M20 11H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button>
+      <button type="button" class="dz-hb" id="dz-reset" aria-label="Restablecer el modelo estándar" title="Volver al modelo estándar" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 3.5v4.5h4.5"/></svg><span>Restablecer</span></button>
     </div>
   </header>
   <div class="dz-cuerpo">
@@ -2173,6 +2187,7 @@ function fijos(){
   FIJOS={
     oscuro:est({color:0x14110f,roughness:.9}),
     negro:est({color:0x1a1a1b,roughness:.42,metalness:.55,envMapIntensity:.9}),
+    tvMarco:est({color:0x070708,roughness:.5,metalness:0,envMapIntensity:.15}),   // marco del TV: negro mate, no gris
     laton:est({color:0xB48F4E,roughness:.3,metalness:1,envMapIntensity:1.3}),
     vidrio:est({color:0x8fa6a8,roughness:.06,metalness:.1,transparent:true,opacity:.26,envMapIntensity:1.6}),
     led:new T.MeshBasicMaterial({color:0xFFD9A8,toneMapped:false}),
@@ -2515,7 +2530,8 @@ function construirPanel(q,d,ctx){
 }
 function construirTV(q,ctx){
   const {x,y,w,h}=q,z0=q.z||0;
-  ctx.L.de('negro').caja(x-.4,y-.4,z0+1,x+w+.4,y+h+.4,z0+3.4,'x');
+  /* Marco negro del TV: más grueso que en la vida real para que no se confunda con una ventana; abajo un poco más ancho */
+  ctx.L.de('tvMarco').caja(x-2.2,y-2.6,z0+1,x+w+2.2,y+h+2.2,z0+3.4,'x');
   plano(ctx.g,x-12,y-14,x+w+12,y+h+10,z0+.05,ctx.opc._mSombra,1);
   const scr=new T.Mesh(PLANO,ctx.opc._mTV);
   scr.position.set(x+w/2,y+h/2,z0+3.42);scr.scale.set(w,h,1);
@@ -2885,7 +2901,26 @@ function irHist(p){
   St.hi=n;St.d=JSON.parse(St.hist[n]);
   validarSel();dibujar();pintarTab();botonesHist();pie();borrador();
 }
-function botonesHist(){$('#dz-undo').disabled=St.hi<=0;$('#dz-redo').disabled=St.hi>=St.hist.length-1;}
+function botonesHist(){
+  const u=$('#dz-undo'),antes=u.disabled;
+  u.disabled=St.hi<=0;$('#dz-redo').disabled=St.hi>=St.hist.length-1;
+  $('#dz-reset').disabled=!!St.estandar&&huella(St.d)===St.estandar;
+  /* La primera vez que hay algo para deshacer, el botón da un pequeño aviso para que se note */
+  if(antes&&!u.disabled&&!St.avisoDeshacer){St.avisoDeshacer=true;u.classList.add('dz-hb-hola');setTimeout(()=>u.classList.remove('dz-hb-hola'),2400);}
+}
+/* Diseño sin los códigos internos de cada pieza, para saber si es igual al modelo estándar */
+const huella=d=>JSON.stringify(d,(k,v)=>k==='id'?undefined:v);
+/* Vuelve al modelo estándar del perfil (se puede deshacer) */
+function restablecer(){
+  const id=St.d.perfil||'cero';
+  const tvAntes=St.d.piezas.find(x=>x.t==='tv');
+  St.d=V.crearDiseno(id);
+  const tv=St.d.piezas.find(x=>x.t==='tv'),pul=tvAntes?tvAntes.pulgadas:V.tvElegida;
+  if(tv&&pul){const cx=tv.x+tv.w/2;tv.pulgadas=pul;V.normalizar(tv);tv.x=cx-tv.w/2;}
+  St.sel=null;St.paleta=false;validarSel();
+  dibujar({encuadrar:true});commit();pintarTab();pie();
+  aviso('Volviste al modelo estándar. Si no querías, toca Deshacer.');
+}
 function borrador(){try{localStorage.setItem('veta-borrador',JSON.stringify(St.d));}catch(e){}}
 function leerBorrador(){try{const s=localStorage.getItem('veta-borrador');return s?JSON.parse(s):null;}catch(e){return null;}}
 
@@ -2970,6 +3005,7 @@ function cargarPerfil(id,ajuste){
   if(St.esc){St.esc.vista('angulo',true);}
   marcarVista('angulo');
   dibujar({encuadrar:true,instantaneo:false});
+  St.estandar=huella(St.d);
   reiniciarHist();pie();borrador();
 }
 
@@ -3670,6 +3706,7 @@ function iniciarInteraccion(){
   $('#dz-sig').addEventListener('click',()=>{const i=TABS.findIndex(t=>t[0]===St.tab);if(TABS[i+1])irTab(TABS[i+1][0]);});
   $('#dz-undo').addEventListener('click',()=>irHist(-1));
   $('#dz-redo').addEventListener('click',()=>irHist(1));
+  $('#dz-reset').addEventListener('click',restablecer);
   $('#dz-salir').addEventListener('click',()=>{location.hash='tienda';cerrar();});
   $$('[data-vista]').forEach(b=>b.addEventListener('click',()=>{if(St.esc)St.esc.vista(b.dataset.vista);marcarVista(b.dataset.vista);}));
 
@@ -3701,6 +3738,7 @@ function primeraVez(){
     St.esc=new V.Escena(cv,{pr:2,margen:.74,subirPx:20});
     St.esc.onRender=pintarCapa;
     St.esc._az=-.34;St.esc._el=.12;St.esc.az=-.34;St.esc.el=.12;
+    marcarVista('angulo');
     const lz=$('#dz-lienzo');
     St.esc.tam(lz.clientWidth||600,lz.clientHeight||400);
   }else{
