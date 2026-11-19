@@ -405,10 +405,23 @@ button{cursor:pointer}
 .tv-reco .corta dd{color:#9B2C1B}
 .fi-tv{display:grid;gap:7px;margin-top:6px}
 .dz-aviso{position:absolute;left:50%;top:52px;transform:translateX(-50%);background:var(--tinta);color:var(--papel);padding:7px 11px;font-size:14px;border-radius:2px;width:max-content;max-width:90%}
-.dz-vista{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
-.dz-vista::-webkit-scrollbar{display:none}
-.dz-vista button{flex:none;background:rgba(42,30,22,.82);color:var(--blanco);border:0;border-radius:2px;padding:7px 10px;font-size:13.5px;font-weight:600;min-height:34px}
-.dz-vista button.on{background:var(--cinta);color:var(--tinta)}
+/* Barra de vista del 3D: centrada abajo, clara y con íconos para que se encuentre fácil */
+.dz-vista{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);width:max-content;box-sizing:border-box;display:flex;align-items:center;gap:4px;padding:5px;background:var(--papel);border:2px solid var(--tinta);border-radius:999px;box-shadow:0 6px 20px rgba(26,16,10,.28),3px 3px 0 var(--tinta);max-width:calc(100% - 16px);z-index:3}
+.dz-vista button{flex:none;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;background:transparent;color:var(--tinta);border:0;border-radius:999px;padding:8px 14px;font-family:var(--texto);font-size:14.5px;font-weight:650;min-height:40px;cursor:pointer;transition:background-color .15s,color .15s}
+.dz-vista button:hover{background:var(--yeso-hondo)}
+.dz-vista button:active{transform:scale(.96)}
+.dz-vista button:focus-visible{outline:3px solid var(--cinta);outline-offset:1px}
+.dz-vista svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dz-vista button.on,.dz-vista .dz-puertas{background:var(--cinta);color:var(--tinta)}
+.dz-vista .dz-puertas:hover{background:#E5A71F}
+.dz-vista .dz-puertas.on{background:var(--tinta);color:var(--cinta)}
+.dz-vsep{width:1.5px;align-self:stretch;margin:6px 2px;background:var(--linea-f)}
+@media(max-width:640px){
+  .dz-vista{bottom:10px;gap:2px;padding:4px;border-radius:14px}
+  .dz-vista button{flex-direction:column;gap:2px;padding:5px 9px;min-height:48px;border-radius:10px;font-size:11.5px;line-height:1.1}
+  .dz-vista svg{width:19px;height:19px}
+  .dz-vsep{margin:8px 1px}
+}
 .dz-panel{display:flex;flex-direction:column;min-height:0;min-width:0;background:var(--papel);border-top:1px solid var(--linea)}
 @media(min-width:900px){.dz-panel{border-top:0;border-left:1px solid var(--linea)}}
 .dz-tabs{flex:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--linea)}
@@ -1130,10 +1143,11 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
       <div class="dz-aviso" id="dz-aviso" hidden role="status"></div>
       <label class="dz-tv" id="dz-tv"><span>Tu TV</span><select id="dz-tv-sel" aria-label="Pulgadas de tu televisor"></select></label>
       <div class="dz-vista" id="dz-vista">
-        <button type="button" data-vista="frente">Frente</button>
-        <button type="button" data-vista="angulo">Ángulo</button>
-        <button type="button" id="dz-ajustar">Centrar</button>
-        <button type="button" id="dz-puertas" aria-pressed="false">Abrir puertas</button>
+        <button type="button" data-vista="frente"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6" width="15" height="12" rx="1"/><path d="M12 6v12"/></svg><span>Frente</span></button>
+        <button type="button" data-vista="angulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l7.5 4v9L12 20.5l-7.5-4v-9z"/><path d="M4.5 7.5L12 11.5l7.5-4M12 11.5v9"/></svg><span>Ángulo</span></button>
+        <button type="button" id="dz-ajustar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/><circle cx="12" cy="12" r="2.5"/></svg><span>Centrar</span></button>
+        <i class="dz-vsep" aria-hidden="true"></i>
+        <button type="button" id="dz-puertas" class="dz-puertas" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20.5V3.5h9v17"/><path d="M14 3.5l5 2.5v17l-5-2.5"/><path d="M16.3 12.5v1.5"/></svg><span>Abrir puertas</span></button>
       </div>
     </div>
     <aside class="dz-panel" aria-label="Opciones del mueble">
@@ -3574,7 +3588,7 @@ function iniciarInteraccion(){
     }
     elegirTV(parseFloat(v));
   });
-  $('#dz-puertas').addEventListener('click',e=>{St.ab=!St.ab;e.currentTarget.classList.toggle('on',St.ab);e.currentTarget.setAttribute('aria-pressed',St.ab);e.currentTarget.textContent=St.ab?'Cerrar puertas':'Abrir puertas';if(St.esc)St.esc.setAbierto(St.ab);});
+  $('#dz-puertas').addEventListener('click',e=>{St.ab=!St.ab;e.currentTarget.classList.toggle('on',St.ab);e.currentTarget.setAttribute('aria-pressed',St.ab);e.currentTarget.querySelector('span').textContent=St.ab?'Cerrar puertas':'Abrir puertas';if(St.esc)St.esc.setAbierto(St.ab);});
   document.addEventListener('keydown',e=>{
     if(!St.abierto)return;
     const edit=e.target.matches('input,textarea,select');
