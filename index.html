@@ -1158,9 +1158,9 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
       <div class="dz-aviso" id="dz-aviso" hidden role="status"></div>
       <label class="dz-tv" id="dz-tv"><span>Tu TV</span><select id="dz-tv-sel" aria-label="Pulgadas de tu televisor"></select></label>
       <div class="dz-vista" id="dz-vista">
-        <button type="button" data-vista="frente"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6" width="15" height="12" rx="1"/><path d="M12 6v12"/></svg><span>Frente</span></button>
-        <button type="button" data-vista="angulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l7.5 4v9L12 20.5l-7.5-4v-9z"/><path d="M4.5 7.5L12 11.5l7.5-4M12 11.5v9"/></svg><span>Ángulo</span></button>
-        <button type="button" data-vista="lado"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h11v12H4z"/><path d="M4 7.5l5-3.5h11l-5 3.5M20 4v12l-5 3.5"/></svg><span>Lado</span></button>
+        <button type="button" data-vista="izquierda" title="Ver desde la izquierda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7.5h11v12H9z"/><path d="M9 7.5L4 4h11l5 3.5M4 4v12l5 3.5"/></svg><span>Izquierda</span></button>
+        <button type="button" data-vista="frente" title="Ver de frente"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6" width="15" height="12" rx="1"/><path d="M12 6v12"/></svg><span>Frente</span></button>
+        <button type="button" data-vista="derecha" title="Ver desde la derecha"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h11v12H4z"/><path d="M4 7.5l5-3.5h11l-5 3.5M20 4v12l-5 3.5"/></svg><span>Derecha</span></button>
         <i class="dz-vsep" aria-hidden="true"></i>
         <button type="button" id="dz-puertas" class="dz-puertas" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20.5V3.5h9v17"/><path d="M14 3.5l5 2.5v17l-5-2.5"/><path d="M16.3 12.5v1.5"/></svg><span>Abrir puertas</span></button>
       </div>
@@ -2743,8 +2743,8 @@ class Escena{
   }
   vista(nombre,instant){
     if(nombre==='frente'){this._az=0;this._el=.02;}
-    else if(nombre==='lado'){this._az=1;this._el=.1;}
-    else{this._az=-.34;this._el=.12;}
+    else if(nombre==='derecha'||nombre==='lado'){this._az=.5;this._el=.12;}
+    else{this._az=-.5;this._el=.12;}            // izquierda (y 'angulo', el nombre de antes)
     this.encuadrar(instant);
   }
   encuadrar(instant){
@@ -2904,19 +2904,29 @@ function irHist(p){
 function botonesHist(){
   const u=$('#dz-undo'),antes=u.disabled;
   u.disabled=St.hi<=0;$('#dz-redo').disabled=St.hi>=St.hist.length-1;
-  $('#dz-reset').disabled=!!St.estandar&&huella(St.d)===St.estandar;
+  $('#dz-reset').disabled=esEstandar();
   /* La primera vez que hay algo para deshacer, el botón da un pequeño aviso para que se note */
   if(antes&&!u.disabled&&!St.avisoDeshacer){St.avisoDeshacer=true;u.classList.add('dz-hb-hola');setTimeout(()=>u.classList.remove('dz-hb-hola'),2400);}
 }
 /* Diseño sin los códigos internos de cada pieza, para saber si es igual al modelo estándar */
-const huella=d=>JSON.stringify(d,(k,v)=>k==='id'?undefined:v);
+const huella=d=>JSON.stringify(d,(k,v)=>k==='id'||(k==='z'&&!v)?undefined:v);   // sin códigos internos ni la profundidad 0 que agrega el 3D
+/* Modelo estándar del perfil de este diseño, con las pulgadas de TV que eligió el cliente */
+function modeloEstandar(d){
+  const tvAntes=d.piezas.find(x=>x.t==='tv'),m=V.crearDiseno(d.perfil||'cero');
+  const tv=m.piezas.find(x=>x.t==='tv'),pul=tvAntes?tvAntes.pulgadas:V.tvElegida;
+  if(tv&&pul){const cx=tv.x+tv.w/2;tv.pulgadas=pul;V.normalizar(tv);tv.x=cx-tv.w/2;}
+  return m;
+}
+/* ¿El diseño ya está igual al modelo estándar? (se guarda el cálculo por perfil y pulgadas) */
+let cacheEst={k:'',h:''};
+function esEstandar(){
+  const tv=St.d.piezas.find(x=>x.t==='tv'),k=(St.d.perfil||'cero')+'|'+(tv?tv.pulgadas:V.tvElegida||'');
+  if(cacheEst.k!==k)cacheEst={k,h:huella(modeloEstandar(St.d))};
+  return huella(St.d)===cacheEst.h;
+}
 /* Vuelve al modelo estándar del perfil (se puede deshacer) */
 function restablecer(){
-  const id=St.d.perfil||'cero';
-  const tvAntes=St.d.piezas.find(x=>x.t==='tv');
-  St.d=V.crearDiseno(id);
-  const tv=St.d.piezas.find(x=>x.t==='tv'),pul=tvAntes?tvAntes.pulgadas:V.tvElegida;
-  if(tv&&pul){const cx=tv.x+tv.w/2;tv.pulgadas=pul;V.normalizar(tv);tv.x=cx-tv.w/2;}
+  St.d=modeloEstandar(St.d);
   St.sel=null;St.paleta=false;validarSel();
   dibujar({encuadrar:true});commit();pintarTab();pie();
   aviso('Volviste al modelo estándar. Si no querías, toca Deshacer.');
@@ -3002,10 +3012,9 @@ function cargarPerfil(id,ajuste){
     if(tv){const cx=tv.x+tv.w/2;tv.pulgadas=V.tvElegida;V.normalizar(tv);tv.x=cx-tv.w/2;}
   }
   St.sel=null;St.paleta=false;St.compartido=false;validarSel();
-  if(St.esc){St.esc.vista('angulo',true);}
-  marcarVista('angulo');
+  if(St.esc){St.esc.vista('izquierda',true);}
+  marcarVista('izquierda');
   dibujar({encuadrar:true,instantaneo:false});
-  St.estandar=huella(St.d);
   reiniciarHist();pie();borrador();
 }
 
@@ -3018,7 +3027,7 @@ function irTab(t){
   $('#dz-cont').scrollTop=0;
   if(St.esc)St.esc.invalidar();
 }
-/* Vista activa (Frente, Ángulo o Lado) resaltada en la barra; al girar a mano se apaga */
+/* Vista activa (Izquierda, Frente o Derecha) resaltada en la barra; al girar a mano se apaga */
 function marcarVista(n){$$('[data-vista]').forEach(b=>{const on=b.dataset.vista===n;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});}
 function pintarTab(){
   const c=$('#dz-cont');
@@ -3737,8 +3746,8 @@ function primeraVez(){
     const cv=$('#dz-canvas');
     St.esc=new V.Escena(cv,{pr:2,margen:.74,subirPx:20});
     St.esc.onRender=pintarCapa;
-    St.esc._az=-.34;St.esc._el=.12;St.esc.az=-.34;St.esc.el=.12;
-    marcarVista('angulo');
+    St.esc._az=-.5;St.esc._el=.12;St.esc.az=-.5;St.esc.el=.12;
+    marcarVista('izquierda');
     const lz=$('#dz-lienzo');
     St.esc.tam(lz.clientWidth||600,lz.clientHeight||400);
   }else{
@@ -3769,7 +3778,7 @@ V.abrirDisenador=function(id,o){
     const hayD=!!St.d;
     if(o.diseno){
       St.d=o.diseno;St.compartido=true;St.sel=null;validarSel();
-      if(St.esc)St.esc.vista('angulo',true);
+      if(St.esc)St.esc.vista('izquierda',true);marcarVista('izquierda');
       dibujar({encuadrar:true,instantaneo:true});reiniciarHist();
     }else if(id){cargarPerfil(id,o.ajuste);}
     else if(!hayD){
