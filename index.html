@@ -144,9 +144,18 @@ button{cursor:pointer}
 @media(min-width:720px){.cat-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 20px}}
 @media(min-width:1100px){.cat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .card{display:flex;flex-direction:column;min-width:0}
-.card-img{display:block;width:100%;aspect-ratio:4/3;padding:0;border:0;background:var(--yeso-hondo);overflow:hidden}
+.card-img{position:relative;display:block;width:100%;aspect-ratio:4/5;padding:0;border:0;background:var(--yeso-hondo);overflow:hidden;cursor:zoom-in}
 .card-m{display:block;width:100%;height:100%}
-.card-img img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.card-img img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 62%;transition:transform .5s ease}
+.card-ia,.fi-ia{position:absolute;left:8px;bottom:8px;max-width:calc(100% - 16px);padding:3px 8px;border-radius:2px;background:rgba(42,30,22,.78);color:var(--papel);font-family:var(--mono);font-size:11px;letter-spacing:.02em;line-height:1.3}
+.card-n{position:absolute;right:8px;top:8px;padding:2px 7px;border-radius:999px;background:var(--papel);color:var(--tinta);font-family:var(--mono);font-size:11px}
+.card-sw{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px}
+.sw-c{width:30px;height:30px;padding:0;border:0;border-radius:50%;background:none;display:grid;place-items:center;cursor:pointer}
+.sw-c i{width:24px;height:24px;border-radius:50%;display:block;transition:transform .15s}
+.sw-c:hover i{transform:scale(1.1)}
+.sw-c.on{box-shadow:0 0 0 2px var(--papel),0 0 0 4px var(--tinta)}
+.sw-c:focus-visible{outline:3px solid var(--cinta);outline-offset:3px}
+.card-t small{font-size:13px;color:var(--tinta-suave)}
 .card-img:hover img{transform:scale(1.04)}
 .plano{display:grid;place-items:center;width:100%;height:100%;padding:12%}
 .plano svg{width:100%;height:100%}
@@ -338,8 +347,21 @@ button{cursor:pointer}
 .ficha::backdrop{background:rgba(26,16,10,.66)}
 .ficha-x{position:absolute;right:8px;top:8px;z-index:2;width:42px;height:42px;background:var(--tinta);color:var(--papel);border:0;border-radius:3px;font-size:26px;line-height:1}
 .ficha-c{display:grid}
-.fi-img{background:var(--yeso-hondo);aspect-ratio:4/3;min-width:0}
-.fi-img img,.fi-img .plano{display:block;width:100%;height:100%;object-fit:cover}
+.fi-gal{display:grid;gap:8px;min-width:0;background:var(--yeso-hondo);padding-bottom:10px}
+.fi-foto{position:relative;height:clamp(300px,58vh,640px);width:100%;display:grid;place-items:center;overflow:hidden;background:var(--yeso-hondo)}
+.fi-foto>img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain}
+.fi-foto.es-plano{display:block}
+.fi-foto.es-plano{background:var(--papel);height:auto;min-height:300px}
+.fi-plano{width:100%;padding:18px 16px 10px;display:grid;gap:10px}
+.fi-plano svg{width:100%;height:auto;max-height:52vh}
+.fi-tiras{display:flex;gap:6px;overflow-x:auto;padding:0 10px;scrollbar-width:thin}
+.fi-t{flex:none;width:62px;height:62px;padding:0;border:2px solid transparent;border-radius:3px;background:var(--papel);overflow:hidden;cursor:pointer}
+.fi-t img{display:block;width:100%;height:100%;object-fit:cover}
+.fi-t.on{border-color:var(--tinta)}
+.fi-t-plano{display:grid;place-items:center;align-content:center;gap:2px;font-size:11px;font-weight:650;color:var(--tinta)}
+.fi-t-plano svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
+.fi-med{font-size:14px}.fi-med span{font-family:var(--texto);color:var(--tinta-suave);font-size:13px}
+.fi-col p,.fi-col{margin:0}.fi-col .card-sw{margin-top:6px}
 .fi-b{padding:20px;display:grid;gap:9px;align-content:start;min-width:0}
 .fi-b h2{font-size:clamp(36px,6vw,50px)}
 .fi-b h3{margin-top:7px;font-size:20px}
@@ -352,7 +374,7 @@ button{cursor:pointer}
 .fi-lista .mono{font-size:13.5px}
 .fi-lista small{grid-column:1/-1;color:var(--tinta-suave);font-size:14px}
 .fi-acc{display:grid;gap:8px;margin-top:5px}
-@media(min-width:800px){.ficha-c{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}.fi-img{aspect-ratio:auto;min-height:100%}}
+@media(min-width:800px){.ficha-c{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}.fi-gal{align-content:start}.fi-foto{height:min(72vh,620px)}}
 
 /* Diseñador */
 .dz{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--papel);color:var(--tinta);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);font-size:16px;line-height:1.4}
@@ -521,6 +543,7 @@ button{cursor:pointer}
 .togg.on{border-color:var(--tinta)}
 .tips{background:var(--cinta);padding:9px 11px;margin-top:13px;font-size:14.5px;line-height:1.35;display:grid;gap:5px}
 .sw-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 6px}
+.sw-grid.sw-3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .sw{background:none;border:0;padding:0;display:grid;gap:3px;font-size:12.5px;line-height:1.12;font-weight:600;text-align:left;min-width:0}
 .sw i{display:block;aspect-ratio:1;background-size:cover;background-position:center;border:3px solid transparent;outline:1px solid var(--linea)}
 .sw.on i{border-color:var(--tinta);outline-color:var(--tinta)}
@@ -898,7 +921,7 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
       <a href="#catalogo" data-ir="catalogo">Catálogo</a>
       <a href="#disenar" data-ir="disenar">Diseña el tuyo</a>
       <a href="#guia" data-ir="guia">Guía de medidas</a>
-      <a href="#maderas" data-ir="maderas">Maderas</a>
+      <a href="#maderas" data-ir="maderas">Colores</a>
       <a href="#contacto" data-ir="contacto">Contacto</a>
     </nav>
     <div class="cab-acc">
@@ -935,11 +958,11 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
   <div class="sec-i">
     <div class="sec-h">
       <h2>Catálogo</h2>
-      <p>Cada modelo es un punto de partida: cambia sus medidas, quítale o agrégale piezas y escoge la madera.</p>
+      <p>Repisas flotantes en <b data-material>RH Original</b>, en blanco mate, arena y humo. Elige el color en cada modelo; si necesitas otra medida, personalízala.</p>
     </div>
     <div class="filtros" id="cat-filtros" role="group" aria-label="Filtrar por tipo de mueble"></div>
     <div class="cat-grid" id="cat-grid"></div>
-    <p class="nota nota-c">Las imágenes son ilustrativas. Si personalizas un mueble, el precio se cotiza según tu diseño.</p>
+    <p class="nota nota-c">Las fotos marcadas como «Imagen ilustrativa» son de referencia: el mueble real puede variar un poco. Los colores en pantalla también pueden variar. Si personalizas un mueble, el precio se calcula según tu diseño.</p>
   </div>
 </section>
 
@@ -950,7 +973,7 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
       <h2 class="dis-h">Diseña <span>el tuyo</span></h2>
       <p class="dis-lead">Toma un mueble del catálogo y déjalo a la medida de tu espacio: más ancho, más alto, con más puertas o cajones. Lo ves en 3D antes de pedirlo.</p>
       <ol class="dis-lista">
-        <li><b>Empieza con un perfil.</b> Bases para TV, organizadores, repisas o una caja vacía.</li>
+        <li><b>Empieza con un modelo.</b> Cualquiera de las repisas del catálogo o una caja vacía.</li>
         <li><b>Agrega o quita piezas.</b> Puertas, cajones, listones, repisas, paneles y luz.</li>
         <li><b>Ajusta las medidas.</b> Escríbelas al centímetro o arrastra en el dibujo.</li>
         <li><b>Agrégalo al carrito.</b> O envíalo por WhatsApp y te contactamos.</li>
@@ -1044,9 +1067,9 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
 <section class="sec mad" id="maderas">
   <div class="sec-i">
     <div class="sec-h">
-      <h2>Maderas y acabados</h2>
+      <h2>Colores</h2>
       <p class="mat-sello"><span>Material</span><b data-material>RH Original</b></p>
-      <p>Todos nuestros muebles se fabrican en <b data-material>RH Original</b>. Elige el acabado: toca una tabla para verla de cerca. Los colores en pantalla pueden variar un poco del acabado real.</p>
+      <p>Todos nuestros muebles se fabrican en <b data-material>RH Original</b> en tres colores: blanco mate, arena y humo. Se pueden combinar en el cuerpo, las puertas y la cubierta. Toca una tabla para verla de cerca; en pantalla el color puede variar un poco.</p>
     </div>
     <div class="mad-rack" id="mad-rack"></div>
   </div>
@@ -1070,8 +1093,8 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
     <div class="faq-l">
       <details><summary>¿Las medidas pueden ser exactas?</summary><p>Sí. En el diseñador eliges cada medida al centímetro y antes de fabricar la confirmamos contigo.</p></details>
       <details><summary>¿Un mueble flotante aguanta en mi pared?</summary><p>Depende del material de la pared y del peso que va a cargar. Por eso te preguntamos si es ladrillo, concreto o drywall.</p></details>
-      <details><summary>¿Qué pasa después de enviar mi diseño?</summary><p>Nos llega por WhatsApp con tus medidas, la madera y tus datos. Te escribimos para cotizar y resolver dudas.</p></details>
-      <details><summary>¿Cuánto cuesta un mueble personalizado?</summary><p>Depende de las medidas, la madera y las piezas. Envíanos tu diseño y te lo cotizamos.</p></details>
+      <details><summary>¿Qué pasa después de enviar mi diseño?</summary><p>Nos llega por WhatsApp con tus medidas, los colores y tus datos. Te escribimos para cotizar y resolver dudas.</p></details>
+      <details><summary>¿Cuánto cuesta un mueble personalizado?</summary><p>Depende de las medidas, los colores y las piezas. Envíanos tu diseño y te lo cotizamos.</p></details>
       <details><summary>¿Puedo pedir algo que no está en el catálogo?</summary><p>Claro. Escríbenos por WhatsApp o búscanos en Instagram, cuéntanos la idea y la cotizamos.</p></details>
     </div>
   </div>
@@ -1084,7 +1107,7 @@ div.ck-cod.ok p b{color:var(--wa-hondo)}
     <li><span class="datos-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7.5" width="18" height="12" rx="1.5"/><path d="M9 7.5V5.5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5.5v2M3 12.5h18M11 12.5v2h2v-2"/></svg></span>
       <div><strong class="datos-n" data-cuenta="150" data-pre="+">+150</strong><b>Trabajos para empresas</b><p>Oficinas, locales y negocios. <a data-wa="empresas" href="https://wa.me/">Cotiza tu proyecto</a></p></div></li>
     <li><span class="datos-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="5" height="16" rx="1"/><rect x="9.5" y="4" width="5" height="16" rx="1"/><rect x="15.5" y="4" width="5" height="16" rx="1"/><path d="M5 8h2M11 11h2M17 14h2"/></svg></span>
-      <div><strong class="datos-n" data-cuenta="7">7</strong><b>Acabados para elegir</b><p>Todos en <span data-material>RH Original</span>, el material con el que fabricamos.</p></div></li>
+      <div><strong class="datos-n" data-cuenta="3">3</strong><b>Colores para combinar</b><p>Blanco mate, arena y humo, todos en <span data-material>RH Original</span>.</p></div></li>
     <li><span class="datos-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4.5a4 4 0 0 0-4.9 5.2L4 15.3V20h4.7l5.6-5.6a4 4 0 0 0 5.2-4.9l-2.6 2.6-2.8-.6-.6-2.8z"/></svg></span>
       <div><strong class="datos-n">Gratis</strong><b>Instalación en tu casa</b><p>En Barranquilla, Soledad, Malambo, Galapa, Puerto Colombia, Palermo y Sabanagrande.</p></div></li>
   </ul>
@@ -1201,18 +1224,12 @@ V.NEGOCIO={
 /* ─────────  PRECIOS DE CATÁLOGO (pesos colombianos)  ─────────
    Precio de cada modelo en el catálogo. */
 V.PRECIOS={
-  horizonte:1350000,
-  liston:1590000,
-  nicho:1750000,
-  muro:3450000,
-  umbral:240000,
-  zaguan:690000,
-  cuadricula:890000,
-  mesada:150000,
-  alero:260000,
-  torre:1150000,
-  mesilla:390000,
-  dintel:790000
+  r2p80_blanco:190000,r2p80_arena:230000,r2p80_full:270000,
+  re120_arena:270000,re120_humo:270000,
+  r3p120_blanco:230000,r3p120_arena:270000,r3p120_humo:270000,r3p120_cubarena:270000,r3p120_cubhumo:270000,r3p120_full:360000,
+  r3n120:340000,r3s120_arena:290000,r3p140_blanco:310000,r3e147_blanco:340000,
+  r4p160_blanco:370000,r4p160_arena:450000,r4p160_humo:450000,
+  rc160:450000
 };
 V.dinero=n=>'$ '+String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
 
@@ -1304,11 +1321,10 @@ V.CONTENIDOS=[
 ];
 
 V.CATEGORIAS=[
-  {id:'todo',n:'Todo'},
-  {id:'tv',n:'Bases para TV'},
-  {id:'org',n:'Organizadores'},
-  {id:'rep',n:'Repisas y estantes'},
-  {id:'mes',n:'Mesas'}
+  {id:'todo',n:'Todas'},
+  {id:'p',n:'80 cm'},
+  {id:'m',n:'120 a 147 cm'},
+  {id:'g',n:'160 cm'}
 ];
 
 V.LIMITES={
@@ -1324,58 +1340,69 @@ V.tvMedidas=function(p){
   return{w,h,min:Math.ceil(w+15),ideal:Math.ceil((w+30)/5)*5};
 };
 
-V.PERFILES=[
-  {id:'horizonte',cat:'tv',nombre:'Horizonte',tipo:'Base flotante para TV',
-   texto:'Tres puertas lisas con la veta corrida y luz bajo el mueble. Deja el piso libre y esconde los equipos.',
-   madera:'roble',pared:'yeso',etiquetas:['Flotante','Luz LED'],
-   piezas:[{t:'mueble',w:180,h:32,d:38,cx:0,y:28,led:true,cables:true,raiz:C([p(),p(),p()])},{t:'tv',pulgadas:55,cx:0,y:72}]},
-  {id:'liston',cat:'tv',nombre:'Listón',tipo:'Base flotante para TV',
-   texto:'Frente de listones que deja pasar la señal del control remoto y mantiene ventilados los equipos.',
-   madera:'nogal',pared:'arena',etiquetas:['Flotante','Listones'],
-   piezas:[{t:'mueble',w:160,h:34,d:36,cx:0,y:26,led:true,cables:true,raiz:C([l(),l(),l(),l()])},{t:'tv',pulgadas:50,cx:0,y:74}]},
-  {id:'nicho',cat:'tv',nombre:'Nicho',tipo:'Base flotante para TV',
-   texto:'Cuatro cajones y un hueco central para la consola o el decodificador, siempre a mano.',
-   madera:'fresno',pared:'arcilla',tirador:'laton',etiquetas:['Flotante','Cajones'],
-   piezas:[{t:'mueble',w:200,h:30,d:40,cx:0,y:30,cables:true,raiz:C([F([j(),j()]),a(),F([j(),j()])],[.3,.4,.3])},{t:'tv',pulgadas:65,cx:0,y:74}]},
-  {id:'muro',cat:'tv',nombre:'Muro',tipo:'Centro de TV con panel',
-   texto:'Panel de listones detrás de la pantalla y base flotante del mismo ancho. Convierte la pared en protagonista.',
-   madera:'nogal',pared:'yeso',etiquetas:['Panel','Luz LED'],
-   piezas:[{t:'panel',w:230,h:176,cx:0,y:58,e:'listones',led:true},{t:'mueble',w:230,h:30,d:38,cx:0,y:28,led:true,cables:true,raiz:C([p(),l(),l(),p()])},{t:'tv',pulgadas:65,cx:0,y:90}]},
-  {id:'umbral',cat:'org',nombre:'Umbral',tipo:'Organizador de entrada',
-   texto:'Perchero y repisa en una sola pieza para llaves, bolsos y chaquetas.',
-   madera:'pino',pared:'arcilla',etiquetas:['Perchero','Repisa'],
-   piezas:[{t:'repisa',w:90,h:3,d:20,cx:0,y:176},{t:'panel',w:90,h:16,cx:0,y:160,e:'liso',ganchos:5}]},
-  {id:'zaguan',cat:'org',nombre:'Zaguán',tipo:'Zapatero flotante',
-   texto:'Listones que ventilan el calzado y un nicho arriba para llaves y correo.',
-   madera:'roble',pared:'piedra',etiquetas:['Flotante','Listones'],
-   piezas:[{t:'mueble',w:100,h:64,d:30,cx:0,y:24,raiz:F([a(),C([l(),l()])],[.28,.72])}]},
-  {id:'cuadricula',cat:'org',nombre:'Cuadrícula',tipo:'Organizador de pared',
-   texto:'Nueve espacios para libros, cajas y plantas. Cambia cualquiera por un cajón o una puerta.',
-   madera:'blanco',frente:'roble',pared:'arcilla',etiquetas:['De pared','9 espacios'],
-   piezas:[{t:'mueble',w:96,h:96,d:25,cx:0,y:90,raiz:F([C([a(),a(),j()]),C([a(),j(),a()]),C([j(),a(),a()])])}]},
-  {id:'mesada',cat:'org',nombre:'Mesada',tipo:'Organizador de escritorio',
-   texto:'Dos cajoncitos y dos huecos para esferos, cuadernos y cargadores.',
-   madera:'nogal',pared:'arena',tirador:'pomo',etiquetas:['De mesa','Compacto'],
-   piezas:[{t:'mueble',w:42,h:16,d:18,cx:0,y:75,m:'mesa',g:1.2,fondo:true,raiz:C([a(),F([j(),j()]),a()],[.35,.3,.35])}]},
-  {id:'alero',cat:'rep',nombre:'Alero',tipo:'Repisa flotante',
-   texto:'Una tabla gruesa, sin soportes a la vista, con luz opcional por debajo.',
-   madera:'cedro',pared:'cacao',etiquetas:['Flotante','Luz LED'],
-   piezas:[{t:'repisa',w:110,h:5,d:22,cx:0,y:120,led:true}]},
-  {id:'torre',cat:'rep',nombre:'Torre',tipo:'Estantería de piso',
-   texto:'Tres niveles abiertos y un par de puertas abajo para lo que no quieres a la vista.',
-   madera:'roble',pared:'arena',tirador:'barra',etiquetas:['De piso','Puertas'],
-   piezas:[{t:'mueble',w:60,h:190,d:32,cx:0,y:0,m:'piso',raiz:F([a(),a(),a(),C([p(),p()])],[1,1,1,1.2])}]},
-  {id:'mesilla',cat:'mes',nombre:'Mesilla',tipo:'Mesa de noche flotante',
-   texto:'Un cajón y un hueco para el libro de turno. El piso queda libre para limpiar.',
-   madera:'nogal',pared:'piedra',tirador:'ranura',etiquetas:['Flotante','Cajón'],
-   piezas:[{t:'mueble',w:48,h:32,d:36,cx:0,y:38,raiz:F([j(),a()])}]},
-  {id:'dintel',cat:'mes',nombre:'Dintel',tipo:'Escritorio flotante',
-   texto:'Tablero con dos cajones y repisa alta. Ideal para espacios donde no cabe un escritorio con patas.',
-   madera:'pino',pared:'cacao',tirador:'barra',etiquetas:['Flotante','Con repisa'],
-   piezas:[{t:'mueble',w:130,h:13,d:55,cx:0,y:62,raiz:C([j(),a(),j()],[1,1.2,1])},{t:'repisa',w:130,h:3.5,d:22,cx:0,y:122}]}
+/* ─────────  CATÁLOGO: repisas flotantes reales  ─────────
+   Cada modelo tiene sus colores (variantes). Cada variante es un mueble con su propio precio en V.PRECIOS
+   y sus fotos en V.FOTOS. Colores: cuerpo (tapas y costados), puertas (frentes) y cubierta (la tapa de arriba).
+   Medidas de todas: 30 cm de alto y 27 cm de fondo. */
+const RAIZ={
+  dos:()=>C([p(),p()]),
+  tres:()=>C([p(),p(),p()]),
+  cuatro:()=>C([p(),p(),p(),p()]),
+  entrepano:()=>C([p(),F([a(),a()]),p()],[1,.62,1]),
+  nicho:()=>C([p(),F([a(),j()]),p()],[1,.8,1]),
+  combinado:()=>C([F([a(),j()]),p(),p()],[.85,1,1]),
+  estructura:()=>C([p(),p(),p(),a()],[1,1,1,1.05])
+};
+V.MODELOS=[
+  {id:'r2p80',nombre:'Repisa 2 puertas',cat:'p',w:80,raiz:'dos',tv:0,etiquetas:['Flotante','2 puertas'],
+   texto:'Repisa flotante compacta con dos puertas lisas, sin tiradores a la vista. Va bien en la entrada, en una habitación o con un TV pequeño.',
+   var:[['r2p80_blanco','Blanco mate','blanco'],['r2p80_arena','Puertas arena','blanco','arena'],['r2p80_full','Full arena','arena']]},
+  {id:'re120',nombre:'Repisa 2 puertas con entrepaño',cat:'m',w:120,raiz:'entrepano',tv:43,etiquetas:['Flotante','2 puertas','Nicho con entrepaño'],
+   texto:'Dos puertas a los lados y un nicho central con entrepaño para el decodificador, la consola o el router.',
+   var:[['re120_arena','Puertas arena','blanco','arena'],['re120_humo','Puertas humo','blanco','humo']]},
+  {id:'r3p120',nombre:'Repisa 3 puertas',cat:'m',w:120,raiz:'tres',tv:43,etiquetas:['Flotante','3 puertas'],
+   texto:'Tres puertas lisas y una cubierta amplia para el TV y los equipos. La puedes pedir en un solo color o combinando cuerpo, puertas y cubierta.',
+   var:[['r3p120_blanco','Blanco mate','blanco'],['r3p120_arena','Puertas arena','blanco','arena'],['r3p120_humo','Puertas humo','blanco','humo'],
+        ['r3p120_cubarena','Cubierta arena','blanco',null,'arena'],['r3p120_cubhumo','Cubierta humo','blanco',null,'humo'],['r3p120_full','Full arena','arena']]},
+  {id:'r3n120',nombre:'Repisa con nicho y cajón',cat:'m',w:120,raiz:'nicho',tv:43,etiquetas:['Flotante','2 puertas','Nicho','Cajón'],
+   texto:'Dos puertas a los lados, un nicho abierto para los equipos y un cajón al centro. Cuerpo en arena y frentes en blanco mate.',
+   var:[['r3n120','Cuerpo arena','arena','blanco']]},
+  {id:'r3s120',nombre:'Repisa 3 puertas con estructura',cat:'m',w:120,raiz:'tres',tv:43,etiquetas:['Flotante','3 puertas','Estructura de 60 cm'],
+   texto:'Tres puertas en blanco mate y una estructura en arena encima (60 × 10 × 27 cm) para subir el decodificador o decorar.',
+   extra:[{t:'mueble',w:60,h:10,d:27,cx:0,y:65,mad:'arena',fondo:false,raiz:a()}],
+   var:[['r3s120_arena','Estructura arena','blanco']]},
+  {id:'r3p140',nombre:'Repisa 3 puertas',cat:'m',w:140,raiz:'tres',tv:55,etiquetas:['Flotante','3 puertas'],
+   texto:'La repisa de 3 puertas en 140 cm, para un TV un poco más grande.',
+   var:[['r3p140_blanco','Blanco mate','blanco']]},
+  {id:'r3e147',nombre:'Repisa 3 puertas con estructura abierta',cat:'m',w:147,raiz:'estructura',tv:55,etiquetas:['Flotante','3 puertas','Espacios abiertos'],
+   texto:'Tres puertas abajo y una estructura abierta arriba, con espacios para los equipos y la decoración.',
+   extra:[{t:'mueble',w:110,h:9,d:27,x:-36.5,y:65,raiz:C([a(),a()])}],
+   var:[['r3e147_blanco','Blanco mate','blanco']]},
+  {id:'r4p160',nombre:'Repisa 4 puertas',cat:'g',w:160,raiz:'cuatro',tv:65,etiquetas:['Flotante','4 puertas'],
+   texto:'Cuatro puertas y 1,60 m de ancho para un TV grande. En blanco mate o con puertas en arena o humo.',
+   var:[['r4p160_blanco','Blanco mate','blanco'],['r4p160_arena','Puertas arena','blanco','arena'],['r4p160_humo','Puertas humo','blanco','humo']]},
+  {id:'rc160',nombre:'Repisa combinada',cat:'g',w:160,raiz:'combinado',tv:65,etiquetas:['Flotante','2 puertas','Nicho','Cajón'],
+   texto:'Arena y blanco combinados: un nicho con cajón a un lado y dos puertas. Cuerpo y cubierta en arena, frentes en blanco mate.',
+   var:[['rc160','Arena y blanco','arena','blanco']]}
 ];
+V.PERFILES=[];
+V.MODELOS.forEach(m=>{
+  m.variantes=m.var.map(v=>v[0]);
+  m.var.forEach(([id,color,cuerpo,frente,cubierta])=>{
+    const piezas=[{t:'mueble',w:m.w,h:30,d:27,cx:0,y:35,cables:!!m.tv,raiz:RAIZ[m.raiz]()}].concat(clone(m.extra||[]));
+    if(m.tv)piezas.push({t:'tv',pulgadas:m.tv,cx:0,y:82});
+    V.PERFILES.push({id,modelo:m.id,cat:m.cat,nombre:m.nombre,tipo:'Repisa flotante · '+m.w+' cm',color,texto:m.texto,etiquetas:m.etiquetas,
+      madera:cuerpo,frente:frente||null,cubierta:cubierta||null,veta:'v',pared:'yeso',piezas});
+  });
+});
+V.modeloDe=id=>V.MODELOS.find(m=>m.variantes.indexOf(id)>=0)||null;
 
-V.PERFIL_CERO={id:'cero',cat:'',nombre:'Desde cero',tipo:'Una caja vacía para empezar',madera:'roble',pared:'yeso',
+/* Fotos de cada variante: [número, ¿imagen ilustrativa (hecha con IA)?, ancho, alto].
+   Archivos en img/catalogo: <variante>-<n>.webp (grande) y <variante>-<n>-m.webp (para las tarjetas). */
+V.FOTOS={"r2p80_blanco":[[1,0,960,1280],[2,0,960,1280],[3,1,864,1152]],"r2p80_arena":[[1,0,960,1280],[2,0,960,1280],[3,0,960,1280],[4,1,864,1152]],"r2p80_full":[[1,0,1024,1024]],"re120_humo":[[1,0,960,1280],[2,0,960,1280]],"re120_arena":[[1,0,960,1280],[2,1,864,1152]],"r3p120_blanco":[[1,0,960,1280],[2,1,1280,1024]],"r3p120_arena":[[1,0,960,1280],[2,1,1280,1024]],"r3p120_humo":[[1,0,960,1280],[2,1,1280,1024]],"r3p120_cubarena":[[1,0,960,1280],[2,0,720,1280],[3,1,1280,698]],"r3p120_cubhumo":[[1,0,960,1280],[2,0,960,1280]],"r3p120_full":[[1,0,864,1152],[2,0,960,1280]],"r3p140_blanco":[[1,0,960,1280]],"r3e147_blanco":[[1,0,1024,1024],[2,0,960,1280]],"r3s120_arena":[[1,0,960,1280],[2,1,1280,698]],"r3n120":[[1,0,960,1280],[2,1,1280,835]],"r4p160_blanco":[[1,0,864,1152],[2,0,960,1280]],"r4p160_arena":[[1,1,672,436]],"r4p160_humo":[[1,1,672,436]],"rc160":[[1,0,864,1152],[2,0,960,1280],[3,0,960,1280]]};
+V.fotos=id=>(V.FOTOS[id]||[]).map(([n,ia,w,h])=>({g:'img/catalogo/'+id+'-'+n+'.webp',m:'img/catalogo/'+id+'-'+n+'-m.webp',ia:!!ia,w,h}));
+
+V.PERFIL_CERO={id:'cero',cat:'',nombre:'Desde cero',tipo:'Una caja vacía para empezar',madera:'blanco',pared:'yeso',
   piezas:[{t:'mueble',w:100,h:40,d:32,cx:0,y:60,raiz:a()}]};
 
 V.PALETA=[
@@ -1410,7 +1437,7 @@ V.normalizar=function(q){
 
 V.crearDiseno=function(id){
   const pf=id==='cero'?V.PERFIL_CERO:(V.PERFILES.find(x=>x.id===id)||V.PERFILES[0]);
-  const d={perfil:pf.id,nombre:pf.nombre,madera:pf.madera,frente:pf.frente||null,tirador:pf.tirador||'push',veta:'h',pared:pf.pared||'yeso',paredAncho:0,piezas:clone(pf.piezas)};
+  const d={perfil:pf.id,nombre:pf.nombre,madera:pf.madera,frente:pf.frente||null,cubierta:pf.cubierta||null,tirador:pf.tirador||'push',veta:pf.veta||'h',pared:pf.pared||'yeso',paredAncho:0,piezas:clone(pf.piezas)};
   d.piezas.forEach(V.normalizar);
   return d;
 };
@@ -1867,17 +1894,61 @@ V.svgFrente=function(d,o){
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" role="img" aria-label="Plano frontal del diseño">${s}</svg>`;
 };
 
+/* Plano con medidas: el mueble en perspectiva (frente, tapa y costado), con los colores reales
+   y las cotas de largo, alto y fondo. Lo dibuja la página a partir del diseño. */
+V.COLOR_PLANO={blanco:'#F6F4EF',arena:'#D8C3A1',humo:'#8C857E'};
+V.svgPlano=function(d){
+  const P=d.piezas.filter(q=>q.t==='mueble');if(!P.length)return '';
+  const K=.55,KY=.34,tinta='#2A1E16',CP=V.COLOR_PLANO,col=k=>CP[k]||CP.blanco;
+  const pr=(x,y,z)=>[x+z*K,-(y+z*KY)];
+  const pt=(x,y,z)=>{const a=pr(x,y,z);return a[0].toFixed(1)+','+a[1].toFixed(1);};
+  const poly=(pts,fill,extra)=>`<polygon points="${pts.join(' ')}" fill="${fill}" stroke="${tinta}" stroke-width="1.3" stroke-linejoin="round" vector-effect="non-scaling-stroke"${extra||''}/>`;
+  const osc=(h,f)=>{const n=parseInt(h.slice(1),16),c=[n>>16,(n>>8)&255,n&255].map(v=>Math.round(v*f));return 'rgb('+c.join(',')+')';};
+  let s='';const xs=[],ys=[];
+  const orden=P.slice().sort((a,b)=>a.y-b.y);
+  orden.forEach(q=>{
+    const {x,y,w,h}=q,dd=q.d||27,cu=q.mad||d.madera,fr=q.mad||d.frente||d.madera,tp=q.mad||d.cubierta||d.madera;
+    [[x,y,0],[x+w,y+h,dd],[x,y+h,dd],[x+w,y,0]].forEach(c=>{const a=pr(...c);xs.push(a[0]);ys.push(a[1]);});
+    s+=poly([pt(x,y+h,0),pt(x+w,y+h,0),pt(x+w,y+h,dd),pt(x,y+h,dd)],col(tp));
+    s+=poly([pt(x+w,y,0),pt(x+w,y+h,0),pt(x+w,y+h,dd),pt(x+w,y,dd)],osc(col(cu),.86));
+    s+=poly([pt(x,y,0),pt(x+w,y,0),pt(x+w,y+h,0),pt(x,y+h,0)],col(cu));
+    if(q.raiz&&(q.raiz.k||q.raiz.c!=='a'))V.celdas(q).forEach(c=>{
+      const r=[pt(c.x,c.y,0),pt(c.x+c.w,c.y,0),pt(c.x+c.w,c.y+c.h,0),pt(c.x,c.y+c.h,0)];
+      if(c.n.c==='a')s+=poly(r,osc(col(cu),.8));
+      else s+=poly(r,col(fr));
+    });
+    else if(q.raiz&&q.raiz.c==='a'){const g=q.g||1.8;s+=poly([pt(x+g,y+g,0),pt(x+w-g,y+g,0),pt(x+w-g,y+h-g,0),pt(x+g,y+h-g,0)],osc(col(cu),.8));}
+  });
+  // cotas del mueble principal (el más ancho) y del conjunto
+  const m=P.reduce((a,b)=>b.w>a.w?b:a,P[0]),dd=m.d||27;
+  const y0=Math.min(...P.map(q=>q.y)),y1=Math.max(...P.map(q=>q.y+q.h)),xL=Math.min(...P.map(q=>q.x));
+  const fs=Math.max(m.w,60)*.052,lin=(a,b)=>`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${tinta}" stroke-width="1.2" vector-effect="non-scaling-stroke" marker-start="url(#pl-f)" marker-end="url(#pl-f)"/>`;
+  const txt=(a,t,rot,anc)=>`<text x="${a[0].toFixed(1)}" y="${a[1].toFixed(1)}" font-size="${fs.toFixed(1)}" font-family="DM Mono,ui-monospace,monospace" fill="${tinta}" text-anchor="${anc||'middle'}"${rot?` transform="rotate(${rot} ${a[0].toFixed(1)} ${a[1].toFixed(1)})"`:''}>${t}</text>`;
+  const sep=fs*1.1;
+  const a1=pr(m.x,y0-sep,0),a2=pr(m.x+m.w,y0-sep,0);s+=lin(a1,a2)+txt([(a1[0]+a2[0])/2,a1[1]+fs*1.25],V.cm(m.w)+' cm de largo');
+  const b1=pr(xL-sep,y0,0),b2=pr(xL-sep,y1,0);s+=lin(b1,b2)+txt([b1[0]-fs*.45,(b1[1]+b2[1])/2],V.cm(y1-y0)+' cm de alto',-90);
+  const c1=pr(m.x+m.w+sep*.8,y0,0),c2=pr(m.x+m.w+sep*.8,y0,dd);s+=lin(c1,c2)+txt([(c1[0]+c2[0])/2+fs*.5,(c1[1]+c2[1])/2+fs*1.2],V.cm(dd)+' cm de fondo',-Math.atan2(KY,K)*57.3,'start');
+  xs.push(b1[0]-fs*1.6,c2[0]+fs*7);ys.push(a1[1]+fs*2.2,b2[1]-fs);
+  const X0=Math.min(...xs),X1=Math.max(...xs),Y0=Math.min(...ys),Y1=Math.max(...ys),mg=fs;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${(X0-mg).toFixed(1)} ${(Y0-mg).toFixed(1)} ${(X1-X0+2*mg).toFixed(1)} ${(Y1-Y0+2*mg).toFixed(1)}" role="img" aria-label="Plano con medidas"><defs><marker id="pl-f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="${(fs*.62).toFixed(2)}" markerHeight="${(fs*.62).toFixed(2)}" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 1L10 5L0 9z" fill="${tinta}"/></marker></defs>${s}</svg>`;
+};
+
 /* Código del diseño para enviarlo en un link (solo letras, números y guiones) */
 const nodoC=n=>n.c?n.c:[n.s,n.r.map(r=>Math.round(r*1000)/1000),n.k.map(nodoC)];
 const nodoX=n=>typeof n==='string'?{c:n}:{s:n[0],r:n[1],k:n[2].map(nodoX)};
 /* Un diseño conserva el precio de catálogo solo si no cambió nada que afecte su fabricación.
    El televisor, el color de la pared y la posición son guías: no cuentan. */
-const firmaPedido=d=>JSON.stringify([d.madera,d.frente||0,d.tirador,d.veta,d.piezas.filter(q=>q.t!=='tv').map(q=>[q.t,q.w,q.h,q.d||0,q.g||0,q.m||0,q.led?1:0,q.fondo===false?0:1,q.cables?1:0,q.ganchos||0,q.e||0,q.raiz?nodoC(q.raiz):0])]);
-V.precioDe=function(d){
-  const base=V.PRECIOS[d.perfil];
-  if(!base)return null;
-  return firmaPedido(d)===firmaPedido(V.crearDiseno(d.perfil))?base:null;
+const firmaPedido=d=>JSON.stringify([d.madera,d.frente||0,d.cubierta||0,d.tirador,d.veta,d.piezas.filter(q=>q.t!=='tv').map(q=>[q.t,q.w,q.h,q.d||0,q.g||0,q.m||0,q.led?1:0,q.fondo===false?0:1,q.cables?1:0,q.ganchos||0,q.e||0,q.mad||0,q.raiz?nodoC(q.raiz):0])]);
+/* Variante del catálogo igual a este diseño (por ejemplo, si al personalizar solo cambió el color
+   a otro que también vendemos, toma el precio de esa variante) */
+let firmasCat=null;
+V.perfilIgual=function(d){
+  if(!firmasCat){firmasCat={};V.PERFILES.forEach(pf=>{if(V.PRECIOS[pf.id])firmasCat[pf.id]=firmaPedido(V.crearDiseno(pf.id));});}
+  const f=firmaPedido(d);
+  if(firmasCat[d.perfil]===f)return d.perfil;
+  return Object.keys(firmasCat).find(k=>firmasCat[k]===f)||null;
 };
+V.precioDe=function(d){const k=V.perfilIgual(d);return k?V.PRECIOS[k]:null;};
 /* ─── Precio de un diseño personalizado (estimado) ───
    Cada modelo tiene una "tarifa": su precio ÷ el material y el trabajo que lleva (según el despiece).
    Un diseño cambiado se cobra con la tarifa del modelo del que partió: si lo agrandas cuesta más
@@ -1900,17 +1971,24 @@ V.unidadesTrabajo=function(d){
   });
   return u;
 };
+/* Recargo por color sobre el blanco mate, sacado de los precios reales del catálogo
+   (puertas en arena o humo ≈ +18 %, cubierta en color ≈ +18 %, cuerpo en color ≈ +20 %) */
+V.RECARGO_COLOR={frentes:.18,cubierta:.18,cuerpo:.2};
+V.factorColor=function(d){
+  const R=V.RECARGO_COLOR,deColor=k=>!!k&&k!=='blanco';
+  return 1+(deColor(d.frente||d.madera)?R.frentes:0)+(deColor(d.cubierta||d.madera)?R.cubierta:0)+(deColor(d.madera)?R.cuerpo:0);
+};
 let tarifas=null;
 function tarifa(id){
   if(!tarifas){
     tarifas={};
-    Object.keys(V.PRECIOS).forEach(k=>{const u=V.unidadesTrabajo(V.crearDiseno(k));if(u>0)tarifas[k]=V.PRECIOS[k]/u;});
+    Object.keys(V.PRECIOS).forEach(k=>{const d=V.crearDiseno(k),u=V.unidadesTrabajo(d)*V.factorColor(d);if(u>0)tarifas[k]=V.PRECIOS[k]/u;});
     const v=Object.values(tarifas).sort((a,b)=>a-b);tarifas._medio=v[Math.floor(v.length/2)]||0;
   }
   return tarifas[id]||tarifas._medio;
 }
 V.precioEstimado=function(d){
-  const u=V.unidadesTrabajo(d),T=V.TRABAJO;
+  const u=V.unidadesTrabajo(d)*V.factorColor(d),T=V.TRABAJO;
   if(!(u>0))return null;
   return Math.max(T.minimo,Math.round(tarifa(d.perfil)*u/T.redondeo)*T.redondeo);
 };
@@ -1918,15 +1996,15 @@ V.precioEstimado=function(d){
 V.precioPedido=function(d){return V.precioDe(d)||V.precioEstimado(d);};
 V.compactar=function(d){
   return [1,d.perfil,d.nombre,d.madera,d.frente||0,d.tirador,d.veta,d.pared,d.paredAncho,d.piezas.map(q=>[
-    q.t,q.x,q.y,q.w,q.h,q.d||0,q.g||0,q.m||0,q.led?1:0,q.fondo===false?0:1,q.cables?1:0,q.ganchos||0,q.e||0,q.pulgadas||0,q.raiz?nodoC(q.raiz):0
-  ])];
+    q.t,q.x,q.y,q.w,q.h,q.d||0,q.g||0,q.m||0,q.led?1:0,q.fondo===false?0:1,q.cables?1:0,q.ganchos||0,q.e||0,q.pulgadas||0,q.raiz?nodoC(q.raiz):0,q.mad||0
+  ]),d.cubierta||0];
 };
 V.expandir=function(c){
   const d={perfil:c[1],nombre:c[2],madera:c[3],frente:c[4]||null,tirador:c[5],veta:c[6],pared:c[7],paredAncho:c[8],piezas:c[9].map(z=>{
     const q={t:z[0],x:z[1],y:z[2],w:z[3],h:z[4],d:z[5]};
-    if(z[6])q.g=z[6];if(z[7])q.m=z[7];if(z[8])q.led=true;q.fondo=!!z[9];if(z[10])q.cables=true;if(z[11])q.ganchos=z[11];if(z[12])q.e=z[12];if(z[13])q.pulgadas=z[13];if(z[14])q.raiz=nodoX(z[14]);
+    if(z[6])q.g=z[6];if(z[7])q.m=z[7];if(z[8])q.led=true;q.fondo=!!z[9];if(z[10])q.cables=true;if(z[11])q.ganchos=z[11];if(z[12])q.e=z[12];if(z[13])q.pulgadas=z[13];if(z[14])q.raiz=nodoX(z[14]);if(z[15])q.mad=z[15];
     return q;
-  })};
+  }),cubierta:c[10]||null};
   d.piezas.forEach(V.normalizar);
   return d;
 };
@@ -1968,13 +2046,19 @@ const T=window.THREE;
 /* Material con el que se fabrican todos los muebles; los "acabados" de abajo son sus colores */
 V.MATERIAL='RH Original';
 V.MADERAS={
-  roble:{n:'Roble natural',nota:'Tono miel y veta marcada. Combina con casi todo.',base:'#B98A55',osc:'#7E5730',cla:'#D9B583',mod:'fina',r:.56},
-  nogal:{n:'Nogal',nota:'Oscuro y cálido, con vetas onduladas.',base:'#6A4630',osc:'#3B2418',cla:'#8F6549',mod:'catedral',r:.48},
-  cedro:{n:'Cedro rojizo',nota:'Tono rojizo con vetas amplias.',base:'#A0603C',osc:'#6E3B22',cla:'#C78A60',mod:'catedral',r:.52},
-  pino:{n:'Pino claro',nota:'Claro, con nudos naturales.',base:'#D8B781',osc:'#AC8349',cla:'#EDD4AA',mod:'nudos',r:.6},
-  fresno:{n:'Fresno negro',nota:'Negro teñido que deja ver la veta.',base:'#2A2725',osc:'#100E0D',cla:'#4A443E',mod:'fina',r:.44},
-  blanco:{n:'Blanco mate',nota:'Pintura mate, sin veta.',base:'#E9E6DD',liso:true,r:.72},
-  arena:{n:'Arena mate',nota:'Pintura mate en tono arena.',base:'#CBB89C',liso:true,r:.68}
+  blanco:{n:'Blanco mate',nota:'Blanco liso y mate, sin veta. Limpio y luminoso.',base:'#ECEAE5',liso:true,r:.72},
+  arena:{n:'Arena',nota:'Madera clara con veta fina y recta.',base:'#CDB797',osc:'#A68E6E',cla:'#DECCAD',mod:'recta',r:.6},
+  humo:{n:'Humo',nota:'Madera gris con vetas marcadas.',base:'#827B74',osc:'#57514B',cla:'#A49D96',mod:'recta',r:.56}
+};
+/* Texto de los colores de un diseño: "Blanco mate" o "Cuerpo Blanco mate · puertas Arena · cubierta Humo" */
+V.textoAcabado=function(d){
+  const M=V.MADERAS,n=k=>(M[k]||M.blanco).n,c=d.madera;
+  const partes=[];
+  if(d.frente&&d.frente!==c)partes.push('puertas '+n(d.frente));
+  if(d.cubierta&&d.cubierta!==c)partes.push('cubierta '+n(d.cubierta));
+  const ex=(d.piezas||[]).find(q=>q.mad&&q.mad!==c);
+  if(ex)partes.push('estructura '+n(ex.mad));
+  return partes.length?'Cuerpo '+n(c)+' · '+partes.join(' · '):n(c);
 };
 V.TIRADORES=[
   {id:'push',n:'Sin tirador',nota:'Se abre al presionar'},
@@ -2032,8 +2116,8 @@ V.pintarMadera=function(clave,W,H){
   for(let i=0;i<FN;i++){lento=clamp(lento+(r()-.5)*.16,.05,.95);fib[i]=lento*.6+r()*.4;}
   const img=g.createImageData(W,H),D=img.data;
   const cx=.2+.6*r(),cy=.1+.8*r();
-  const cat=def.mod==='catedral',nud=def.mod==='nudos';
-  const frec=cat?15:nud?16:24,amp=cat?.5:nud?.36:.28,pot=cat?2:1.5,est=cat?.075:.05;
+  const cat=def.mod==='catedral',nud=def.mod==='nudos',rec=def.mod==='recta';
+  const frec=cat?15:nud?16:24,amp=rec?.05:cat?.5:nud?.36:.28,pot=cat?2:1.5,est=cat?.075:.05,ond=rec?8:44;
   for(let y=0,k=0;y<H;y++){
     const v=y/H;
     for(let x=0;x<W;x++,k+=4){
@@ -2042,7 +2126,7 @@ V.pintarMadera=function(clave,W,H){
       const di=Math.sqrt(du*du+dv*dv);
       let an=.5+.5*Math.sin(di*frec*6.2832+(w2-.5)*3);
       an=Math.pow(an,pot);
-      const fy=clamp((y+(w1-.5)*44+H)|0,0,FN-1);
+      const fy=clamp((y+(w1-.5)*ond+H)|0,0,FN-1);
       const t=clamp(an*amp+fib[fy]*(1-amp),0,1);
       let a1,a2,kk;
       if(t<.5){a1=cla;a2=base;kk=t*2;}else{a1=base;a2=osc;kk=(t-.5)*2;}
@@ -2422,7 +2506,7 @@ function construirMueble(q,d,ctx){
   const {x,y,w,h}=q,g=q.g,prof=q.d,z0=q.z||0,zf=z0+prof;
   const hay=V.hayFrentes(q.raiz),zc=hay?zf-1.8:zf,L=ctx.L,O=ctx.of,O0={u:0,v:0};
   const vetaF=d.veta==='v'?'y':'x',zi=z0+(q.fondo?.6:0);
-  L.de('cuerpo').caja(x,y+h-g,z0,x+w,y+h,zc,'x',O());
+  L.de(d.cubierta?'cubierta':'cuerpo').caja(x,y+h-g,z0,x+w,y+h,zc,'x',O());
   L.de('cuerpo').caja(x,y,z0,x+w,y+g,zc,'x',O());
   L.de('cuerpo').caja(x,y+g,z0,x+g,y+h-g,zc,'y',O());
   L.de('cuerpo').caja(x+w-g,y+g,z0,x+w,y+h-g,zc,'y',O());
@@ -2628,21 +2712,24 @@ function ponerObjeto(a,ctx){
   }
 }
 V.construirDiseno=function(d,opc){
-  if(!V.MADERAS[d.madera])d.madera='roble';
+  if(!V.MADERAS[d.madera])d.madera='blanco';
   if(d.frente&&!V.MADERAS[d.frente])d.frente=null;
+  if(d.cubierta&&!V.MADERAS[d.cubierta])d.cubierta=null;
   V.prepararZ(d);
   const grupo=new T.Group(),anim=[];
   const F=fijos(),mC=matMadera(d.madera),mF=d.frente?matMadera(d.frente):mC;
-  const mats=Object.assign({cuerpo:mC,frente:mF},F);
+  const mats=Object.assign({cuerpo:mC,frente:mF,cubierta:d.cubierta?matMadera(d.cubierta):mC},F);
   d.piezas.forEach((q,iq)=>{
     const r=rng((iq+3)*97+13);
-    const ctx={g:grupo,anim,mats,L:new Lotes(),rnd:r,d,opc,of:()=>({u:r()*340,v:r()*104})};
+    const mq=q.mad&&V.MADERAS[q.mad]?matMadera(q.mad):null;
+    const matsQ=mq?Object.assign({},mats,{cuerpo:mq,frente:mq,cubierta:mq}):mats;
+    const ctx={g:grupo,anim,mats:matsQ,L:new Lotes(),rnd:r,d,opc,of:()=>({u:r()*340,v:r()*104})};
     if(q.t==='mueble')construirMueble(q,d,ctx);
     else if(q.t==='repisa')construirRepisa(q,d,ctx);
     else if(q.t==='panel')construirPanel(q,d,ctx);
     else if(q.t==='tv')construirTV(q,ctx);
     if(opc.decorar&&q.t!=='tv'&&q.t!=='panel')decorar(q,ctx);
-    ctx.L.mallas(mats).forEach(m=>grupo.add(m));
+    ctx.L.mallas(matsQ).forEach(m=>grupo.add(m));
   });
   if(d.ambiente){
     const ctx={g:grupo,mats,L:new Lotes(),rnd:rng(2027),opc};
@@ -3037,16 +3124,17 @@ function pintarTab(){
 
 /* ─── Pestaña Perfil ─── */
 function imgMini(id){
-  const u=V.miniaturas&&V.miniaturas[id];
-  return u?`<img alt="" src="${u}">`:`<span class="p-sin">${V.svgFrente(V.crearDiseno(id),{conTV:true})}</span>`;
+  const f=V.fotos(id)[0];
+  return f?`<img alt="" src="${f.m}" loading="lazy" decoding="async">`:`<span class="p-sin">${V.svgFrente(V.crearDiseno(id),{conTV:true})}</span>`;
 }
 function htmlPerfil(){
-  const lista=V.PERFILES.filter(p=>St.cat==='todo'||p.cat===St.cat);
-  return `<h2 class="p-h">Elige un perfil</h2>
-  <p class="p-sub">Es tu punto de partida. Después puedes cambiar medidas y agregar o quitar piezas.</p>
+  const lista=V.MODELOS.filter(m=>St.cat==='todo'||m.cat===St.cat);
+  return `<h2 class="p-h">Elige un modelo</h2>
+  <p class="p-sub">Es tu punto de partida. Después puedes cambiar medidas, colores y agregar o quitar piezas.</p>
   <div class="chips" role="group" aria-label="Tipo de mueble">${V.CATEGORIAS.map(c=>`<button type="button" class="chip ${St.cat===c.id?'on':''}" data-a="cat" data-id="${c.id}">${c.n}</button>`).join('')}</div>
   <div class="p-grid">
-    ${lista.map(p=>`<button type="button" class="p-card ${St.d.perfil===p.id?'on':''}" data-a="perfil" data-id="${p.id}"><span class="p-img" data-mini="${p.id}">${imgMini(p.id)}</span><b>${p.nombre}</b><small>${p.tipo}</small><small class="p-pr">${V.dinero(V.PRECIOS[p.id])}</small></button>`).join('')}
+    ${lista.map(m=>{const id=m.variantes[0],pf=V.PERFILES.find(x=>x.id===id),min=Math.min(...m.variantes.map(v=>V.PRECIOS[v]));
+      return `<button type="button" class="p-card ${m.variantes.indexOf(St.d.perfil)>=0?'on':''}" data-a="perfil" data-id="${id}"><span class="p-img">${imgMini(id)}</span><b>${m.nombre}</b><small>${m.w} cm${m.variantes.length>1?' · '+m.variantes.length+' colores':' · '+pf.color}</small><small class="p-pr">${m.variantes.length>1?'Desde ':''}${V.dinero(min)}</small></button>`;}).join('')}
     <button type="button" class="p-card p-cero ${St.d.perfil==='cero'?'on':''}" data-a="perfil" data-id="cero"><span class="p-img p-img-cero">${ICO.modulo}</span><b>Desde cero</b><small>Una caja vacía para empezar</small></button>
   </div>`;
 }
@@ -3275,15 +3363,17 @@ const acciones={
     St.d.piezas=St.d.piezas.filter(x=>x.id!==q.id);St.sel=null;validarSel();
     dibujar({encuadrar:true});commit();pintarTab();pie();
   },
-  madera(b){St.d.madera=b.dataset.id;dibujar();commit();pintarTab();},
-  frente(b){St.d.frente=b.dataset.id==='igual'?null:b.dataset.id;dibujar();commit();pintarTab();},
+  madera(b){St.d.madera=b.dataset.id;dibujar();commit();pintarTab();pie();},
+  frente(b){St.d.frente=b.dataset.id==='igual'?null:b.dataset.id;dibujar();commit();pintarTab();pie();},
+  cubierta(b){St.d.cubierta=b.dataset.id==='igual'?null:b.dataset.id;dibujar();commit();pintarTab();pie();},
   tirador(b){St.d.tirador=b.dataset.id;dibujar();commit();pintarTab();},
   veta(b){St.d.veta=b.dataset.id;dibujar();commit();pintarTab();},
   pared(b){St.d.pared=b.dataset.id;dibujar();commit();pintarTab();},
   copiar(b){copiarResumen(b);},
   alCarrito(b){
     if(!V.carrito)return;
-    if(V.precioDe(St.d))V.carrito.agregar(St.d.perfil,b);
+    const k=V.perfilIgual(St.d);
+    if(k)V.carrito.agregar(k,b);
     else V.carrito.agregarDiseno(St.d,b);
   }
 };
@@ -3296,9 +3386,12 @@ function htmlAcabado(){
   const d=St.d,M=V.MADERAS;
   const sw=(acc,k,act,et)=>`<button type="button" class="sw ${act?'on':''}" data-a="${acc}" data-id="${k}" aria-pressed="${!!act}"><i style="background-image:url(${V.muestraMadera(k)})"></i><span>${et}</span></button>`;
   const tv=d.piezas.find(x=>x.t==='tv');
-  return `<div class="bloque"><h3>Acabado <small class="mat-chip">${V.MATERIAL}</small></h3><div class="sw-grid">${Object.keys(M).map(k=>sw('madera',k,d.madera===k,M[k].n)).join('')}</div></div>
-  <div class="bloque"><h3>Frentes de puertas y cajones</h3><div class="chips"><button type="button" class="chip ${!d.frente?'on':''}" data-a="frente" data-id="igual">Igual que el cuerpo</button></div>
-    <div class="sw-grid sw-mini">${Object.keys(M).map(k=>sw('frente',k,d.frente===k,M[k].n)).join('')}</div></div>
+  const igual=(acc,act)=>`<div class="chips"><button type="button" class="chip ${act?'on':''}" data-a="${acc}" data-id="igual">Igual que el cuerpo</button></div>`;
+  return `<div class="bloque"><h3>Color del cuerpo <small class="mat-chip">${V.MATERIAL}</small></h3><p class="nota">Costados, base y nichos.</p><div class="sw-grid sw-3">${Object.keys(M).map(k=>sw('madera',k,d.madera===k,M[k].n)).join('')}</div></div>
+  <div class="bloque"><h3>Puertas y cajones</h3>${igual('frente',!d.frente)}
+    <div class="sw-grid sw-3 sw-mini">${Object.keys(M).map(k=>sw('frente',k,d.frente===k,M[k].n)).join('')}</div></div>
+  <div class="bloque"><h3>Cubierta</h3><p class="nota">La tapa de arriba, donde va el TV.</p>${igual('cubierta',!d.cubierta)}
+    <div class="sw-grid sw-3 sw-mini">${Object.keys(M).map(k=>sw('cubierta',k,d.cubierta===k,M[k].n)).join('')}</div></div>
   <div class="bloque"><h3>Dirección de la veta</h3>${chipsOp('veta',[['h','Horizontal'],['v','Vertical']],d.veta)}</div>
   <div class="bloque"><h3>Tirador</h3><div class="op-list">${V.TIRADORES.map(t=>`<button type="button" class="op ${d.tirador===t.id?'on':''}" data-a="tirador" data-id="${t.id}" aria-pressed="${d.tirador===t.id}"><b>${t.n}</b><small>${t.nota}</small></button>`).join('')}</div></div>
   <div class="bloque"><h3>Ancho libre de tu pared</h3><p class="nota">Opcional. Marcamos el límite en el dibujo para ver si cabe.</p><div class="pa-c"><input id="pared-ancho" type="number" inputmode="numeric" min="0" max="1200" placeholder="Ej: 320" value="${d.paredAncho||''}" aria-label="Ancho libre de tu pared en centímetros"><span class="mono">cm</span></div></div>
@@ -3365,7 +3458,7 @@ function htmlEnviar(){
   const foto=St.esc?`<img id="t-img" alt="Vista de tu diseño">`:`<div id="t-img-svg">${V.svgFrente(d,{conTV:true})}</div>`;
   const filas=pedido.map((q,i)=>`<li><div><b>${i+1}. ${esc(V.nombrePieza(q))}</b><span class="mono">${V.medidasPieza(q)}</span></div><small>${esc(V.detallePieza(q))}</small></li>`).join('');
   const desp=pedido.map(q=>V.despiece(q).map(z=>`<tr><td>${z.q}</td><td>${z.n}</td><td class="mono">${cm(z.a)} × ${cm(z.b)}</td></tr>`).join('')).join('');
-  const mad=V.MADERAS[d.madera].n+(d.frente?' con frentes en '+V.MADERAS[d.frente].n:'');
+  const mad=V.textoAcabado(d);
   const tir=V.TIRADORES.find(t=>t.id===d.tirador).n;
   const pr=V.precioDe(d),est=pr?0:V.precioEstimado(d);
   const sel=(id,et,ops,val)=>`<div class="f-c"><label for="f-${id}">${et}</label><select id="f-${id}" data-f="${id}"><option value="">Elige una opción</option>${ops.map(o=>`<option value="${o[0]}" ${val===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></div>`;
@@ -3416,7 +3509,7 @@ function mensaje(){
   L.push('*'+d.nombre+'*'+(nom?' ('+nom.tipo+')':''));
   pedido.forEach((q,i)=>{L.push((i+1)+'. '+V.nombrePieza(q)+': '+V.medidasPieza(q)+(V.detallePieza(q)?' — '+V.detallePieza(q):''));});
   L.push('');
-  L.push('Material: '+V.MATERIAL+' · Acabado: '+V.MADERAS[d.madera].n+(d.frente?' · Frentes: '+V.MADERAS[d.frente].n:''));
+  L.push('Material: '+V.MATERIAL+' · Color: '+V.textoAcabado(d));
   L.push('Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
   const pr=V.precioDe(d),est=pr?0:V.precioEstimado(d);
   L.push(pr?'Precio publicado: '+V.dinero(pr):est?'Diseño personalizado: precio estimado '+V.dinero(est):'Diseño personalizado: precio por cotizar');
@@ -3784,7 +3877,7 @@ V.abrirDisenador=function(id,o){
     else if(!hayD){
       const b=leerBorrador();
       if(b&&b.piezas&&b.piezas.length){St.d=b;St.sel=null;validarSel();dibujar({encuadrar:true,instantaneo:true});reiniciarHist();}
-      else cargarPerfil('horizonte');
+      else cargarPerfil('r3p120_blanco');
     }
     else if(St.esc){St.esc.ajustar();dibujar();}
     irTab(o.tab||(id?'piezas':(St.tab||'perfil')));
@@ -3820,7 +3913,7 @@ const dzCache={};
 function dis(i){if(!i.d)return V.crearDiseno(i.id);return dzCache[i.id]||(dzCache[i.id]=V.expandir(i.d));}
 function valido(x){try{const d=V.expandir(x.d);return d.piezas.some(q=>q.t!=='tv')&&V.precioEstimado(d)>0;}catch(e){return false;}}
 function precio(i){return i.d?V.precioEstimado(dis(i)):V.PRECIOS[i.id];}
-function acabado(i){const d=dis(i);return V.MATERIAL+' '+V.MADERAS[d.madera].n;}
+function acabado(i){const d=dis(i);return V.MATERIAL+' · '+V.textoAcabado(d);}
 function nombre(i){return i.d?(dis(i).nombre||'Mi diseño'):perfil(i.id).nombre;}
 function tipo(i){
   if(!i.d)return perfil(i.id).tipo;
@@ -3916,7 +4009,7 @@ const PAGO_EST={APPROVED:'Pago aprobado',DECLINED:'Pago rechazado',ERROR:'Error 
 
 /* ─── Textos y piezas de pantalla ─── */
 function medida(i){const d=dis(i),q=d.piezas.find(x=>x.t==='mueble')||d.piezas.find(x=>x.t==='repisa')||d.piezas.find(x=>x.t!=='tv');return q?V.medidasPieza(q):'';}
-function imagen(i){const u=!i.d&&V.miniaturas&&V.miniaturas[i.id];return u?`<img alt="" src="${u}">`:`<span class="plano">${V.svgFrente(dis(i),{conTV:true})}</span>`;}
+function imagen(i){const f=!i.d&&V.fotos(i.id)[0];return f?`<img alt="" src="${f.m}">`:`<span class="plano">${V.svgFrente(dis(i),{conTV:true})}</span>`;}
 function mensaje(extra){
   const f=form,L=[];
   L.push('Hola'+(f.nombre.trim()?', soy '+f.nombre.trim():'')+'. Quiero hacer este pedido:');L.push('');
@@ -3925,7 +4018,7 @@ function mensaje(extra){
     if(i.d){
       const d=dis(i);
       d.piezas.filter(q=>q.t!=='tv').forEach(q=>L.push('   · '+V.nombrePieza(q)+': '+V.medidasPieza(q)+(V.detallePieza(q)?' — '+V.detallePieza(q):'')));
-      L.push('   · Material: '+V.MATERIAL+' · Acabado: '+V.MADERAS[d.madera].n+(d.frente?' · Frentes: '+V.MADERAS[d.frente].n:'')+' · Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
+      L.push('   · Material: '+V.MATERIAL+' · Color: '+V.textoAcabado(d)+' · Tirador: '+V.TIRADORES.find(t=>t.id===d.tirador).n);
       if(i.c&&V.NEGOCIO.urlBeta)L.push('   · Ver en 3D: '+V.NEGOCIO.urlBeta+'#'+i.c);
     }
   });
@@ -4520,84 +4613,133 @@ function iniciarNavegacion(){
   b.addEventListener('click',()=>{const on=$('#nav').classList.toggle('abierto');b.setAttribute('aria-expanded',on);});
 }
 
-/* ─── Catálogo ─── */
+/* ─── Catálogo: cada tarjeta es un modelo; sus colores se eligen en la misma tarjeta ─── */
 let cat='todo';
+const selVar={};
+const escH=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const perfilId=id=>V.PERFILES.find(x=>x.id===id);
 function medidaPrincipal(id){
-  const d=V.crearDiseno(id),q=d.piezas.find(x=>x.t==='mueble')||d.piezas.find(x=>x.t==='repisa')||d.piezas[0];
+  const d=V.crearDiseno(id),q=d.piezas.find(x=>x.t==='mueble')||d.piezas[0];
   return V.medidasPieza(q);
 }
-function msjModelo(p,pul){return 'Hola, me interesa el modelo '+p.nombre+' ('+p.tipo+', '+medidaPrincipal(p.id)+').'+(pul?' Mi TV es de '+pul+' pulgadas.':'')+' ¿Me pueden cotizar?';}
-function imgCat(p){
-  const u=V.miniaturas[p.id];
-  return u?`<img alt="${p.nombre}" src="${u}">`:`<span class="plano">${V.svgFrente(V.crearDiseno(p.id),{conTV:true})}</span>`;
+function msjModelo(p,pul){return 'Hola, me interesa la '+p.nombre+' ('+medidaPrincipal(p.id)+') en '+p.color+', de '+V.dinero(V.PRECIOS[p.id])+'.'+(pul?' Mi TV es de '+pul+' pulgadas.':'')+' ¿Me pueden dar más información?';}
+/* Muestra de color de una variante: arriba la cubierta (o la estructura), abajo las puertas, el borde es el cuerpo */
+function muestra(id){
+  const pf=perfilId(id),C=V.COLOR_PLANO,ex=pf.piezas.find(q=>q.mad);
+  const arriba=C[ex?ex.mad:(pf.cubierta||pf.madera)],abajo=C[pf.frente||pf.madera],borde=C[pf.madera];
+  return `background:linear-gradient(180deg,${arriba} 0 40%,${abajo} 40% 100%);box-shadow:inset 0 0 0 3px ${borde},inset 0 0 0 4px rgba(42,30,22,.25)`;
+}
+function htmlSw(m,id,attr){
+  return `<div class="card-sw" role="radiogroup" aria-label="Color">${m.variantes.map(v=>{const c=perfilId(v).color;return `<button type="button" class="sw-c ${v===id?'on':''}" role="radio" aria-checked="${v===id}" ${attr}="${v}" title="${escH(c)}" aria-label="${escH(c)}"><i style="${muestra(v)}"></i></button>`;}).join('')}</div>`;
+}
+function htmlCard(m){
+  const id=selVar[m.id]||m.variantes[0],pf=perfilId(id),F=V.fotos(id),f=F[0],varias=m.variantes.length>1;
+  return `<article class="card" data-modelo="${m.id}">
+    <button type="button" class="card-img" data-ficha="${id}" aria-label="Ver ${escH(m.nombre)} en ${escH(pf.color)}">${f?`<img loading="lazy" decoding="async" alt="${escH(m.nombre+' en '+pf.color)}" src="${f.m}">`:`<span class="plano">${V.svgPlano(V.crearDiseno(id))}</span>`}${f&&f.ia?'<span class="card-ia">Imagen ilustrativa</span>':''}${F.length>1?`<span class="card-n">${F.length} fotos</span>`:''}</button>
+    <div class="card-b">
+      <h3>${escH(m.nombre)}</h3>
+      <p class="mono card-d">${medidaPrincipal(id)}</p>
+      ${varias?htmlSw(m,id,'data-var'):''}
+      <p class="card-t">${escH(pf.color)}${varias?` <small>· ${m.variantes.length} colores</small>`:''}</p>
+      <p class="card-p">${V.dinero(V.PRECIOS[id])}</p>
+      <div class="card-acc">
+        <button type="button" class="btn btn-p btn-peq cr-add" data-carrito="${id}">Agregar al carrito</button>
+        <button type="button" class="enl" data-disenar="${id}">Personalizar</button>
+        <a class="enl enl-s" href="${V.linkWA(msjModelo(pf))}" target="_blank" rel="noopener">Cotizar</a>
+      </div>
+    </div></article>`;
 }
 function pintarFiltros(){
   $('#cat-filtros').innerHTML=V.CATEGORIAS.map(c=>{
-    const n=c.id==='todo'?V.PERFILES.length:V.PERFILES.filter(p=>p.cat===c.id).length;
+    const n=c.id==='todo'?V.MODELOS.length:V.MODELOS.filter(m=>m.cat===c.id).length;
     return `<button type="button" class="filtro ${cat===c.id?'on':''}" data-cat="${c.id}" aria-pressed="${cat===c.id}">${c.n} <small>${n}</small></button>`;
   }).join('');
 }
 function pintarCatalogo(){
   pintarFiltros();
-  const lista=V.PERFILES.filter(p=>cat==='todo'||p.cat===cat);
-  $('#cat-grid').innerHTML=lista.map(p=>`<article class="card">
-    <button type="button" class="card-img" data-ficha="${p.id}" aria-label="Ver ${p.nombre}"><span class="card-m" data-mini="${p.id}">${imgCat(p)}</span></button>
-    <div class="card-b">
-      <h3>${p.nombre}</h3>
-      <p class="card-t">${p.tipo}</p>
-      <p class="mono card-d">${medidaPrincipal(p.id)}</p>
-      <p class="card-p">${V.dinero(V.PRECIOS[p.id])}</p>
-      <div class="card-acc">
-        <button type="button" class="btn btn-p btn-peq cr-add" data-carrito="${p.id}">Agregar al carrito</button>
-        <button type="button" class="enl" data-disenar="${p.id}">Personalizar</button>
-        <a class="enl enl-s" href="${V.linkWA(msjModelo(p))}" target="_blank" rel="noopener">Cotizar</a>
-      </div>
-    </div></article>`).join('');
+  $('#cat-grid').innerHTML=V.MODELOS.filter(m=>cat==='todo'||m.cat===cat).map(htmlCard).join('');
+}
+function pintarCard(mid){
+  const el=$(`#cat-grid [data-modelo="${mid}"]`),m=V.MODELOS.find(x=>x.id===mid);
+  if(el&&m)el.outerHTML=htmlCard(m);
 }
 function iniciarCatalogo(){
   pintarCatalogo();
   $('#cat-filtros').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;cat=b.dataset.cat;pintarCatalogo();});
+  $('#cat-grid').addEventListener('click',e=>{
+    const b=e.target.closest('[data-var]');if(!b)return;
+    const m=V.modeloDe(b.dataset.var);if(!m)return;
+    selVar[m.id]=b.dataset.var;pintarCard(m.id);
+    const nb=$(`#cat-grid [data-var="${b.dataset.var}"]`);if(nb)nb.focus();
+  });
 }
 
-/* ─── Ficha de producto ─── */
+/* ─── Ficha de producto: fotos, colores y plano con medidas ─── */
+const ICO_PLANO='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.5l8-4 9 4.5-8 4z"/><path d="M3.5 8.5v7l9 4.5v-7M20.5 9v7l-8 4"/></svg>';
 function recoFicha(p,base){
   const t=V.tvMedidas(p);
-  return 'Tu TV de '+p+'″ mide '+Math.round(t.w)+' cm de ancho. '+(base.w>=t.min?'Esta base de '+cm(base.w)+' cm le queda bien.':'Esta base mide '+cm(base.w)+' cm: te conviene de '+t.ideal+' cm. Puedes ajustarla al personalizar.');
+  return 'Tu TV de '+p+'″ mide '+Math.round(t.w)+' cm de ancho. '+(base.w>=t.min?'Esta repisa de '+cm(base.w)+' cm le queda bien.':'Esta repisa mide '+cm(base.w)+' cm: te conviene una de '+t.ideal+' cm. Puedes ajustarla al personalizar.');
 }
-function abrirFicha(id){
-  const p=V.PERFILES.find(x=>x.id===id);if(!p)return;
-  const d=V.crearDiseno(id),f=$('#ficha');
-  const piezas=d.piezas.filter(q=>q.t!=='tv'),tv=d.piezas.find(q=>q.t==='tv'),base=d.piezas.find(q=>q.t==='mueble');
+function htmlFoto(id,k){
+  const F=V.fotos(id),f=F[k],pf=perfilId(id);
+  if(!f){
+    const d=V.crearDiseno(id),extra=d.piezas.filter(q=>q.t==='mueble').slice(1);
+    return `<div class="fi-plano">${V.svgPlano(d)}<p class="nota">Medidas en centímetros.${extra.length?' Estructura de arriba: '+extra.map(q=>V.medidasPieza(q)).join(', ')+'.':''} Antes de fabricar las confirmamos contigo.</p></div>`;
+  }
+  return `<img src="${f.g}" alt="${escH(pf.nombre+' en '+pf.color)}" width="${f.w}" height="${f.h}">${f.ia?'<span class="fi-ia">Imagen ilustrativa · el mueble real puede variar un poco</span>':''}`;
+}
+function abrirFicha(id,k){
+  const pf=perfilId(id);if(!pf)return;
+  const m=V.modeloDe(id),d=V.crearDiseno(id),f=$('#ficha'),F=V.fotos(id);
+  const tv=d.piezas.find(q=>q.t==='tv'),base=d.piezas.find(q=>q.t==='mueble');
   const pAct=tv?(V.tvElegida||tv.pulgadas):0;
+  k=Math.min(k||0,F.length);
   f.dataset.id=id;
   $('#ficha-c').innerHTML=`
-    <div class="fi-img" data-mini="${p.id}">${imgCat(p)}</div>
+    <div class="fi-gal">
+      <div class="fi-foto ${k===F.length?'es-plano':''}" id="fi-foto">${htmlFoto(id,k)}</div>
+      <div class="fi-tiras" aria-label="Fotos del mueble">${F.map((x,i)=>`<button type="button" class="fi-t ${i===k?'on':''}" data-ff="${i}" aria-label="Foto ${i+1}${x.ia?' (imagen ilustrativa)':''}" aria-pressed="${i===k}"><img alt="" src="${x.m}" loading="lazy"></button>`).join('')}<button type="button" class="fi-t fi-t-plano ${k===F.length?'on':''}" data-ff="${F.length}" aria-pressed="${k===F.length}">${ICO_PLANO}<span>Medidas</span></button></div>
+    </div>
     <div class="fi-b">
-      <p class="eti">${p.tipo}</p>
-      <h2>${p.nombre}</h2>
-      <p class="fi-pr">${V.dinero(V.PRECIOS[p.id])}</p>
-      <p>${p.texto}</p>
-      <ul class="fi-et">${p.etiquetas.map(e=>`<li>${e}</li>`).join('')}</ul>
-      <h3>Incluye</h3>
-      <ul class="fi-lista">${piezas.map(q=>`<li><b>${V.nombrePieza(q)}</b><span class="mono">${V.medidasPieza(q)}</span><small>${V.detallePieza(q)}</small></li>`).join('')}</ul>
+      <p class="eti">Repisa flotante · ${V.MATERIAL}</p>
+      <h2>${escH(pf.nombre)}</h2>
+      <p class="mono fi-med">${medidaPrincipal(id)} <span>(ancho × alto × fondo)</span></p>
+      <p class="fi-pr">${V.dinero(V.PRECIOS[id])}</p>
+      ${m&&m.variantes.length>1?`<div class="fi-col"><p>Color: <b>${escH(pf.color)}</b></p>${htmlSw(m,id,'data-fvar')}</div>`:`<p class="fi-col">Color: <b>${escH(pf.color)}</b></p>`}
+      <p>${escH(pf.texto)}</p>
+      <ul class="fi-et">${pf.etiquetas.map(e=>`<li>${escH(e)}</li>`).join('')}</ul>
       ${tv&&base?`<div class="fi-tv"><h3>¿De cuántas pulgadas es tu TV?</h3><div class="chips" id="fi-pulg">${V.PULGADAS.map(x=>`<button type="button" class="chip ${x===pAct?'on':''}" data-fp="${x}" aria-pressed="${x===pAct}">${x}″</button>`).join('')}</div><p class="nota" id="fi-reco">${recoFicha(pAct,base)}</p></div>`:''}
-      <p class="fi-mat"><span>Material</span><b>${V.MATERIAL}</b><span>Acabado</span><b>${V.MADERAS[d.madera].n}${d.frente?' · frentes '+V.MADERAS[d.frente].n:''}</b></p>
-      <p class="nota">Precio de referencia con estas medidas, en ${V.MATERIAL} acabado ${V.MADERAS[d.madera].n}. Si cambias algo, te lo cotizamos.</p>
+      <p class="fi-mat"><span>Material</span><b>${V.MATERIAL}</b><span>Colores</span><b>${V.textoAcabado(d)}</b></p>
       <div class="fi-acc">
-        <button type="button" class="btn btn-p btn-gde" data-carrito="${p.id}">Agregar al carrito · ${V.dinero(V.PRECIOS[p.id])}</button>
-        <button type="button" class="btn btn-t" data-disenar="${p.id}">Personalizar este mueble</button>
-        <a class="btn btn-wa" id="fi-wa" href="${V.linkWA(msjModelo(p,pAct))}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Cotizar por WhatsApp</a>
+        <button type="button" class="btn btn-p btn-gde" data-carrito="${id}">Agregar al carrito · ${V.dinero(V.PRECIOS[id])}</button>
+        <button type="button" class="btn btn-t" data-disenar="${id}">Personalizar medidas y colores</button>
+        <a class="btn btn-wa" id="fi-wa" href="${V.linkWA(msjModelo(pf,pAct))}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Cotizar por WhatsApp</a>
       </div>
     </div>`;
-  if(f.showModal)f.showModal();else f.setAttribute('open','');
+  if(!f.open){if(f.showModal)f.showModal();else f.setAttribute('open','');}
 }
 function iniciarFicha(){
   const f=$('#ficha');
   $('#ficha-x').addEventListener('click',()=>f.close());
   f.addEventListener('click',e=>{if(e.target===f)f.close();});
   $('#ficha-c').addEventListener('click',e=>{
+    const ff=e.target.closest('[data-ff]');
+    if(ff){
+      const k=parseInt(ff.dataset.ff,10),id=f.dataset.id,box=$('#fi-foto');
+      box.innerHTML=htmlFoto(id,k);box.classList.toggle('es-plano',k===V.fotos(id).length);
+      $$('[data-ff]',f).forEach(x=>{const on=x===ff;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});
+      return;
+    }
+    const fv=e.target.closest('[data-fvar]');
+    if(fv){
+      const v=fv.dataset.fvar,m=V.modeloDe(v);
+      if(m){selVar[m.id]=v;pintarCard(m.id);}
+      abrirFicha(v,0);
+      const nb=$(`[data-fvar="${v}"]`,f);if(nb)nb.focus();
+      return;
+    }
     const b=e.target.closest('[data-fp]');if(!b)return;
-    const n=parseInt(b.dataset.fp,10),id=f.dataset.id,pf=V.PERFILES.find(x=>x.id===id),base=V.crearDiseno(id).piezas.find(q=>q.t==='mueble');
+    const n=parseInt(b.dataset.fp,10),id=f.dataset.id,pf=perfilId(id),base=V.crearDiseno(id).piezas.find(q=>q.t==='mueble');
     V.tvElegida=n;
     $$('[data-fp]').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});
     $('#fi-reco').textContent=recoFicha(n,base);
@@ -4640,11 +4782,11 @@ function iniciarGuia(){
   $('#g-empezar').addEventListener('click',()=>{
     const t=datosTV(pulg);
     V.tvElegida=pulg;
-    V.abrirDisenador('horizonte',{ajuste:d=>{
+    V.abrirDisenador('r3p120_blanco',{ajuste:d=>{
       const m=d.piezas.find(q=>q.t==='mueble'),tv=d.piezas.find(q=>q.t==='tv');
       m.w=t.ideal;m.x=-t.ideal/2;
       tv.pulgadas=pulg;V.normalizar(tv);tv.x=-tv.w/2;
-      d.nombre='Horizonte para TV de '+pulg+'″';
+      d.nombre='Repisa para TV de '+pulg+'″';
     }});
   });
 }
@@ -4671,8 +4813,8 @@ function iniciarPortada(){
   const sec=$('#inicio'),cv=$('#hero-canvas'),cinta=$('#hero-cinta'),cif=$('#hero-cm'),tit=$('#hero-tit');
   if(!V.webgl){sec.classList.add('sin-3d');return;}
   const E=new V.Escena(cv,{noche:true,pr:1.75,decorar:true,fov:22});
-  const raiz={s:'c',k:[{c:'l'},{c:'p'},{c:'l'}],r:[1,1.4,1]};
-  const dis={perfil:'hero',nombre:'',madera:'roble',frente:null,tirador:'push',veta:'h',pared:'cacao',paredAncho:0,piezas:[
+  const raiz={s:'c',k:[{c:'p'},{c:'p'},{c:'p'}],r:[1,1,1]};
+  const dis={perfil:'hero',nombre:'',madera:'blanco',frente:'arena',tirador:'push',veta:'v',pared:'cacao',paredAncho:0,piezas:[
     V.normalizar({t:'mueble',w:150,h:32,d:38,cx:0,y:30,led:true,raiz}),
     V.normalizar({t:'tv',pulgadas:55,cx:0,y:74}),
     V.normalizar({t:'mueble',w:52,h:186,d:30,x:-194,y:0,m:'piso',luzInterior:true,raiz:{s:'f',k:[{c:'a'},{c:'a'},{c:'a'},{s:'c',k:[{c:'p'},{c:'p'}],r:[1,1]}],r:[1,1,1,1.1]}})
@@ -4919,7 +5061,6 @@ function arrancar(){
   iniciarDistinto();
   try{iniciarAparecer();}catch(e){}
   try{iniciarPortada();}catch(e){$('#inicio').classList.add('sin-3d');}
-  try{generarImagenes();}catch(e){}
   window.addEventListener('hashchange',ruta);
   ruta();
 }
